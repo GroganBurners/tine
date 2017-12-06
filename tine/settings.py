@@ -25,7 +25,7 @@ SECRET_KEY = 'pb@q^gagmz0+u(-8f%gd*$^)g!)yf0_fmo#k&3pwubrbc7sk^y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['groganbuners.com','groganburners.ie','.serveo.net']
 
 
 # Application definition
