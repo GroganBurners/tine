@@ -1,0 +1,32 @@
+{% load static %}
+<!doctype html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport",content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description",content="Oil & Gas Burner/Boiler Servicing in Kilkenny. Family owned and run." />
+  <meta name="author",content="Neil Grogan" />
+  <title>{% block title %}Grogan Burner Services{% endblock %}</title>
+  <style>
+      {% include 'css/bootstrap.min.css' %}
+      {% include 'css/base.css' %}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    {% include 'layouts/components/navbar.html' %}
+    
+    <div class="messages"></div>
+
+	{% block content %}
+	{% endblock %}
+	{% include 'layouts/components/footer.html' %}
+  </div>
+	<script>
+		{% include 'js/jquery-3.0.0.min.js' %}
+		{% include 'js/popper.js' %}
+		{% include 'js/bootstrap.min.js' %}
+	</script>
+</body>
+</html>

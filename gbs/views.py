@@ -5,26 +5,27 @@ from decimal import Decimal
 
 # Create your views here.
 def index(request):
-    gas_prices = Price.objects.filter(type__startswith="gas",
-                                      summer_offer=False,
-                                      cost__gt=Decimal('0.00')
-                                      ).exclude(type__endswith="install")
-    oil_prices = Price.objects.filter(type__startswith="oil",
-                                      summer_offer=False,
-                                      cost__gt=Decimal('0.00'))
-    summer_gas = Price.objects.filter(type__startswith="gas",
-                                      summer_offer=True,
-                                      cost__gt=Decimal('0.00'))
-    summer_oil = Price.objects.filter(type__startswith="oil",
-                                      summer_offer=True,
-                                      cost__gt=Decimal('0.00'))
-    repair_fee = Price.objects.filter(type__startswith="repair",
-                                      cost__gt=Decimal('0.00'))[0]
-    season = get_season()
-    context = {'gas_prices': gas_prices, 'oil_prices': oil_prices,
-               'summer_gas': summer_gas, 'summer_oil': summer_oil,
-               'repair_fee': repair_fee, 'season': season}
-    return render(request, 'gbs/index.html', context)
+    # gas_prices = Price.objects.filter(type__startswith="gas",
+    #                                   summer_offer=False,
+    #                                   cost__gt=Decimal('0.00')
+    #                                   ).exclude(type__endswith="install")
+    # oil_prices = Price.objects.filter(type__startswith="oil",
+    #                                   summer_offer=False,
+    #                                   cost__gt=Decimal('0.00'))
+    # summer_gas = Price.objects.filter(type__startswith="gas",
+    #                                   summer_offer=True,
+    #                                   cost__gt=Decimal('0.00'))
+    # summer_oil = Price.objects.filter(type__startswith="oil",
+    #                                   summer_offer=True,
+    #                                   cost__gt=Decimal('0.00'))
+    # repair_fee = Price.objects.filter(type__startswith="repair",
+    #                                   cost__gt=Decimal('0.00'))[0]
+    # season = get_season()
+    # context = {'gas_prices': gas_prices, 'oil_prices': oil_prices,
+    #            'summer_gas': summer_gas, 'summer_oil': summer_oil,
+    #            'repair_fee': repair_fee, 'season': season}
+    context = {}
+    return render(request, 'index.html', context)
 
 
 def get_season():
