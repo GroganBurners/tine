@@ -1,4 +1,15 @@
 {% extends "layouts/base.html" %}
-{% block content %}
-<h1>Hello world!</h1>
+{% block styles %}
+{% include "css/carousel.css" %}
 {% endblock %}
+{% block content %}
+{% include "layouts/components/carousel.html" %}
+<div class="container marketing">
+  {% include "layouts/components/marketing.html" %}
+  {% include "layouts/components/featurettes.html" %}
+</div>
+{% endblock %}
+<script>
+ {% include 'js/ga-public.js' %}
+</script>
+

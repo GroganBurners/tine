@@ -9,24 +9,28 @@
   <title>{% block title %}Grogan Burner Services{% endblock %}</title>
   <style>
       {% include 'css/bootstrap.min.css' %}
-      {% include 'css/base.css' %}
+      {% block styles %}
+      {% endblock %}
   </style>
 </head>
 
 <body>
-  <div class="container">
+   <header>
     {% include 'layouts/components/navbar.html' %}
-    
-    <div class="messages"></div>
+   </header>
+    <main role="main"> 
+      <div class="messages"></div>
 
-	{% block content %}
-	{% endblock %}
-	{% include 'layouts/components/footer.html' %}
-  </div>
+      {% block content %}
+      {% endblock %}
+      {% include 'layouts/components/footer.html' %}
+    </main>
 	<script>
 		{% include 'js/jquery-3.0.0.min.js' %}
 		{% include 'js/popper.js' %}
 		{% include 'js/bootstrap.min.js' %}
+          {% block scripts %}
+          {% endblock %}
 	</script>
 </body>
 </html>
