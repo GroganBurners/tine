@@ -1,2 +1,2 @@
 FROM nginx:latest
-ADD sites-enabled/ /etc/nginx/sites-enabled
+ADD conf.d/ /etc/nginx/conf.d
