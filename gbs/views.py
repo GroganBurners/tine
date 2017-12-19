@@ -24,7 +24,7 @@ def index(request):
     # context = {'gas_prices': gas_prices, 'oil_prices': oil_prices,
     #            'summer_gas': summer_gas, 'summer_oil': summer_oil,
     #            'repair_fee': repair_fee, 'season': season}
-    carousels = Carousel.objects.filter(active=True).order_by('-order')
+    carousels = Carousel.objects.filter(active=True).order_by('order')
     context = { 'carousels': carousels }
     return render(request, 'index.html', context)
 

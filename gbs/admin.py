@@ -16,7 +16,7 @@ class PriceAdmin(admin.ModelAdmin):
 
 class CarouselAdmin(admin.ModelAdmin):
     model = Carousel
-    ordering = ('-active','-order')
+    ordering = ('active','order')
     list_display = ['active', 'order', 'title', 'image', 'teaser_text']
 
 admin.site.register(Customer, CustomerAdmin)

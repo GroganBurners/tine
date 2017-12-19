@@ -1,7 +1,7 @@
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
           {% for carousel in carousels %}
-          <li data-target="#myCarousel" data-slide-to="{{forloop.counter}}" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" class="active"></li>
           {% empty %}
           {% endfor %}
         </ol>
