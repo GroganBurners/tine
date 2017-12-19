@@ -146,4 +146,15 @@ class Price(models.Model):
         ser_name = d[self.type]
         return ser_name + " " + "€" + ('%f' % self.cost).rstrip('0').rstrip('.')
 
+class Carousel(models.Model):
+    title = models.CharField(max_length=50, blank=False, null=False)
+    image = models.ImageField(upload_to='%Y/%m', blank=False, null=False)
+    teaser_text = models.CharField(max_length=200, blank=False, null=False)
+    use_button = models.BooleanField()
+    active = models.BooleanField()
+    order = models.PositiveSmallIntegerField()
+    button_text = models.CharField(max_length=50)
+    button_link = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.title

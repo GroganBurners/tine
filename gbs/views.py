@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from gbs.models import Price
+from gbs.models import Carousel, Price
 from decimal import Decimal
 
 
@@ -24,7 +24,8 @@ def index(request):
     # context = {'gas_prices': gas_prices, 'oil_prices': oil_prices,
     #            'summer_gas': summer_gas, 'summer_oil': summer_oil,
     #            'repair_fee': repair_fee, 'season': season}
-    context = {}
+    carousels = Carousel.objects.filter(active=True).order_by('-order')
+    context = { 'carousels': carousels }
     return render(request, 'index.html', context)
 
 

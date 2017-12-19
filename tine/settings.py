@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ['groganbuners.com','groganburners.ie','.serveo.net']
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/src/app/static'
+MEDIA_URL = '/static/images/carousel/' 
+MEDIA_ROOT = '/usr/src/app/static/images/carousel'
 
 # Application definition
 
