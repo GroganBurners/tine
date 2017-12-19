@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'pb@q^gagmz0+u(-8f%gd*$^)g!)yf0_fmo#k&3pwubrbc7sk^y'
+SECRET_KEY = os.environ.get("SECRET_KEY", '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'tine.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("DB_NAME",''),
+        'USER': os.environ.get("DB_USER", ''),
+        'PASSWORD': os.environ.get("DB_PASS",''),
+        'HOST': os.environ.get("DB_HOST",''),
+        'PORT': os.environ.get("DB_PORT",'')
     }
 }
 
