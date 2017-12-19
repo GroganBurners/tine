@@ -1,4 +1,7 @@
 version: '2'
+volumes:
+  postgres_data_local: {}
+  postgres_backup_local: {}
 services:
   nginx:
     restart: always
@@ -26,18 +29,12 @@ services:
     restart: always
     container_name: psql
     image: postgres:9.5
-    volumes_from:
-      - data
+    volumes:
+      - postgres_data_local:/var/lib/postgresql/data
+      - postgres_backup_local:/backups
     env_file: .env
     expose: 
       - "5432"
-  data:
-    restart: always
-    container_name: data
-    image: postgres:9.5
-    volumes:
-      - /var/lib/postgresql
-    command: "true"
   pgadmin:
     restart: always
     image: fenglc/pgadmin4
