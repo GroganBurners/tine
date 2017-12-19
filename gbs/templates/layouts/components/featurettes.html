@@ -1,3 +1,4 @@
+{% load static %}
         <hr id="gas" class="featurette-divider">
 
         <div class="row featurette">
@@ -53,7 +54,36 @@
           </div>
         </div>
 
-        <hr id="contact" class="featurette-divider">
+        <hr id="summer" class="featurette-divider">
+	
+	<div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Summer Deals. <span class="text-muted">Special offers for the holidays.</span></h2>
+          <p class="lead"> All charges reduced in summer! Prices valid for June, July and August</p>
+
+          <p class="lead"> Oil deals</p>
+          <ul>
+            {% for price in summer_oil %}
+              <li>{{ price }}</li>
+            {% endfor %}
+          </ul>
+          <br />
+          <p class="lead"> Gas deals</p>
+          <ul>
+            {% for price in summer_gas %}
+              <li>{{ price }}</li>
+            {% endfor %}
+          </ul>
+          <br />
+         <p><a class="btn btn-lg btn-primary" href="#contact" role="button">Book Now</a></p>
+         <a href="#">Back to top</a>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" src="{% static 'images/featurettes/offers.jpg' %}" alt="Summer savings">
+        </div>
+      </div>
+
+      <hr id="contact" class="featurette-divider">
 
         <div class="row featurette">
           <div class="col-md-7 order-md-2">
