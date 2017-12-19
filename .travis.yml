@@ -1,0 +1,23 @@
+language: python
+services:
+    - postgresql
+python:
+  - "3.6"
+env:
+  global:
+    - SECRET_KEY="test"
+    - DB_HOST="127.0.0.1"
+    - DB_PORT="5432"
+    - DB_NAME="gbs"
+    - DB_USER="postgres"
+    - DB_PASS=""
+install:
+  - "pip install -r requirements.txt"
+  - "pip install -r requirements-test.txt"
+  - psql -c 'create database ${DB_NAME};' -U postgres
+  - python manage.py makemigrations
+  - python manage.py migrate
+# command to run tests
+script:
+  - python manage.py check
+  - python manage.py test
