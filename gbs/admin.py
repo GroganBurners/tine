@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carousel, Customer, Service, Price
+from .models import Carousel, Customer, Expense, ExpenseType, Service, Supplier, Price
 
 class ServiceInline(admin.TabularInline):
         model = Service
@@ -10,9 +10,23 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'last_name']
     search_fields = ('first_name', 'last_name')
 
+class ExpenseAdmin(admin.ModelAdmin):
+    model = Expense
+    autocomplete_fields = ['supplier']
+    list_display = ['supplier', 'cost', 'vat']
+    search_fields = ('supplier', 'cost')
+
+class ExpenseTypeAdmin(admin.ModelAdmin):
+    model = ExpenseType
+
 class PriceAdmin(admin.ModelAdmin):
     model = Price
     list_display = ['type', 'cost', 'summer_offer']
+
+class SupplierAdmin(admin.ModelAdmin):
+    model = Supplier
+    list_display = ['name', 'email', 'phone_number']
+    search_fields = ('name', 'email')
 
 class CarouselAdmin(admin.ModelAdmin):
     model = Carousel
@@ -21,4 +35,7 @@ class CarouselAdmin(admin.ModelAdmin):
 
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Carousel, CarouselAdmin)
+admin.site.register(Expense, ExpenseAdmin)
+admin.site.register(ExpenseType, ExpenseTypeAdmin)
 admin.site.register(Price, PriceAdmin)
+admin.site.register(Supplier, SupplierAdmin)

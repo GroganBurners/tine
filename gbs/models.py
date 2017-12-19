@@ -39,25 +39,31 @@ class Supplier(models.Model):
         ('WW', 'Wicklow'),
     )
     street = models.CharField(max_length=200, blank=True)
-    county = models.CharField(choices=COUNTIES, max_length=30, blank=True)
-    eircode = models.CharField(max_length=12, blank=True)
+    county = models.CharField(choices=COUNTIES, max_length=30, blank=True, default='KK')
+    eircode = models.CharField(max_length=12, blank=True, default='R95 XXXX')
+    country = models.CharField(max_length=200, blank=True, default='Ireland')
     date_added = models.DateField(auto_now=True)
     date_updated = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.name
 
-
-class Invoice(models.Model):
-    TYPES = (
-        ('fuel', 'Diesel for the Van'),
-    )
-    type = models.CharField(choices=TYPES, max_length=30)
-    customer = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+class ExpenseType(models.Model):
+    type = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.type
+
+class Expense(models.Model):
+    type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     cost = models.DecimalField(max_digits=6, decimal_places=2)
     vat = models.DecimalField(max_digits=6, decimal_places=2)
+    notes = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Customer(models.Model):
@@ -150,9 +156,9 @@ class Carousel(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
     image = models.ImageField(upload_to='%Y/%m', blank=False, null=False)
     teaser_text = models.CharField(max_length=200, blank=False, null=False)
+    active = models.BooleanField(blank=False, null=False, default=False)
+    order = models.PositiveSmallIntegerField(blank=False, null=False)
     use_button = models.BooleanField()
-    active = models.BooleanField()
-    order = models.PositiveSmallIntegerField()
     button_text = models.CharField(max_length=50)
     button_link = models.CharField(max_length=20)
 
