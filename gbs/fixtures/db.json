@@ -1,0 +1,202 @@
+[
+  {
+    "model": "gbs.price", 
+    "pk": 1, 
+    "fields": 
+    {
+      "type": "gas_service", 
+      "cost": "80.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 2, 
+    "fields": 
+    {
+      "type": "gas_combi_service", 
+      "cost": "80.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 3, 
+    "fields": 
+    {
+      "type": "gas_fire", 
+      "cost": "65.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 4, 
+    "fields": 
+    {
+      "type": "gas_service_fire", 
+      "cost": "120.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 5, 
+    "fields": 
+    {
+      "type": "gas_install", 
+      "cost": "120.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 6, 
+    "fields": 
+    {
+      "type": "oil_service", 
+      "cost": "80.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 7, 
+    "fields": 
+    {
+      "type": "oil_combi_service", 
+      "cost": "80.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 8, 
+    "fields": 
+    {
+      "type": "oil_install", 
+      "cost": "120.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 9, 
+    "fields": 
+    {
+      "type": "repair_call_out", 
+      "cost": "80.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 10, 
+    "fields": 
+    {
+      "type": "ber", 
+      "cost": "120.00", 
+      "summer_offer": false
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 11, 
+    "fields": 
+    {
+      "type": "gas_service", 
+      "cost": "70.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 12, 
+    "fields": 
+    {
+      "type": "gas_combi_service", 
+      "cost": "70.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 13, 
+    "fields": 
+    {
+      "type": "gas_fire", 
+      "cost": "55.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 14, 
+    "fields": 
+    {
+      "type": "gas_service_fire", 
+      "cost": "100.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 15, 
+    "fields": 
+    {
+      "type": "gas_install", 
+      "cost": "100.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 16, 
+    "fields": 
+    {
+      "type": "oil_service", 
+      "cost": "70.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 17, 
+    "fields": 
+    {
+      "type": "oil_combi_service", 
+      "cost": "70.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 18, 
+    "fields": 
+    {
+      "type": "oil_install", 
+      "cost": "100.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 19, 
+    "fields": 
+    {
+      "type": "repair_call_out", 
+      "cost": "70.00", 
+      "summer_offer": true
+    }
+  },
+  {
+    "model": "gbs.price", 
+    "pk": 20, 
+    "fields": 
+    {
+      "type": "ber", 
+      "cost": "100.00", 
+      "summer_offer": true
+    }
+  }
+]
