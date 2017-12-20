@@ -199,5 +199,6 @@
       "summer_offer": true
     }
   },
-  {"model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$100000$J2DiIJ76k3Lr$E359ey8IrgQcvPj9TuP6xTyv760rLCEkI+VP1/tgHrY=", "last_login": "2017-12-19T23:42:42.545Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "admin@example.com", "is_staff": true, "is_active": true, "date_joined": "2017-12-19T23:42:13.854Z", "groups": [], "user_permissions": []}}
+  {"model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$100000$J2DiIJ76k3Lr$E359ey8IrgQcvPj9TuP6xTyv760rLCEkI+VP1/tgHrY=", "last_login": "2017-12-19T23:42:42.545Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "admin@example.com", "is_staff": true, "is_active": true, "date_joined": "2017-12-19T23:42:13.854Z", "groups": [], "user_permissions": []}},
+  {"model": "gbs.carousel", "pk": 1, "fields":{ "title": "Happy Christmas...", "image": "2017/12/christmas.jpg", "teaser_text": "and a happy new year to all of our valued customers. We wish you and yours the very best this holiday season.", "active": true, "order": 1, "use_button": false, "button_text": "Feliz navidad >", "button_link": "#gas"}}
 ]
