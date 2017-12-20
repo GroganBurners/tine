@@ -4,7 +4,10 @@ from decimal import Decimal
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-import xlwt
+# Working with Excel
+from openpyxl import Workbook
+from openpyxl.compat import range
+from openpyxl.utils import get_column_letter
 
 
 # Create your views here.
@@ -32,32 +35,23 @@ def index(request):
     return render(request, 'index.html', context)
 
 @login_required
-def export_users_xls(request):
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="users.xls"'
+def export_finance_xls(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="FinanceSheet.xlsx"'
 
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Users')
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "FinanceSheet2017"
 
     # Sheet header, first row
     row_num = 0
 
-    font_style = xlwt.XFStyle()
-    font_style.font.bold = True
+    ws.append(['Date', 'Details', 'Company', 'Money Out', 'Money In', 'VAT Due In', 'VAT Due Out', 'VAT Total', 'Total' ])
 
-    columns = ['Username', 'First name', 'Last name', 'Email address', ]
-
-    for col_num in range(len(columns)):
-        ws.write(row_num, col_num, columns[col_num], font_style)
-
-    # Sheet body, remaining rows
-    font_style = xlwt.XFStyle()
 
     rows = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
     for row in rows:
-        row_num += 1
-        for col_num in range(len(row)):
-            ws.write(row_num, col_num, row[col_num], font_style)
+        ws.append(row)
 
     wb.save(response)
     return response
