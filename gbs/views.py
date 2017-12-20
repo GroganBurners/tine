@@ -3,6 +3,7 @@ from gbs.models import Carousel, Price
 from decimal import Decimal
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 import xlwt
 
 
@@ -30,7 +31,7 @@ def index(request):
                 'summer_oil': summer_oil, 'repair_fee': repair_fee }
     return render(request, 'index.html', context)
 
-
+@login_required
 def export_users_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="users.xls"'
