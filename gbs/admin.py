@@ -7,8 +7,8 @@ class ServiceInline(admin.TabularInline):
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
     inlines = [ServiceInline,]
-    list_display = ['first_name', 'last_name']
-    search_fields = ('first_name', 'last_name')
+    list_display = ['first_name', 'last_name', 'street']
+    search_fields = ('first_name', 'last_name', 'street')
 
 class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
