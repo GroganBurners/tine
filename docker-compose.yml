@@ -7,6 +7,9 @@ services:
     restart: always
     build: ./docker/nginx
     container_name: web
+    volumes:
+      - "/etc/letsencrypt/live/:/etc/letsencrypt/live/"
+      - "/etc/ssl/certs/:/etc/ssl/certs/"
     volumes_from:
       - "django"
     ports:
