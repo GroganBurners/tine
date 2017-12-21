@@ -7,14 +7,17 @@ class ServiceInline(admin.TabularInline):
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
     inlines = [ServiceInline,]
-    list_display = ['first_name', 'last_name', 'street']
+    list_display = ['first_name__last_name', 'street']
     search_fields = ('first_name', 'last_name', 'street')
 
 class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
-    autocomplete_fields = ['type','supplier']
+    autocomplete_fields = ['supplier']
     list_display = ['supplier', 'cost', 'vat']
     search_fields = ('supplier', 'cost')
+
+class ExpenseTypeAdmin(admin.ModelAdmin):
+    model = ExpenseType
 
 class PriceAdmin(admin.ModelAdmin):
     model = Price
@@ -33,5 +36,6 @@ class CarouselAdmin(admin.ModelAdmin):
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Carousel, CarouselAdmin)
 admin.site.register(Expense, ExpenseAdmin)
+admin.site.register(ExpenseType, ExpenseTypeAdmin)
 admin.site.register(Price, PriceAdmin)
 admin.site.register(Supplier, SupplierAdmin)
