@@ -39,11 +39,11 @@ services:
     env_file: .env
     expose: 
       - "5432"
-  pgadmin:
-    restart: always
-    image: fenglc/pgadmin4
-    links:
-      - psql:psql
-    ports:
-      - "5050:5050"
+  # pgadmin:
+  #   restart: always
+  #   image: fenglc/pgadmin4
+  #   links:
+  #     - psql:psql
+  #   ports:
+  #     - "5050:5050"
 
