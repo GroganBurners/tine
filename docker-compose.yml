@@ -8,8 +8,8 @@ services:
     build: ./docker/nginx
     container_name: web
     volumes:
-      - "/etc/letsencrypt/live/:/etc/letsencrypt/live/"
-      - "/etc/ssl/certs/:/etc/ssl/certs/"
+      - "/etc/letsencrypt/:/etc/letsencrypt/:ro"
+      - "/etc/ssl/:/etc/ssl/:ro"
     volumes_from:
       - "django"
     ports:
