@@ -12,12 +12,19 @@ class CustomerAdmin(admin.ModelAdmin):
 
 class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
-    autocomplete_fields = ['supplier']
+    autocomplete_fields = ['type','supplier']
     list_display = ['supplier', 'cost', 'vat']
     search_fields = ('supplier', 'cost')
 
 class ExpenseTypeAdmin(admin.ModelAdmin):
     model = ExpenseType
+    search_fields = ['type']
+
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
 
 class PriceAdmin(admin.ModelAdmin):
     model = Price

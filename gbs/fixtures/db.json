@@ -200,5 +200,24 @@
     }
   },
   {"model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$100000$J2DiIJ76k3Lr$E359ey8IrgQcvPj9TuP6xTyv760rLCEkI+VP1/tgHrY=", "last_login": "2017-12-19T23:42:42.545Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "admin@example.com", "is_staff": true, "is_active": true, "date_joined": "2017-12-19T23:42:13.854Z", "groups": [], "user_permissions": []}},
-  {"model": "gbs.carousel", "pk": 1, "fields":{ "title": "Happy Christmas...", "image": "2017/12/christmas.jpg", "teaser_text": "and a happy new year to all of our valued customers. We wish you and yours the very best this holiday season.", "active": true, "order": 1, "use_button": false, "button_text": "Feliz navidad >", "button_link": "#gas"}}
+  {"model": "gbs.carousel", "pk": 1, "fields":{ "title": "Happy Christmas...", "image": "2017/12/christmas.jpg", "teaser_text": "and a happy new year to all of our valued customers. We wish you and yours the very best this holiday season.", "active": true, "order": 1, "use_button": false, "button_text": "Feliz navidad >", "button_link": "#gas"}},
+  {"model": "gbs.expensetype", "pk": 1, "fields": {"type": "Accountant Fees" }},
+  {"model": "gbs.expensetype", "pk": 2, "fields": {"type": "Bank Fees" }},
+  {"model": "gbs.expensetype", "pk": 3, "fields": {"type": "BER Cert Fees" }},
+  {"model": "gbs.expensetype", "pk": 4, "fields": {"type": "Electricity" }},
+  {"model": "gbs.expensetype", "pk": 5, "fields": {"type": "Equipment Hire" }},
+  {"model": "gbs.expensetype", "pk": 6, "fields": {"type": "Heating" }},
+  {"model": "gbs.expensetype", "pk": 7, "fields": {"type": "Landfill" }},
+  {"model": "gbs.expensetype", "pk": 8, "fields": {"type": "Motor Fuel" }},
+  {"model": "gbs.expensetype", "pk": 9, "fields": {"type": "Motor Service & Repir" }},
+  {"model": "gbs.expensetype", "pk": 10, "fields": {"type": "Motor Tax/Insurance" }},
+  {"model": "gbs.expensetype", "pk": 11, "fields": {"type": "Motor DOE" }},
+  {"model": "gbs.expensetype", "pk": 12, "fields": {"type": "Office expenses" }},
+  {"model": "gbs.expensetype", "pk": 13, "fields": {"type": "Purchases" }},
+  {"model": "gbs.expensetype", "pk": 14, "fields": {"type": "Public Liability Insurance" }},
+  {"model": "gbs.expensetype", "pk": 15, "fields": {"type": "Sponsorship" }},
+  {"model": "gbs.expensetype", "pk": 16, "fields": {"type": "Sub-Contractor" }},
+  {"model": "gbs.expensetype", "pk": 17, "fields": {"type": "Sundry" }},
+  {"model": "gbs.expensetype", "pk": 18, "fields": {"type": "Telephone & Broadband" }},
+  {"model": "gbs.expensetype", "pk": 19, "fields": {"type": "Training" }}
 ]
