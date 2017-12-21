@@ -12,7 +12,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
-    autocomplete_fields = ['supplier']
+    autocomplete_fields = ['type','supplier']
     list_display = ['supplier', 'cost', 'vat']
     search_fields = ('supplier', 'cost')
 
