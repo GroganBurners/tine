@@ -16,9 +16,6 @@ class ExpenseAdmin(admin.ModelAdmin):
     list_display = ['supplier', 'cost', 'vat']
     search_fields = ('supplier', 'cost')
 
-class ExpenseTypeAdmin(admin.ModelAdmin):
-    model = ExpenseType
-
 class PriceAdmin(admin.ModelAdmin):
     model = Price
     list_display = ['type', 'cost', 'summer_offer']
@@ -36,6 +33,5 @@ class CarouselAdmin(admin.ModelAdmin):
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Carousel, CarouselAdmin)
 admin.site.register(Expense, ExpenseAdmin)
-admin.site.register(ExpenseType, ExpenseTypeAdmin)
 admin.site.register(Price, PriceAdmin)
 admin.site.register(Supplier, SupplierAdmin)
