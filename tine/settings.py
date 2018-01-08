@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", 'testsecretkeyfortesting')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['.groganburners.com','groganburners.com', '.groganburners.ie','groganburners.ie','.serveo.net']
+ALLOWED_HOSTS = ['.groganburners.com','groganburners.com', '.groganburners.ie','groganburners.ie','gbs.ballyda.com']
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/src/app/static'
