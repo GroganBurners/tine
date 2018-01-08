@@ -7,6 +7,10 @@ services:
     restart: always
     build: ./docker/nginx
     container_name: web
+    volumes:
+       - "/etc/letsencrypt/:/etc/letsencrypt/:ro"
+       - "/var/www/html:/var/www/html:ro"
+       - "/etc/ssl/:/etc/ssl/:ro"
     volumes_from:
       - "django"
       - "certbot"
@@ -42,11 +46,6 @@ services:
     container_name: certbot
     image: certbot/certbot:latest
     command: certonly --webroot -w /var/www/html/ -d www.groganburners.com -d groganburners.com -d www.groganburners.ie -d groganburners.ie
-    volumes:
-      - "/etc/letsencrypt"
-      - "/var/lib/letsencrypt"
-      - "/var/www/html"
-      - "/etc/ssl/"
   # pgadmin:
   #   restart: always
   #   image: fenglc/pgadmin4
