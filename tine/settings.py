@@ -27,10 +27,13 @@ DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
 ALLOWED_HOSTS = ['.groganburners.com','groganburners.com', '.groganburners.ie','groganburners.ie','gbs.ballyda.com']
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.0/howto/static-files/
+
 STATIC_URL = '/static/'
-STATIC_ROOT = '/usr/src/app/static'
-MEDIA_URL = '/static/images/carousel/' 
-MEDIA_ROOT = '/usr/src/app/static/images/carousel'
+STATIC_ROOT = '/usr/src/app/static/'
+MEDIA_URL = '/uploads/' 
+MEDIA_ROOT = '/usr/src/app/static'
 
 # Application definition
 
@@ -123,8 +126,3 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-
-STATIC_URL = '/static/'

@@ -13,7 +13,7 @@
             {% else %}
              <div class="carousel-item">
             {% endif %}
-            <img class="first-slide" src="/static/images/carousel/{{ carousel.image }}" alt="Second slide">
+            <img class="first-slide" src="{{ carousel.image.url }}" alt="Second slide">
             <div class="container">
               <div class="carousel-caption">
                 <h1>{{ carousel.title }}</h1>

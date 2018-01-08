@@ -151,7 +151,7 @@ class Price(models.Model):
 
 class Carousel(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
-    image = models.ImageField(upload_to='%Y/%m', blank=False, null=False)
+    image = models.ImageField(upload_to='images/carousel', blank=False, null=False)
     teaser_text = models.CharField(max_length=200, blank=False, null=False)
     active = models.BooleanField(blank=False, null=False, default=False)
     order = models.PositiveSmallIntegerField(blank=False, null=False)
