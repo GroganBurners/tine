@@ -43,10 +43,10 @@ services:
     image: certbot/certbot:latest
     command: certonly --webroot -w /var/www/html/ -d www.groganburners.com -d groganburners.com -d www.groganburners.ie -d groganburners.ie
     volumes:
-      - "/etc/letsencrypt:ro"
-      - "/var/lib/letsencrypt:ro"
-      - "/var/www/html:ro"
-      - "/etc/ssl/:ro"
+      - "/etc/letsencrypt"
+      - "/var/lib/letsencrypt"
+      - "/var/www/html"
+      - "/etc/ssl/"
   # pgadmin:
   #   restart: always
   #   image: fenglc/pgadmin4
