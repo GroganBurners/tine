@@ -9,6 +9,7 @@ services:
     container_name: web
     volumes:
       - "/etc/letsencrypt/:/etc/letsencrypt/:ro"
+      - "/var/www/html:/var/www/html:ro"
       - "/etc/ssl/:/etc/ssl/:ro"
     volumes_from:
       - "django"
