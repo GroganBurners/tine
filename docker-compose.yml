@@ -1,7 +1,7 @@
 version: '2'
 volumes:
-  postgres_data_local: {}
-  postgres_backup_local: {}
+  pg_data: {}
+  pg_backup: {}
 services:
   nginx:
     restart: always
@@ -44,8 +44,8 @@ services:
     container_name: gbs-psql
     image: postgres:9.5
     volumes:
-      - postgres_data_local:/var/lib/postgresql/data
-      - postgres_backup_local:/backups
+      - pg_data:/var/lib/postgresql/data
+      - pg_backup:/backups
     env_file: .env
     expose: 
       - "5432"
