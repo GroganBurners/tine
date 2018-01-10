@@ -3,7 +3,7 @@ from django.core.validators import RegexValidator
 from .constants import COUNTIES, SERVICES
 
 
-class Supplier(models.Model):
+class ContactInfo(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone" +
@@ -15,9 +15,15 @@ class Supplier(models.Model):
     county = models.CharField(choices=COUNTIES, max_length=30, blank=True, default='KK')
     eircode = models.CharField(max_length=12, blank=True, default='R95 XXXX')
     country = models.CharField(max_length=200, blank=True, default='Ireland')
-    date_added = models.DateField(auto_now=True)
-    date_updated = models.DateField(auto_now=True)
 
+    class Meta:
+        abstract = True
+
+class Customer(ContactInfo):
+    def __str__(self):
+        return self.name + " (" + self.street + ")"
+
+class Supplier(ContactInfo):
     def __str__(self):
         return self.name
 
@@ -29,37 +35,17 @@ class ExpenseType(models.Model):
 
 class Expense(models.Model):
     type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now=True)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     cost = models.DecimalField(max_digits=6, decimal_places=2)
     vat = models.DecimalField(max_digits=6, decimal_places=2)
     notes = models.CharField(max_length=300)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class Customer(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(blank=True)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone" +
-                                 " number must be entered in the format:" +
-                                 " '+999999999'. Up to 15 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=16,
-                                    blank=True)
-    street = models.CharField(max_length=200, blank=True)
-    county = models.CharField(choices=COUNTIES, max_length=30, blank=True)
-    eircode = models.CharField(max_length=12, blank=True)
-    date_added = models.DateField(auto_now=True)
-    date_updated = models.DateField(auto_now=True)
-
-    def __str__(self):
-        return self.name + "(" + self.street + ")"
 
 
 class Service(models.Model):
-    type = models.CharField(choices=SERVICES, max_length=30)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    type = models.CharField(choices=SERVICES, max_length=30)
+    date = models.DateTimeField(auto_now=True)
     total = models.DecimalField(max_digits=6, decimal_places=2)
     vat = models.DecimalField(max_digits=6, decimal_places=2)
 
@@ -81,6 +67,7 @@ class Price(models.Model):
 class Carousel(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
     image = models.ImageField(upload_to='images/carousel', blank=False, null=False)
+    img_alt = models.CharField("Image alternative text (for screen readers)", max_length=50, blank=True, null=True)
     teaser_text = models.CharField(max_length=200, blank=False, null=False)
     active = models.BooleanField(blank=False, null=False, default=False)
     order = models.PositiveSmallIntegerField(blank=False, null=False)
