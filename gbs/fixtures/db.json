@@ -227,5 +227,6 @@
   {"model": "gbs.expensetype", "pk": 16, "fields": {"type": "Sub-Contractor" }},
   {"model": "gbs.expensetype", "pk": 17, "fields": {"type": "Sundry" }},
   {"model": "gbs.expensetype", "pk": 18, "fields": {"type": "Telephone & Broadband" }},
-  {"model": "gbs.expensetype", "pk": 19, "fields": {"type": "Training" }}
+  {"model": "gbs.expensetype", "pk": 19, "fields": {"type": "Training" }},
+  {"model": "gbs.customer", "pk": 1, "fields": {"name": "Neil Grogan", "street": "Ballyda" }}
 ]

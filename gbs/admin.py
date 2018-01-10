@@ -1,12 +1,27 @@
 from django.contrib import admin
-from .models import Carousel, Customer, Expense, ExpenseType, Service, Supplier, Price
+from .models import Carousel, Customer, Expense, ExpenseType, Invoice, InvoiceItem, Supplier, Price
 
-class ServiceInline(admin.TabularInline):
-        model = Service
+class InvoiceItemInline(admin.TabularInline):
+    model = InvoiceItem
+
+class InvoiceAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['customer']
+    readonly_fields=('invoice_id',)
+    inlines = [ InvoiceItemInline ]
+    list_display = [
+        'invoice_id', 
+        'customer', 
+        'invoice_date', 
+        'draft', 
+        'invoiced',
+        'paid_date',
+        'total'
+    ]
+    search_fields = ('invoice_id', 'customer__name')
+    model = Invoice
 
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
-    inlines = [ServiceInline,]
     list_display = ['name', 'street', 'county']
     search_fields = ('name', 'street')
 
@@ -44,5 +59,6 @@ admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Carousel, CarouselAdmin)
 admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(ExpenseType, ExpenseTypeAdmin)
+admin.site.register(Invoice, InvoiceAdmin)
 admin.site.register(Price, PriceAdmin)
 admin.site.register(Supplier, SupplierAdmin)
