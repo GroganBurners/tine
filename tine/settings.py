@@ -78,10 +78,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tine.wsgi.application'
 
+# Email Settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ.get("EMAIL_HOST",'smtp.gmail.com')
+EMAIL_HOST_USER = os.environ.get("EMAIL_ADDR",'')
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS",'')
+EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
 	'ENGINE': 'django.db.backends.postgresql_psycopg2',
