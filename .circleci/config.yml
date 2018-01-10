@@ -4,10 +4,16 @@ jobs:
     working_directory: ~/tine
     docker:
       - image: circleci/python:3.6.1
+        enviroment:
+          SECRET_KEY: test
+          DB_HOST: postgres
+          DB_PORT: 5432
+          DB_NAME: gbs
+          DB_USER: root
       - image: circleci/postgres:9.6.2
         environment:
           POSTGRES_USER: root
-          POSTGRES_DB: circle_test
+          POSTGRES_DB: gbs
     steps:
       - checkout
       - restore_cache:
