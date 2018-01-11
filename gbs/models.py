@@ -67,6 +67,10 @@ class Invoice(models.Model):
             total = total + item.total_ex_vat()
         return total
 
+    def total_vat(self):
+        total = self.total()-self.total_ex_vat()
+        return total.quantize(0, ROUND_HALF_UP)
+
     def total(self):
         total = Decimal('0.00')
         for item in self.items.all():

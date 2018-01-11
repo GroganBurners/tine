@@ -13,3 +13,23 @@ def pdf_response(pdf_funk, file_name, *args, **kwargs):
     response['Content-Disposition'] = 'attachment; filename="'+file_name+'"'
     pdf_funk(response, *args, **kwargs)
     return response
+
+
+def get_season():
+    from datetime import date
+    doy = date.today().timetuple().tm_yday
+    # "day of year" ranges for the northern hemisphere
+    spring = range(80, 172)
+    summer = range(172, 264)
+    autumn = range(264, 355)
+    # winter = everything else
+
+    if doy in spring:
+        season = 'spring'
+    elif doy in summer:
+        season = 'summer'
+    elif doy in autumn:
+        season = 'autumn'
+    else:
+        season = 'winter'
+    return season
