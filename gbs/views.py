@@ -1,13 +1,11 @@
 from django.shortcuts import render
 from gbs.models import Carousel, Price
 from decimal import Decimal
-from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-# Working with Excel
-from openpyxl import Workbook
-from openpyxl.compat import range
-from openpyxl.utils import get_column_letter
+from gbs.utils import excel_response, pdf_response
+from gbs.excel import export_finances
+# from gbs.pdf import export_invoice
 
 
 # Create your views here.
@@ -36,26 +34,11 @@ def index(request):
 
 @login_required
 def export_finance_xls(request):
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename="FinanceSheet.xlsx"'
+    return excel_response(export_finances, "FinanceSheet.xlsx")
 
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "FinanceSheet2017"
-
-    # Sheet header, first row
-    row_num = 0
-
-    ws.append(['Date', 'Details', 'Company', 'Money Out', 'Money In', 'VAT Due In', 'VAT Due Out', 'VAT Total', 'Total' ])
-
-
-    rows = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
-    for row in rows:
-        ws.append(row)
-
-    wb.save(response)
-    return response
-
+# @login_required
+# def print_invoice(request):
+#     return pdf_response(export_invoice, "Invoice.pdf")
 
 def get_season():
     from datetime import date
