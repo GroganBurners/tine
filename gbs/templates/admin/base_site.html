@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('GBS site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Grogan Burner Services') }}</a></h1>
+{% endblock %}
+
+{% include 'gbs/templates/layouts/components/navbar.html' %}
+{% block nav-global %}{% endblock %}
