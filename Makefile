@@ -3,8 +3,19 @@ DEC:= exec -it
 G:=git
 DC:=docker-compose
 
-run:
+.PHONY:= build cleanfiles cleandjango run dj db dev clean deploy 
+
+build:
 	${DC} build
+
+cleanfiles:
+	${G} clean -f gbs/migrations
+
+cleandjango:
+	${D} rm -f gbs-dj gbs-psql
+	${D} volume rm -f tine_pg_data tine_pg_backup
+
+run:
 	${DC} up -d
 
 dj:
@@ -12,11 +23,13 @@ dj:
 
 db:
 	${D} ${DEC} gbs-psql su postgres -c 'psql'
-clean:
+
+dev: cleanfiles build cleandjango run
+
+clean: cleanfiles
 	${DC} stop
 	${DC} rm -f
 	${D} volume rm -f tine_pg_data tine_pg_backup
-	${G} clean -f gbs/migrations
 
 deploy:
 	${G} pull
