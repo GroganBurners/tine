@@ -1,5 +1,9 @@
 from django.contrib import admin
+from django.contrib.admin import AdminSite
 from .models import Carousel, Customer, Expense, ExpenseType, Invoice, InvoiceItem, Supplier, Price
+
+class GBSAdminSite(AdminSite):
+    site_header = "My Super Awesome Customized Admin Site"
 
 class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
@@ -55,10 +59,11 @@ class CarouselAdmin(admin.ModelAdmin):
     ordering = ('active','order')
     list_display = ['active', 'order', 'title', 'image', 'teaser_text']
 
-admin.site.register(Customer, CustomerAdmin)
-admin.site.register(Carousel, CarouselAdmin)
-admin.site.register(Expense, ExpenseAdmin)
-admin.site.register(ExpenseType, ExpenseTypeAdmin)
-admin.site.register(Invoice, InvoiceAdmin)
-admin.site.register(Price, PriceAdmin)
-admin.site.register(Supplier, SupplierAdmin)
+admin_site = GBSAdminSite(name="gbsadmin")
+admin_site.register(Customer, CustomerAdmin)
+admin_site.register(Carousel, CarouselAdmin)
+admin_site.register(Expense, ExpenseAdmin)
+admin_site.register(ExpenseType, ExpenseTypeAdmin)
+admin_site.register(Invoice, InvoiceAdmin)
+admin_site.register(Price, PriceAdmin)
+admin_site.register(Supplier, SupplierAdmin)
