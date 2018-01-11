@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+import os
 
 class GBSConfig(AppConfig):
     BANK_ADDRESS = os.environ.get("BANK_ADDRESS",'Bank of Ireland, Parliament Street, Co. Kilkenny, R95 K857, Ireland')
