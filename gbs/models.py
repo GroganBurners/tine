@@ -102,7 +102,7 @@ class InvoiceItem(models.Model):
         total = Decimal(str(self.total_ex_vat()+self.total_vat()))
         return total.quantize(Decimal('0.01'))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 
