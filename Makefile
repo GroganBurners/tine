@@ -16,6 +16,7 @@ clean:
 	${DC} stop
 	${DC} rm -f
 	${D} volume rm -f tine_pg_data tine_pg_backup
+	${G} clean -f gbs/migrations
 
 deploy:
 	${G} pull
