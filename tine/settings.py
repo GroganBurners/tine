@@ -38,7 +38,7 @@ MEDIA_ROOT = '/usr/src/app/static'
 # Application definition
 
 INSTALLED_APPS = [
-    'gbs.apps.GbsConfig',
+    'gbs',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
