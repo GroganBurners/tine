@@ -57,7 +57,7 @@ class SupplierAdmin(admin.ModelAdmin):
 class CarouselAdmin(admin.ModelAdmin):
     model = Carousel
     ordering = ('active','order')
-    list_display = ['active', 'order', 'title', 'image', 'teaser_text']
+    list_display = ['title', 'active', 'order', 'image', 'teaser_text']
 
 admin_site = GBSAdminSite(name="gbsadmin")
 admin_site.register(Customer, CustomerAdmin)
