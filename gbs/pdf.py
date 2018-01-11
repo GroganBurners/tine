@@ -22,7 +22,7 @@ def draw_address(canvas):
         u'BALLYDA',
         u'DANESFORT',
         U'KILKENNY',
-        U'POSTCODE',
+        U'R95 CC92',
         U'IRELAND',
         u'',
         u'',
