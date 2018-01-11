@@ -2,8 +2,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import Table
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
-from django.conf import settings
-
+from gbs.conf import settings
 
 def draw_header(canvas):
     """ Draws the invoice header """
