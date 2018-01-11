@@ -2,7 +2,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import Table
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
-from .settings.GBSConfig import BANK_ADDRESS, BIC, EMAIL, IBAN, PHONE, REG_NO, SORT_CODE, VAT_NO
+from django.conf import settings
 
 
 def draw_header(canvas):
@@ -27,11 +27,11 @@ def draw_address(canvas):
         U'IRELAND',
         u'',
         u'',
-        u'Phone: '+PHONE,
-        u'Email: '+EMAIL,
-        u'Website: '+WEBSITE,
-        u'Reg No: '+REG_NO,
-        u'VAT No: '+VAT_NO
+        u'Phone: ' + settings.PHONE,
+        u'Email: ' + settings.EMAIL,
+        u'Website: ' + settings.WEBSITE,
+        u'Reg No: ' + settings.REG_NO,
+        u'VAT No: ' + settings.VAT_NO
     )
     canvas.setFont('Helvetica', 9)
     textobject = canvas.beginText(13 * cm, -2.5 * cm)
@@ -43,8 +43,8 @@ def draw_address(canvas):
 def draw_footer(canvas):
     """ Draws the invoice footer """
     note = (
-        u'Bank Details: '+ BANK_ADDRESS,
-        u'Sort Code: '+SORT_CODE+' BIC: '+BIC+' IBAN: '+IBAN+' (Quote invoice number).',
+        u'Bank Details: ' + settings.BANK_ADDRESS,
+        u'Sort Code: ' + settings.SORT_CODE + ' BIC: ' + settings.BIC + ' IBAN: ' + settings.IBAN + ' (Quote invoice number).',
         u'Please pay via bank transfer or cheque. All payments should be made in EURO.',
         u'Make cheques payable to Grogan Burner Services Ltd.',
     )
