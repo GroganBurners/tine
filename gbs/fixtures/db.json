@@ -228,5 +228,7 @@
   {"model": "gbs.expensetype", "pk": 17, "fields": {"type": "Sundry" }},
   {"model": "gbs.expensetype", "pk": 18, "fields": {"type": "Telephone & Broadband" }},
   {"model": "gbs.expensetype", "pk": 19, "fields": {"type": "Training" }},
-  {"model": "gbs.customer", "pk": 1, "fields": {"name": "Neil Grogan", "street": "Ballyda" }}
+  {"model": "gbs.customer", "pk": 1, "fields": {"name": "Neil Grogan", "street": "Ballyda" }},
+  {"model": "gbs.invoice", "pk": 1, "fields": {"customer": 1, "invoice_id": "E1301R", "invoice_date": "2018-01-11", "invoiced": false, "draft": false, "paid_date": null}}, 
+  {"model": "gbs.invoiceitem", "pk": 1, "fields": {"invoice": 1, "description": "Service", "unit_price": "70.48", "vat_rate": "13.50", "quantity": "1.00"}}
 ]

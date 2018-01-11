@@ -1,9 +1,15 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django.utils.html import format_html
+from django.urls import reverse, path
 from .models import Carousel, Customer, Expense, ExpenseType, Invoice, InvoiceItem, Supplier, Price
+from gbs.utils import excel_response, pdf_response
+from gbs.pdf import export_invoice
 
 class GBSAdminSite(AdminSite):
-    site_header = "My Super Awesome Customized Admin Site"
+    site_header = "Grogan Burner Services Admin Site"
+
+admin_site = GBSAdminSite(name="gbsadmin")
 
 class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
@@ -13,16 +19,32 @@ class InvoiceAdmin(admin.ModelAdmin):
     readonly_fields=('invoice_id',)
     inlines = [ InvoiceItemInline ]
     list_display = [
-        'invoice_id', 
-        'customer', 
-        'invoice_date', 
-        'draft', 
-        'invoiced',
-        'paid_date',
-        'total'
+        'invoice_id', 'customer', 'invoice_date', 
+        'draft', 'invoiced', 'paid_date', 'total',
+        'invoice_actions'
     ]
     search_fields = ('invoice_id', 'customer__name')
     model = Invoice
+
+    def print_invoice(self, request, invoice_id):
+        invoice = self.get_object(request, invoice_id)
+        return pdf_response(export_invoice, "Invoice.pdf", invoice)
+
+    def get_urls(self):
+        return [
+                path('<int:invoice_id>/pdf/',
+                    self.admin_site.admin_view(self.print_invoice),
+                    name='invoice-pdf'
+                    )
+        ] + super().get_urls()
+
+    def invoice_actions(self, obj):
+        return format_html(
+            '<a class="button" href="{}">PDF</a>',
+            reverse('gbsadmin:invoice-pdf', args=[obj.pk]),
+        )
+    invoice_actions.short_description = 'Invoice Actions'
+    invoice_actions.allow_tags = True
 
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
@@ -59,7 +81,6 @@ class CarouselAdmin(admin.ModelAdmin):
     ordering = ('active','order')
     list_display = ['title', 'active', 'order', 'image', 'teaser_text']
 
-admin_site = GBSAdminSite(name="gbsadmin")
 admin_site.register(Customer, CustomerAdmin)
 admin_site.register(Carousel, CarouselAdmin)
 admin_site.register(Expense, ExpenseAdmin)

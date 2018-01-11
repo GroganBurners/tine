@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from gbs.utils import excel_response, pdf_response
 from gbs.excel import export_finances
-from gbs.pdf import export_invoice
 ADMIN_LOGIN_URL = '/admin/login/'
 
 
@@ -36,9 +35,4 @@ def index(request):
 @login_required(login_url=ADMIN_LOGIN_URL)
 def export_finance_xls(request):
     return excel_response(export_finances, "FinanceSheet.xlsx")
-
-@login_required(login_url=ADMIN_LOGIN_URL)
-def print_invoice(request, id):
-    invoice = get_object_or_404(Invoice, id=id)
-    return pdf_response(export_invoice, "Invoice.pdf", invoice)
 
