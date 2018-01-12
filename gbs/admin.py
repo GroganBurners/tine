@@ -5,8 +5,9 @@ from django.urls import reverse, path
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
+from io import BytesIO
 from .models import Carousel, Customer, Expense, ExpenseType, Invoice, InvoiceItem, Supplier, Price
-from gbs.utils import excel_response, pdf_response
+from gbs.utils import excel_response, pdf_response, zip_response
 from gbs.pdf import export_invoice
 
 class GBSAdminSite(AdminSite):
@@ -27,14 +28,26 @@ class InvoiceAdmin(admin.ModelAdmin):
         'invoice_actions'
     ]
     search_fields = ('invoice_id', 'customer__name')
-    actions = ['email_invoices', 'print_invoice']
+    actions = ['email_invoices', 'print_invoices']
     model = Invoice
 
     def print_invoice(self, request, invoice_id):
         invoice = self.get_object(request, invoice_id)
         return pdf_response(export_invoice, invoice.file_name(), invoice)
 
-    print_invoice.short_description = "Generate PDF of invoice"
+    def print_invoices(self, request, queryset):
+        files = []
+        for invoice in queryset.all():
+            fi = {}
+            buf = BytesIO()
+            export_invoice(buf, invoice)
+            fi['content'] = buf
+            fi['name'] = invoice.file_name()
+            files.append(fi)
+
+        return zip_response(files, 'invoice.zip')
+
+    print_invoices.short_description = "Generate a Zip of PDF invoice(s)"
 
     def sms_invoice(self, request, invoice_id):
         invoice = self.get_object(request, invoice_id)
