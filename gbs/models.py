@@ -1,19 +1,14 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from django.template.loader import render_to_string, get_template
-from django.template import TemplateDoesNotExist, Context
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
 from .constants import COUNTIES, SERVICES
 from hashids import Hashids
 from datetime import date
-from io import BytesIO
-from email.mime.application import MIMEApplication
 from decimal import Decimal, ROUND_HALF_UP
 from django.conf import settings
 from django.core.mail import send_mail
 from .conf import settings as app_settings
-from gbs.pdf import export_invoice
+from gbs.comm import email
+from gbs.comm import sms
 
 class ContactInfo(models.Model):
     name = models.CharField(max_length=100)
@@ -22,7 +17,7 @@ class ContactInfo(models.Model):
                                  " number must be entered in the format:" +
                                  " '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=16,
-                                    blank=True)
+                                    blank=True, default='353')
     street = models.CharField(max_length=200, blank=True)
     county = models.CharField(choices=COUNTIES, max_length=30, blank=True, default='KK')
     eircode = models.CharField(max_length=12, blank=True, default='R95 XXXX')
@@ -90,33 +85,24 @@ class Invoice(models.Model):
     def file_name(self):
         return f'Invoice {self.invoice_id}.pdf'
 
+    def send_sms(self):
+        if self.customer.phone_number:
+            return False, None
+
+        message = f'Your invoice {self.invoice_id} is now due, \
+                please pay {self.total()}. Any queries, please call \
+                0876341300 or email mick@grogan.ie'
+        resp = sms.send_sms(str(self.customer.phone_number), message)
+
+        if resp['success'] == True:
+            self.invoiced = True
+            self.save()
+            return True, resp
+        else:
+            return False, resp
+
     def send_invoice(self):
-        pdf = BytesIO()
-        export_invoice(pdf, self)
-        pdf.seek(0)
-        attachment = MIMEApplication(pdf.read())
-        attachment.add_header("Content-Disposition", "attachment",
-                                              filename=self.file_name())
-        pdf.close()
-
-        subject = f'Your Grogan Burner Services Invoice {self.invoice_id} is ready'
-        email_kwargs = {
-            "invoice": self,
-            "SITE_NAME": "Grogan Burner Services",
-            "SUPPORT_EMAIL": app_settings.EMAIL,
-        }
-
-        # try:
-        #     template = get_template("email/invoice.html")
-        #     body = template.render(Context(email_kwargs))
-        # except TemplateDoesNotExist:
-        body = render_to_string("email/invoice.txt", email_kwargs)
-
-        email = EmailMultiAlternatives(subject=subject, body=strip_tags(body), from_email='mick@grogan.ie', to=['neil@grogan.ie'])
-        # email.attach_alternative(body, "text/html")
-        email.attach(attachment)
-        email.send(fail_silently=False)
-
+        email.send_invoice(self)
         self.invoiced = True
         self.save()
 

@@ -5,10 +5,13 @@
         <a href="{% url opts|admin_urlname:'history' original.pk|admin_urlquote %}" class="historylink">{% trans "History" %}</a>
     </li>
     <li>
-        <a href="{% url 'gbsadmin:invoice-pdf' original.pk %}" class="historylink">Generate PDF</a>
+        <a href="{% url 'gbsadmin:invoice-pdf' original.pk %}" class="historylink">PDF</a>
     </li>
     <li>
         <a href="{% url 'gbsadmin:invoice-email' original.pk %}" class="historylink">Email</a>
+    </li>
+    <li>
+        <a href="{% url 'gbsadmin:invoice-sms' original.pk %}" class="historylink">SMS</a>
     </li>
     {% if has_absolute_url %}
         <li>

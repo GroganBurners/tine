@@ -27,7 +27,7 @@ class InvoiceAdmin(admin.ModelAdmin):
         'invoice_actions'
     ]
     search_fields = ('invoice_id', 'customer__name')
-    actions = ['send_invoice', 'print_invoice']
+    actions = ['email_invoices', 'print_invoice']
     model = Invoice
 
     def print_invoice(self, request, invoice_id):
@@ -35,6 +35,17 @@ class InvoiceAdmin(admin.ModelAdmin):
         return pdf_response(export_invoice, invoice.file_name(), invoice)
 
     print_invoice.short_description = "Generate PDF of invoice"
+
+    def sms_invoice(self, request, invoice_id):
+        invoice = self.get_object(request, invoice_id)
+        if invoice.customer.phone_number:
+            if invoice.send_sms():
+                messages.add_message(request, messages.INFO, 'Invoice SMS Sent.')
+            else:
+                messages.add_message(request, messages.ERROR, 'SMS sending failed. Please check the logs and try later.')
+        else:
+            messages.add_message(request, messages.ERROR, 'No phone number present for customer.')
+        return HttpResponseRedirect("../")
 
     def email_invoice(self, request, invoice_id):
         invoice = self.get_object(request, invoice_id)
@@ -58,18 +69,20 @@ class InvoiceAdmin(admin.ModelAdmin):
                     self.admin_site.admin_view(self.email_invoice),
                     name='invoice-email'
                     ),
-                path('email/',
-                    self.admin_site.admin_view(self.email_invoices),
-                    name='invoice-emails'
+                path('<int:invoice_id>/sms/',
+                    self.admin_site.admin_view(self.sms_invoice),
+                    name='invoice-sms'
                     )
         ] + super().get_urls()
 
     def invoice_actions(self, obj):
         return format_html(
-            '<a class="button" href="{}">PDF</a>',
+            '<a class="button" href="{}">PDF</a> \
+             <a class="button" href="{}">Email</a> \
+             <a class="button" href="{}">SMS</a>',
             reverse('gbsadmin:invoice-pdf', args=[obj.pk]),
-            '<a class="button" href="{}">Email</a>',
             reverse('gbsadmin:invoice-email', args=[obj.pk]),
+            reverse('gbsadmin:invoice-sms', args=[obj.pk]),
         )
     invoice_actions.short_description = 'Invoice Actions'
     invoice_actions.allow_tags = True
