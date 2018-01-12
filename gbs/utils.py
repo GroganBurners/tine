@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 import zipfile
 from io import BytesIO
+from .conf import settings
+
 
 def generate_zip(buf, files):
     zip_archive = zipfile.ZipFile(buf, mode='w')
@@ -26,6 +28,10 @@ def zip_response(files, file_name, *args, **kwargs):
     response['Content-Disposition'] = 'attachment; filename="'+file_name+'"'
     generate_zip(response, files, *args, **kwargs)
     return response
+
+def format_currency(amount):
+    sym = settings.CURRENCY_SYMBOL
+    return f'{sym} {amount:.2f}'
 
 def get_season():
     from datetime import date
