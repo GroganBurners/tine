@@ -14,6 +14,11 @@ def pdf_response(pdf_funk, file_name, *args, **kwargs):
     pdf_funk(response, *args, **kwargs)
     return response
 
+def zip_response(files, file_name, *args, **kwargs):
+    response = HttpResponse(content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="'+file_name+'"'
+    # TODO
+    return response
 
 def get_season():
     from datetime import date
