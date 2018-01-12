@@ -1,33 +1,24 @@
 
 COUNTIES = (
-('C', 'Cork'),
-('CE', 'Clare'),
-('CN', 'Cavan'),
-('CW', 'Carlow'),
 ('D', 'Dublin'),
-('DL', 'Donegal'),
-('G', 'Galway'),
 ('KE', 'Kildare'),
 ('KK', 'Kilkenny'),
-('KY', 'Kerry'),
 ('L', 'Limerick'),
-('LD', 'Longford'),
-('LH', 'Louth'),
-('LM', 'Leitrim'),
-('LS', 'Loais'),
-('MH', 'Meath'),
-('MM', 'Monaghan'),
-('MO', 'Mayo'),
 ('OY', 'Offaly'),
-('RN', 'Roscommon'),
-('SO', 'Sligo'),
 ('T', 'Tipperary'),
 ('W', 'Waterford'),
-('WH', 'Westmeath'),
 ('WX', 'Wexford'),
 ('WW', 'Wicklow'),
 )
 
+
+COUNTRIES = (
+('IE', 'Ireland'),
+('UK', 'United Kingdom'),
+('F', 'France'),
+('DE', 'Germany'),
+('ES', 'Spain'),
+)
 
 SERVICES = (
 # Start of GAS Categories
