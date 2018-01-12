@@ -50,12 +50,8 @@ class InvoiceAdmin(admin.ModelAdmin):
     def print_invoices(self, request, queryset):
         files = []
         for invoice in queryset.all():
-            fi = {}
-            buf = BytesIO()
-            export_invoice(buf, invoice)
-            fi['content'] = buf
-            fi['name'] = invoice.file_name()
-            files.append(fi)
+            pdf = export_invoice(invoice)
+            files.append((invoice.file_name(), pdf))
 
         return zip_response(files, 'invoice.zip')
 

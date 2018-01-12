@@ -2,6 +2,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import Table
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
+from io import BytesIO
 from gbs.conf import settings
 
 def draw_header(canvas):
@@ -54,8 +55,9 @@ def draw_footer(canvas):
     canvas.drawText(textobject)
 
 
-def export_invoice(buffer, invoice):
+def export_invoice(invoice):
     """ Draws the invoice """
+    buffer = BytesIO()
     canvas = Canvas(buffer, pagesize=A4)
     canvas.translate(0, 29.7 * cm)
     canvas.setFont('Helvetica', 10)
@@ -120,4 +122,8 @@ def export_invoice(buffer, invoice):
     table.drawOn(canvas, 1 * cm, -8 * cm - th)
 
     canvas.showPage()
+    buffer.name = invoice.file_name()
     canvas.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf
