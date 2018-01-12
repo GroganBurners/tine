@@ -10,7 +10,8 @@ def draw_header(canvas):
     canvas.setFillColorRGB(0.2, 0.2, 0.2)
     canvas.setFont('Helvetica', 16)
     canvas.drawString(18 * cm, -1 * cm, 'Invoice')
-    canvas.drawInlineImage('static/images/export/gbs-logo.png', 1 * cm, -1 * cm, 250, 16)
+    canvas.drawString(1 * cm, -1 * cm, 'Grogan Burner Services')
+    canvas.drawInlineImage('static/images/export/flames.png', 7.1 * cm, -1.1 * cm, 24, 30)
     canvas.setLineWidth(4)
     canvas.line(0, -1.25 * cm, 21.7 * cm, -1.25 * cm)
 
@@ -97,14 +98,14 @@ def export_invoice(buffer, invoice):
     for item in invoice.items.all():
         data.append([
             item.description,
-            item.quantity,
-            item.vat_rate,
-            item.unit_price,
-            item.total_ex_vat(),
+            item.quantity_amount(),
+            item.vat_rate_amount(),
+            item.unit_price_amount(),
+            item.total_ex_vat_amount(),
         ])
-    data.append([u'', u'', u'', u'Subtotal:', invoice.total_ex_vat()])
-    data.append([u'', u'', u'', u'VAT Total:', invoice.total_vat()])
-    data.append([u'', u'', u'', u'Total:', invoice.total()])
+    data.append([u'', u'', u'', u'Subtotal:', invoice.total_ex_vat_amount()])
+    data.append([u'', u'', u'', u'VAT Total:', invoice.total_vat_amount()])
+    data.append([u'', u'', u'', u'Total:', invoice.total_amount()])
     table = Table(data, colWidths=[10 * cm, 2 * cm, 2 * cm, 2 * cm, 2.5 * cm])
     table.setStyle([
         ('FONT', (0, 0), (-1, -1), 'Helvetica'),
