@@ -1,12 +1,19 @@
 from django.http import HttpResponse
+import zipfile
+from io import BytesIO
+
+def generate_zip(buf, files):
+    zip_archive = zipfile.ZipFile(buff, mode='w')
+    for f in files:
+        zip_archive.writestr(f.name, f.contents)
+
+    zip_archive.close()
 
 def excel_response(xls_funk, file_name, *args, **kwargs):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename="'+file_name+'"'
     xls_funk(response, *args, **kwargs)
     return response
-
-
 
 def pdf_response(pdf_funk, file_name, *args, **kwargs):
     response = HttpResponse(content_type='application/pdf')
@@ -17,7 +24,7 @@ def pdf_response(pdf_funk, file_name, *args, **kwargs):
 def zip_response(files, file_name, *args, **kwargs):
     response = HttpResponse(content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename="'+file_name+'"'
-    # TODO
+    generate_zip(response, files, *args, **kwargs)
     return response
 
 def get_season():
