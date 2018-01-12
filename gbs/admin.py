@@ -2,6 +2,9 @@ from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.utils.html import format_html
 from django.urls import reverse, path
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.contrib import messages
 from .models import Carousel, Customer, Expense, ExpenseType, Invoice, InvoiceItem, Supplier, Price
 from gbs.utils import excel_response, pdf_response
 from gbs.pdf import export_invoice
@@ -24,17 +27,40 @@ class InvoiceAdmin(admin.ModelAdmin):
         'invoice_actions'
     ]
     search_fields = ('invoice_id', 'customer__name')
+    actions = ['send_invoice', 'print_invoice']
     model = Invoice
 
     def print_invoice(self, request, invoice_id):
         invoice = self.get_object(request, invoice_id)
-        return pdf_response(export_invoice, "Invoice.pdf", invoice)
+        return pdf_response(export_invoice, invoice.file_name(), invoice)
+
+    print_invoice.short_description = "Generate PDF of invoice"
+
+    def email_invoice(self, request, invoice_id):
+        invoice = self.get_object(request, invoice_id)
+        invoice.send_invoice()
+        messages.add_message(request, messages.INFO, 'Invoice Email Sent.')
+        return HttpResponseRedirect("../")
+
+    def email_invoices(self, request, queryset):
+        for invoice in queryset.all():
+            invoice.send_invoice()
+
+    email_invoice.short_description = "Send invoice to client"
 
     def get_urls(self):
         return [
                 path('<int:invoice_id>/pdf/',
                     self.admin_site.admin_view(self.print_invoice),
                     name='invoice-pdf'
+                    ),
+                path('<int:invoice_id>/email/',
+                    self.admin_site.admin_view(self.email_invoice),
+                    name='invoice-email'
+                    ),
+                path('email/',
+                    self.admin_site.admin_view(self.email_invoices),
+                    name='invoice-emails'
                     )
         ] + super().get_urls()
 
@@ -42,6 +68,8 @@ class InvoiceAdmin(admin.ModelAdmin):
         return format_html(
             '<a class="button" href="{}">PDF</a>',
             reverse('gbsadmin:invoice-pdf', args=[obj.pk]),
+            '<a class="button" href="{}">Email</a>',
+            reverse('gbsadmin:invoice-email', args=[obj.pk]),
         )
     invoice_actions.short_description = 'Invoice Actions'
     invoice_actions.allow_tags = True

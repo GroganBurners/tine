@@ -7,6 +7,9 @@
     <li>
         <a href="{% url 'gbsadmin:invoice-pdf' original.pk %}" class="historylink">Generate PDF</a>
     </li>
+    <li>
+        <a href="{% url 'gbsadmin:invoice-email' original.pk %}" class="historylink">Email</a>
+    </li>
     {% if has_absolute_url %}
         <li>
             <a href="{% url 'admin:view_on_site' content_type_id original.pk %}" class="viewsitelink">{% trans "View on site" %}</a>

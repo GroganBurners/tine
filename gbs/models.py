@@ -1,9 +1,19 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.template.loader import render_to_string, get_template
+from django.template import TemplateDoesNotExist, Context
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 from .constants import COUNTIES, SERVICES
 from hashids import Hashids
 from datetime import date
+from io import BytesIO
+from email.mime.application import MIMEApplication
 from decimal import Decimal, ROUND_HALF_UP
+from django.conf import settings
+from django.core.mail import send_mail
+from .conf import settings as app_settings
+from gbs.pdf import export_invoice
 
 class ContactInfo(models.Model):
     name = models.CharField(max_length=100)
@@ -65,17 +75,50 @@ class Invoice(models.Model):
         total = Decimal('0.00')
         for item in self.items.all():
             total = total + item.total_ex_vat()
-        return total
+        return total.quantize(Decimal('0.01'))
 
     def total_vat(self):
         total = self.total()-self.total_ex_vat()
-        return total.quantize(0, ROUND_HALF_UP)
+        return total.quantize(Decimal('0.01'))
 
     def total(self):
         total = Decimal('0.00')
         for item in self.items.all():
             total = total + item.total()
         return total.quantize(0, ROUND_HALF_UP)
+
+    def file_name(self):
+        return f'Invoice {self.invoice_id}.pdf'
+
+    def send_invoice(self):
+        pdf = BytesIO()
+        export_invoice(pdf, self)
+        pdf.seek(0)
+        attachment = MIMEApplication(pdf.read())
+        attachment.add_header("Content-Disposition", "attachment",
+                                              filename=self.file_name())
+        pdf.close()
+
+        subject = f'Your Grogan Burner Services Invoice {self.invoice_id} is ready'
+        email_kwargs = {
+            "invoice": self,
+            "SITE_NAME": "Grogan Burner Services",
+            "SUPPORT_EMAIL": app_settings.EMAIL,
+        }
+
+        # try:
+        #     template = get_template("email/invoice.html")
+        #     body = template.render(Context(email_kwargs))
+        # except TemplateDoesNotExist:
+        body = render_to_string("email/invoice.txt", email_kwargs)
+
+        email = EmailMultiAlternatives(subject=subject, body=strip_tags(body), from_email='mick@grogan.ie', to=['neil@grogan.ie'])
+        # email.attach_alternative(body, "text/html")
+        email.attach(attachment)
+        email.send(fail_silently=False)
+
+        self.invoiced = True
+        self.save()
 
     def __str__(self):
         desc = "Invoice: " + str(self.invoice_id) + " (" + str(self.customer) + ")"
@@ -96,7 +139,7 @@ class InvoiceItem(models.Model):
         percentage = self.vat_rate/Decimal(100)
         total_ex_vat = self.total_ex_vat()
         total = Decimal(str(total_ex_vat*percentage))
-        return total
+        return total.quantize(Decimal('0.01'))
 
     def total(self):
         total = Decimal(str(self.total_ex_vat()+self.total_vat()))
