@@ -3,9 +3,9 @@ import zipfile
 from io import BytesIO
 
 def generate_zip(buf, files):
-    zip_archive = zipfile.ZipFile(buff, mode='w')
+    zip_archive = zipfile.ZipFile(buf, mode='w')
     for f in files:
-        zip_archive.writestr(f.name, f.contents)
+        zip_archive.write(f['content'].getvalue())
 
     zip_archive.close()
 

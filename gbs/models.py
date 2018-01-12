@@ -7,6 +7,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from django.conf import settings
 from django.core.mail import send_mail
 from .conf import settings as app_settings
+from .utils import format_currency
 from gbs.comm import email
 from gbs.comm import sms
 
@@ -72,15 +73,24 @@ class Invoice(models.Model):
             total = total + item.total_ex_vat()
         return total.quantize(Decimal('0.01'))
 
+    def total_ex_vat_amount(self):
+        return format_currency(self.total_ex_vat())
+
     def total_vat(self):
         total = self.total()-self.total_ex_vat()
         return total.quantize(Decimal('0.01'))
+
+    def total_vat_amount(self):
+        return format_currency(self.total_vat())
 
     def total(self):
         total = Decimal('0.00')
         for item in self.items.all():
             total = total + item.total()
         return total.quantize(0, ROUND_HALF_UP)
+
+    def total_amount(self):
+        return format_currency(self.total())
 
     def file_name(self):
         return f'Invoice {self.invoice_id}.pdf'
@@ -117,9 +127,21 @@ class InvoiceItem(models.Model):
     vat_rate = models.DecimalField(max_digits=5, decimal_places=2, default=13.5)
     quantity = models.DecimalField(max_digits=8, decimal_places=2, default=1)
 
+    def unit_price_amount(self):
+        return format_currency(self.unit_price)
+
+    def vat_rate_amount(self):
+        return ('%f' % self.vat_rate).rstrip('0').rstrip('.') +'%'
+
+    def quantity_amount(self):
+        return ('%f' % self.quantity).rstrip('0').rstrip('.')
+
     def total_ex_vat(self):
         total = Decimal(str(self.unit_price * self.quantity))
         return total.quantize(Decimal('0.01'))
+
+    def total_ex_vat_amount(self):
+        return format_currency(self.total_ex_vat())
 
     def total_vat(self):
         percentage = self.vat_rate/Decimal(100)
@@ -127,9 +149,15 @@ class InvoiceItem(models.Model):
         total = Decimal(str(total_ex_vat*percentage))
         return total.quantize(Decimal('0.01'))
 
+    def total_vat_amount(self):
+        return format_currency(self.total_vat())
+
     def total(self):
         total = Decimal(str(self.total_ex_vat()+self.total_vat()))
         return total.quantize(Decimal('0.01'))
+
+    def total_amount(self):
+        return format_currency(self.total())
 
     def __str__(self):
         return self.description
