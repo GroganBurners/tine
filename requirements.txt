@@ -10,4 +10,5 @@ Pillow==4.3.0
 psycopg2==2.7.3.2
 pytz==2017.3
 reportlab==3.4.0
+requests==2.18.4
 selenium==3.8.0
