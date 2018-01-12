@@ -3,8 +3,6 @@ from gbs.models import Carousel, Price, Invoice
 from decimal import Decimal
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from gbs.utils import excel_response, pdf_response
-from gbs.excel import export_finances
 ADMIN_LOGIN_URL = '/admin/login/'
 
 
@@ -31,8 +29,3 @@ def index(request):
                 'oil_prices': oil_prices, 'summer_gas': summer_gas, 
                 'summer_oil': summer_oil, 'repair_fee': repair_fee }
     return render(request, 'index.html', context)
-
-@login_required(login_url=ADMIN_LOGIN_URL)
-def export_finance_xls(request):
-    return excel_response(export_finances, "FinanceSheet.xlsx")
-

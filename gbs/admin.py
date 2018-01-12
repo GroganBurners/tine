@@ -8,10 +8,22 @@ from django.contrib import messages
 from io import BytesIO
 from .models import Carousel, Customer, Expense, ExpenseType, Invoice, InvoiceItem, Supplier, Price
 from gbs.utils import excel_response, pdf_response, zip_response
+from gbs.excel import export_finances
 from gbs.pdf import export_invoice
 
 class GBSAdminSite(AdminSite):
     site_header = "Grogan Burner Services Admin Site"
+
+    def export_finances_xls(self, request):
+        return excel_response(export_finances, "FinanceSheet.xlsx")
+
+    def get_urls(self):
+        return [
+                path('export/xls/',
+                    self.admin_view(self.export_finances_xls),
+                    name='export-finances'
+                    ),
+        ] + super().get_urls()
 
 admin_site = GBSAdminSite(name="gbsadmin")
 
