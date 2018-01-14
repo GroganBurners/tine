@@ -9,6 +9,7 @@ from decimal import Decimal
 from io import BytesIO
 from itertools import chain
 from operator import attrgetter
+import string
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,7 +23,7 @@ def apply_border_format(ws, row, column, style='thin'):
 
 def print_total_row(ws, row_num):
     ws["A"+str(row_num)] = "Total"
-    for let in ['D','E','F','G','H','I']:
+    for let in list(string.ascii_uppercase[3:9]):
         start_cell = f'{let}{row_num}'
         ws[start_cell] = f"=SUM({let}2:{let}{row_num-1})"
 
