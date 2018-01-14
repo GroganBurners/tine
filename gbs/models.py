@@ -36,6 +36,8 @@ class Supplier(ContactInfo):
         return self.name
 
 class Bill(models.Model):
+    date = models.DateField(default=date.today)
+
     def total_ex_vat(self):
         total = Decimal('0.00')
         for item in self.items.all():
@@ -63,6 +65,7 @@ class Bill(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['-date']
 
 class BillItem(models.Model):
     description = models.CharField(max_length=100)
@@ -116,12 +119,8 @@ class ExpenseType(models.Model):
 
 class Expense(Bill):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
-    expense_date = models.DateField(default=date.today)
     type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
     notes = models.CharField(max_length=300, blank=True, null=True)
-
-    class Meta:
-        ordering = ['-expense_date']
 
 class ExpenseItem(BillItem):
     expense = models.ForeignKey(Expense, related_name='items', unique=False, on_delete=models.CASCADE)
@@ -130,7 +129,6 @@ class Invoice(Bill):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     invoice_id = models.CharField(unique=True, max_length=6, null=True,
                                               blank=True, editable=False)
-    invoice_date = models.DateField(default=date.today)
     invoiced = models.BooleanField(default=False)
     draft = models.BooleanField(default=False)
     paid_date = models.DateField(blank=True, null=True)
@@ -170,9 +168,6 @@ class Invoice(Bill):
     def __str__(self):
         desc = "Invoice: " + str(self.invoice_id) + " (" + str(self.customer) + ")"
         return desc
-
-    class Meta:
-        ordering = ['-invoice_date']
 
 class InvoiceItem(BillItem):
     invoice = models.ForeignKey(Invoice, related_name='items', unique=False, on_delete=models.CASCADE)

@@ -36,7 +36,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     readonly_fields=('invoice_id',)
     inlines = [ InvoiceItemInline ]
     list_display = [
-        'invoice_id', 'customer', 'invoice_date', 
+        'invoice_id', 'customer', 'date', 
         'draft', 'invoiced', 'paid_date', 'total',
         'invoice_actions'
     ]
@@ -122,7 +122,7 @@ class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
     inlines = [ ExpenseItemInline ]
     autocomplete_fields = ['type','supplier']
-    list_display = ['supplier', 'total']
+    list_display = ['date', 'supplier', 'total']
     search_fields = ('supplier', 'total')
 
 class ExpenseTypeAdmin(admin.ModelAdmin):
