@@ -35,38 +35,7 @@ class Supplier(ContactInfo):
     def __str__(self):
         return self.name
 
-class ExpenseType(models.Model):
-    type = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.type
-
-class Expense(models.Model):
-    type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now=True)
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
-    cost = models.DecimalField(max_digits=6, decimal_places=2)
-    vat = models.DecimalField(max_digits=6, decimal_places=2)
-    notes = models.CharField(max_length=300)
-
-
-class Invoice(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    invoice_id = models.CharField(unique=True, max_length=6, null=True,
-                                              blank=True, editable=False)
-    invoice_date = models.DateField(default=date.today)
-    invoiced = models.BooleanField(default=False)
-    draft = models.BooleanField(default=False)
-    paid_date = models.DateField(blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        super(Invoice, self).save(*args, **kwargs)
-
-        if not self.invoice_id:
-            hashids = Hashids(alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', min_length=6, salt='this is my salt 2')
-            self.invoice_id = hashids.encode(self.id)
-            super(Invoice, self).save(*args, **kwargs)
-
+class Bill(models.Model):
     def total_ex_vat(self):
         total = Decimal('0.00')
         for item in self.items.all():
@@ -92,36 +61,10 @@ class Invoice(models.Model):
     def total_amount(self):
         return format_currency(self.total())
 
-    def file_name(self):
-        return f'Invoice {self.invoice_id}.pdf'
+    class Meta:
+        abstract = True
 
-    def send_sms(self):
-        if self.customer.phone_number:
-            return False, None
-
-        message = f'Your invoice {self.invoice_id} is now due, \
-                please pay {self.total()}. Any queries, please call \
-                0876341300 or email mick@grogan.ie'
-        resp = sms.send_sms(str(self.customer.phone_number), message)
-
-        if resp['success'] == True:
-            self.invoiced = True
-            self.save()
-            return True, resp
-        else:
-            return False, resp
-
-    def send_invoice(self):
-        email.send_invoice(self)
-        self.invoiced = True
-        self.save()
-
-    def __str__(self):
-        desc = "Invoice: " + str(self.invoice_id) + " (" + str(self.customer) + ")"
-        return desc
-
-class InvoiceItem(models.Model):
-    invoice = models.ForeignKey(Invoice, related_name='items', unique=False, on_delete=models.CASCADE)
+class BillItem(models.Model):
     description = models.CharField(max_length=100)
     unit_price = models.DecimalField(max_digits=8, decimal_places=2)
     vat_rate = models.DecimalField(max_digits=5, decimal_places=2, default=13.5)
@@ -162,7 +105,77 @@ class InvoiceItem(models.Model):
     def __str__(self):
         return self.description
 
+    class Meta:
+        abstract = True
 
+class ExpenseType(models.Model):
+    type = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.type
+
+class Expense(Bill):
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+    expense_date = models.DateField(default=date.today)
+    type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
+    notes = models.CharField(max_length=300, blank=True, null=True)
+
+    class Meta:
+        ordering = ['-expense_date']
+
+class ExpenseItem(BillItem):
+    expense = models.ForeignKey(Expense, related_name='items', unique=False, on_delete=models.CASCADE)
+
+class Invoice(Bill):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    invoice_id = models.CharField(unique=True, max_length=6, null=True,
+                                              blank=True, editable=False)
+    invoice_date = models.DateField(default=date.today)
+    invoiced = models.BooleanField(default=False)
+    draft = models.BooleanField(default=False)
+    paid_date = models.DateField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        super(Invoice, self).save(*args, **kwargs)
+
+        if not self.invoice_id:
+            hashids = Hashids(alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', min_length=6, salt='this is my salt 2')
+            self.invoice_id = hashids.encode(self.id)
+            super(Invoice, self).save(*args, **kwargs)
+
+    def file_name(self):
+        return f'Invoice {self.invoice_id}.pdf'
+
+    def send_sms(self):
+        if self.customer.phone_number:
+            return False, None
+
+        message = f'Your invoice {self.invoice_id} is now due, \
+                please pay {self.total()}. Any queries, please call \
+                0876341300 or email mick@grogan.ie'
+        resp = sms.send_sms(str(self.customer.phone_number), message)
+
+        if resp['success'] == True:
+            self.invoiced = True
+            self.save()
+            return True, resp
+        else:
+            return False, resp
+
+    def send_invoice(self):
+        email.send_invoice(self)
+        self.invoiced = True
+        self.save()
+
+    def __str__(self):
+        desc = "Invoice: " + str(self.invoice_id) + " (" + str(self.customer) + ")"
+        return desc
+
+    class Meta:
+        ordering = ['-invoice_date']
+
+class InvoiceItem(BillItem):
+    invoice = models.ForeignKey(Invoice, related_name='items', unique=False, on_delete=models.CASCADE)
 
 class Price(models.Model):
     type = models.CharField(choices=SERVICES, max_length=30)

@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
 from io import BytesIO
-from .models import Carousel, Customer, Expense, ExpenseType, Invoice, InvoiceItem, Supplier, Price
+from .models import Carousel, Customer, Expense, ExpenseItem, ExpenseType, Invoice, InvoiceItem, Supplier, Price
 from gbs.utils import excel_response, pdf_response, zip_response
 from gbs.excel import export_finances
 from gbs.pdf import export_invoice
@@ -29,6 +29,7 @@ admin_site = GBSAdminSite(name="gbsadmin")
 
 class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
+    extra = 1
 
 class InvoiceAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
@@ -113,11 +114,16 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ['name', 'street', 'county']
     search_fields = ('name', 'street')
 
+class ExpenseItemInline(admin.TabularInline):
+    model = ExpenseItem
+    extra = 1
+
 class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
+    inlines = [ ExpenseItemInline ]
     autocomplete_fields = ['type','supplier']
-    list_display = ['supplier', 'cost', 'vat']
-    search_fields = ('supplier', 'cost')
+    list_display = ['supplier', 'total']
+    search_fields = ('supplier', 'total')
 
 class ExpenseTypeAdmin(admin.ModelAdmin):
     model = ExpenseType
