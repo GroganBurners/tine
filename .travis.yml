@@ -3,6 +3,7 @@ services:
     - postgresql
 python:
   - "3.6"
+cache: pip
 env:
   global:
     - SECRET_KEY="test"
