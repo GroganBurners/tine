@@ -8,6 +8,7 @@ olefile==0.44
 openpyxl==2.4.9
 Pillow==4.3.0
 psycopg2==2.7.3.2
+PyPDF2==1.26.0
 pytz==2017.3
 reportlab==3.4.0
 requests==2.18.4

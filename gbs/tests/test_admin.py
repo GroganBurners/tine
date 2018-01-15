@@ -9,6 +9,8 @@ from django.contrib.admin.options import ModelAdmin
 from django.contrib.admin.sites import AdminSite
 from gbs.models import Customer, Invoice
 from django.urls import get_resolver
+from io import BytesIO
+import PyPDF2
 
 class MockRequest:
     pass
@@ -104,6 +106,13 @@ class InvoiceAdminTests(TestCase):
         self.assertIsInstance(response, HttpResponse)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], "application/pdf")
+        self.assertIsInstance(response.content, bytes)
+
+        pdfReader = PyPDF2.PdfFileReader(BytesIO(response.content))
+
+        self.assertEqual(pdfReader.numPages, 1)
+        pageObj = pdfReader.getPage(0)
+        self.assertTrue(pageObj.extractText().find(self.invoice.customer.name))
 
     def test_delete_invoice_admin(self):
         """
@@ -114,3 +123,4 @@ class InvoiceAdminTests(TestCase):
         response = self.client.get(delete_url)
         self.assertIsInstance(response, TemplateResponse)
         self.assertEqual(response.status_code, 200)
+

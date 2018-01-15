@@ -91,7 +91,7 @@ def export_invoice(invoice):
     # Info
     textobject = canvas.beginText(1.5 * cm, -6.75 * cm)
     textobject.textLine(u'Invoice Number: %s' % invoice.invoice_id)
-    textobject.textLine(u'Invoice Date: %s' % invoice.invoice_date.strftime('%d %b %Y'))
+    textobject.textLine(u'Invoice Date: %s' % invoice.date.strftime('%d %b %Y'))
     # textobject.textLine(u'Client: %s' % invoice.customer.name)
     canvas.drawText(textobject)
 
