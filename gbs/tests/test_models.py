@@ -15,3 +15,6 @@ class CustomerTest(TestCase):
         self.assertEqual(cust.county, "KK")
         self.assertEqual(cust.eircode, "R95 CX65")
         self.assertEqual(cust.country, "IE")
+
+    def tearDown(self):
+        Customer.objects.all().delete()
