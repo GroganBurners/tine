@@ -8,8 +8,8 @@ from django.test import TestCase
 from django.contrib.admin.options import ModelAdmin
 from django.contrib.admin.sites import AdminSite
 from gbs.models import Customer, Invoice
-from django.urls import get_resolver
 from io import BytesIO
+from openpyxl import load_workbook
 import PyPDF2
 
 class MockRequest:
@@ -20,18 +20,26 @@ class MockSuperUser:
     def has_perm(self, perm):
         return True
 
-def get_resolved_urls(url_patterns):
-    url_patterns_resolved = []
-    for entry in url_patterns:
-        if hasattr(entry, 'url_patterns'):
-            url_patterns_resolved += get_resolved_urls(
-                entry.url_patterns)
-        else:
-            url_patterns_resolved.append(entry)
-    return url_patterns_resolved
-
 request = MockRequest()
 request.user = MockSuperUser()
+
+class GBSAdminTests(TestCase):
+
+    def setUp(self):
+        self.superuser = User.objects.create_superuser(username='super', password='secret', email='super@example.com')
+        self.client.force_login(self.superuser)
+
+    def test_export_xls_finances_admin(self):
+        xls_url = reverse('gbsadmin:export-finances')
+        self.assertTrue(xls_url.endswith('/xls/'))
+        response = self.client.get(xls_url)
+        self.assertIsInstance(response, HttpResponse)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        self.assertIsInstance(response.content, bytes)
+
+        wb = load_workbook(BytesIO(response.content))
+        self.assertEqual(wb.get_sheet_names()[0], "FinanceSheet2018")
 
 class InvoiceAdminTests(TestCase):
 
