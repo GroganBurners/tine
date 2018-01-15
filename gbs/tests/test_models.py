@@ -1,7 +1,7 @@
 from decimal import Decimal
 from datetime import date
 from django.test import TestCase
-from gbs.models import Customer, Invoice, InvoiceItem, Price, Supplier
+from gbs.models import Customer, Expense, ExpenseItem, ExpenseType, Invoice, InvoiceItem, Price, Supplier
 
 class CustomerTest(TestCase):
     def setUp(self):
@@ -65,6 +65,40 @@ class InvoiceTest(TestCase):
         self.assertEqual(item.description, "Service")
         # self.assertEqual(item.unit_price, Decimal(70.48))
         self.assertEqual(item.vat_rate, Decimal(13.5))
+        self.assertEqual(item.quantity, Decimal(1.00))
+
+        # self.assertEqual(item.total_amount(), "€ 80")
+
+
+    def tearDown(self):
+        Customer.objects.all().delete()
+        Invoice.objects.all().delete()
+        InvoiceItem.objects.all().delete()
+
+class ExpenseTest(TestCase):
+    def setUp(self):
+        suppl = Supplier.objects.create(name="Heating Parts Ltd.", email="info@example.com",
+                                phone_number="+44871234567", street="1 Huddersfield",
+                                county="KK", eircode="BT1 XYZ",
+                                country="UK")
+        exp_type = ExpenseType.objects.create(type='Parts')
+        self.expense = Expense.objects.create(supplier=suppl, date=date(2018,1,1),
+                                type=exp_type, notes='Ferroli Part')
+        ExpenseItem.objects.create(description="Boiler Parts", unit_price=Decimal(70.48),
+                vat_rate=Decimal(9.5), quantity=Decimal(1.00), expense=self.expense)
+                                              
+    def test_expense_values_set_correctly(self):
+        expense = Expense.objects.get(id=1)
+        supp = Supplier.objects.get(name="Heating Parts Ltd.")
+        e_type = ExpenseType.objects.get(id=1)
+        self.assertEqual(expense.supplier, supp)
+        self.assertEqual(expense.date, date(2018,1,1))
+        self.assertEqual(expense.type, e_type)
+        self.assertEqual(expense.notes, "Ferroli Part")
+        item = expense.items.all()[0]
+        self.assertEqual(item.description, "Boiler Parts")
+        # self.assertEqual(item.unit_price, Decimal(70.48))
+        self.assertEqual(item.vat_rate, Decimal(9.5))
         self.assertEqual(item.quantity, Decimal(1.00))
 
         # self.assertEqual(item.total_amount(), "€ 80")
