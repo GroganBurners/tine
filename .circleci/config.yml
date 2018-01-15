@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/tine
     docker:
-      - image: circleci/python:3.6.1
+      - image: circleci/python:3.6
         enviroment:
           SECRET_KEY: test
           DB_HOST: 127.0.0.1
@@ -32,6 +32,7 @@ jobs:
       - run:
           command: |
             . venv/bin/activate
+            env
             python manage.py makemigrations
             python manage.py migrate
             python manage.py test
