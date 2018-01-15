@@ -1,6 +1,7 @@
 from datetime import date
 from django.contrib.auth.models import User
 from django.template.response import TemplateResponse
+from django.http import HttpResponse
 from django.urls import reverse
 import django.urls
 from django.test import TestCase
@@ -63,6 +64,16 @@ class InvoiceAdminTests(TestCase):
         self.assertIsInstance(response, TemplateResponse)
         self.assertEqual(response.status_code, 200)
 
+    def test_changelist_invoice_admin(self):
+        """
+        Ensure CHANGELIST on admin works.
+        """
+        change_list_url = reverse('gbsadmin:gbs_invoice_changelist')
+        self.assertTrue(change_list_url.endswith('/invoice/'))
+        response = self.client.get(change_list_url)
+        self.assertIsInstance(response, TemplateResponse)
+        self.assertEqual(response.status_code, 200)
+
     def test_change_invoice_admin(self):
         """
         Ensure CHANGE on admin works.
@@ -75,13 +86,24 @@ class InvoiceAdminTests(TestCase):
 
     def test_history_invoice_admin(self):
         """
-        Ensure CHANGE on admin works.
+        Ensure HISTORY on admin works.
         """
         history_url = reverse('gbsadmin:gbs_invoice_history', args=[self.invoice.id])
         self.assertTrue(history_url.endswith('/history/'))
         response = self.client.get(history_url)
         self.assertIsInstance(response, TemplateResponse)
         self.assertEqual(response.status_code, 200)
+
+    def test_get_pdf_invoice_admin(self):
+        """
+        Ensure GET on the add_view works.
+        """
+        pdf_url = reverse('gbsadmin:invoice-pdf', args=[self.invoice.id])
+        self.assertTrue(pdf_url.endswith('/pdf/'))
+        response = self.client.get(pdf_url)
+        self.assertIsInstance(response, HttpResponse)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], "application/pdf")
 
     def test_delete_invoice_admin(self):
         """
