@@ -1,7 +1,7 @@
 from decimal import Decimal
 from datetime import date
 from django.test import TestCase
-from gbs.models import Customer, Invoice, InvoiceItem, Price
+from gbs.models import Customer, Invoice, InvoiceItem, Price, Supplier
 
 class CustomerTest(TestCase):
     def setUp(self):
@@ -20,6 +20,26 @@ class CustomerTest(TestCase):
 
     def tearDown(self):
         Customer.objects.all().delete()
+
+class SupplierTest(TestCase):
+
+    def setUp(self):
+        Supplier.objects.create(name="Heating Parts Ltd.", email="info@example.com",
+                                phone_number="+44871234567", street="1 Huddersfield",
+                                county="KK", eircode="BT1 XYZ",
+                                country="UK")
+
+    def test_supplier_values_set_correctly(self):
+        suppl = Supplier.objects.get(name="Heating Parts Ltd.")
+        self.assertEqual(suppl.email, "info@example.com")
+        self.assertEqual(suppl.phone_number, "+44871234567")
+        self.assertEqual(suppl.street, "1 Huddersfield")
+        self.assertEqual(suppl.county, "KK")
+        self.assertEqual(suppl.eircode, "BT1 XYZ")
+        self.assertEqual(suppl.country, "UK")
+
+    def tearDown(self):
+        Supplier.objects.all().delete()
 
 class InvoiceTest(TestCase):
     def setUp(self):
