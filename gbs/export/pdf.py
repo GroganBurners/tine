@@ -4,6 +4,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from io import BytesIO
 from gbs.conf import settings
+import os
 
 def draw_header(canvas):
     """ Draws the invoice header """
@@ -12,7 +13,9 @@ def draw_header(canvas):
     canvas.setFont('Helvetica', 16)
     canvas.drawString(18 * cm, -1 * cm, 'Invoice')
     canvas.drawString(1 * cm, -1 * cm, 'Grogan Burner Services')
-    canvas.drawInlineImage('static/images/export/flames.png', 7.1 * cm, -1.1 * cm, 24, 30)
+    dir = os.path.dirname(__file__)
+    filename = os.path.join(dir, '../static/images/export/flames.png')
+    canvas.drawInlineImage(filename, 7.1 * cm, -1.1 * cm, 24, 30)
     canvas.setLineWidth(4)
     canvas.line(0, -1.25 * cm, 21.7 * cm, -1.25 * cm)
 
