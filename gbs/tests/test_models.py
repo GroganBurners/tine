@@ -105,9 +105,9 @@ class ExpenseTest(TestCase):
 
 
     def tearDown(self):
-        Customer.objects.all().delete()
-        Invoice.objects.all().delete()
-        InvoiceItem.objects.all().delete()
+        Supplier.objects.all().delete()
+        Expense.objects.all().delete()
+        ExpenseItem.objects.all().delete()
 
 class PriceTest(TestCase):
     def setUp(self):
