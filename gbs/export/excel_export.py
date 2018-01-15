@@ -1,4 +1,4 @@
-from .models import Invoice, Expense
+from gbs.models import Invoice, Expense
 from openpyxl import Workbook
 from openpyxl.compat import range
 from openpyxl.styles import Font, Fill

@@ -8,8 +8,8 @@ from django.contrib import messages
 from io import BytesIO
 from .models import Carousel, Customer, Expense, ExpenseItem, ExpenseType, Invoice, InvoiceItem, Supplier, Price
 from gbs.utils import excel_response, pdf_response, zip_response
-from gbs.excel import export_finances
-from gbs.pdf import export_invoice
+from gbs.export.excel_export import export_finances
+from gbs.export.pdf import export_invoice
 
 class GBSAdminSite(AdminSite):
     site_header = "Grogan Burner Services Admin Site"

@@ -5,7 +5,7 @@ from django.utils.html import strip_tags
 from email.mime.application import MIMEApplication
 from gbs.conf import settings as app_settings
 from io import BytesIO
-from gbs.pdf import export_invoice
+from gbs.export.pdf import export_invoice
 
 def send_invoice(invoice):
     pdf = export_invoice(invoice)
