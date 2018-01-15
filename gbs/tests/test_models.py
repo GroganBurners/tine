@@ -1,5 +1,7 @@
+from decimal import Decimal
+from datetime import date
 from django.test import TestCase
-from gbs.models import Customer
+from gbs.models import Customer, Invoice, InvoiceItem
 
 class CustomerTest(TestCase):
     def setUp(self):
@@ -18,3 +20,37 @@ class CustomerTest(TestCase):
 
     def tearDown(self):
         Customer.objects.all().delete()
+
+class InvoiceTest(TestCase):
+    def setUp(self):
+        cust = Customer.objects.create(name="Neil Grogan", email="neil@grogan.ie",
+                                phone_number="+353871234567", street="Ballyda",
+                                county="KK", eircode="R95 CX65",
+                                country="IE")
+        self.invoice = Invoice.objects.create(customer=cust, date=date(2018,1,1),
+                invoice_id='R11D23', invoiced=False, draft=False,
+                paid_date=date(2018,1,1))
+        InvoiceItem.objects.create(description="Service", unit_price=Decimal(70.48),
+                vat_rate=Decimal(13.5), quantity=Decimal(1.00), invoice=self.invoice)
+                                              
+    def test_invoice_values_set_correctly(self):
+        invoice = Invoice.objects.get(invoice_id="R11D23")
+        self.assertEqual(invoice.date, date(2018,1,1))
+        self.assertEqual(invoice.invoice_id, 'R11D23')
+        self.assertFalse(invoice.invoiced)
+        self.assertFalse(invoice.draft)
+        self.assertEqual(invoice.paid_date, date(2018,1,1))
+
+        item = invoice.items.all()[0]
+        self.assertEqual(item.description, "Service")
+        # self.assertEqual(item.unit_price, Decimal(70.48))
+        self.assertEqual(item.vat_rate, Decimal(13.5))
+        self.assertEqual(item.quantity, Decimal(1.00))
+
+        # self.assertEqual(item.total_amount(), "€ 80")
+
+
+    def tearDown(self):
+        Customer.objects.all().delete()
+        Invoice.objects.all().delete()
+        InvoiceItem.objects.all().delete()
