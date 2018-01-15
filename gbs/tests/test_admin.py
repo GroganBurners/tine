@@ -74,6 +74,15 @@ class InvoiceAdminTests(TestCase):
         self.assertIsInstance(response, TemplateResponse)
         self.assertEqual(response.status_code, 200)
 
+    def test_post_invoice_admin(self):
+        pass
+        # TODO
+        # data = {}
+        # add_url = reverse('gbsadmin:gbs_invoice_add')
+        # self.assertTrue(add_url.endswith('/add/'))
+        # response = self.post(add_url, data, follow=True)
+        # self.assertEqual(response.status_code, 200)
+
     def test_changelist_invoice_admin(self):
         """
         Ensure CHANGELIST on admin works.
