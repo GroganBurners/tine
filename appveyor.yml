@@ -43,6 +43,7 @@ install:
   # add databases
   - "pip install wheel"
   - "pip install -r requirements.txt"
+  - "pip install -r requirements-test.txt"
 # to run your custom scripts instead of automatic tests
 test_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
