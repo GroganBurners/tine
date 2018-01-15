@@ -47,5 +47,7 @@ install:
 test_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - cmd: "python.exe manage.py showmigrations"
+  - cmd: "python.exe manage.py makemigrations"
+  - cmd: "python.exe manage.py migrate"
   - cmd: "python.exe manage.py test gbs"
 
