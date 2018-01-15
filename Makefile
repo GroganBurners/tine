@@ -18,6 +18,9 @@ cleandjango:
 run:
 	${DC} up -d
 
+test:
+	${D} ${DEC} gbs-dj python manage.py test gbs
+
 dj:
 	${D} ${DEC} gbs-dj python manage.py shell
 
