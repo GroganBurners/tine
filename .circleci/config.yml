@@ -2,6 +2,15 @@ version: 2
 jobs:
   build:
     working_directory: ~/tine
+    enviroment:
+      WORKON_HOME: "~/.venvs"
+      SECRET_KEY: test
+      DJANGO_DEBUG: true
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: gbs
+      DB_USER: ubuntu
+      DB_PASS: 12345
     docker:
       - image: circleci/python:3.6
         enviroment:
