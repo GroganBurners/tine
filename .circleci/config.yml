@@ -23,7 +23,7 @@ jobs:
           key: deps1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
-            pip install -r pipenv
+            pip install pipenv
             pipenv install
       # - save_cache:
       #     key: deps1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
