@@ -41,14 +41,13 @@ build_script:
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   # add databases
-  - "pip install wheel"
-  - "pip install -r requirements.txt"
-  - "pip install -r requirements-test.txt"
+  - "pip install pipenv"
+  - "pipenv install --dev --skip-lock"
 # to run your custom scripts instead of automatic tests
 test_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - cmd: "python.exe manage.py showmigrations"
-  - cmd: "python.exe manage.py makemigrations"
-  - cmd: "python.exe manage.py migrate"
-  - cmd: "python.exe manage.py test gbs"
+  - cmd: "pipenv run python manage.py showmigrations"
+  - cmd: "pipenv run python manage.py makemigrations"
+  - cmd: "pipenv run python manage.py migrate"
+  - cmd: "pipenv run python manage.py test gbs"
 
