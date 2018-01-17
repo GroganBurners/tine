@@ -12,6 +12,7 @@ from io import BytesIO
 from openpyxl import load_workbook
 import PyPDF2
 
+
 class MockRequest:
     pass
 
@@ -20,13 +21,16 @@ class MockSuperUser:
     def has_perm(self, perm):
         return True
 
+
 request = MockRequest()
 request.user = MockSuperUser()
+
 
 class GBSAdminTests(TestCase):
 
     def setUp(self):
-        self.superuser = User.objects.create_superuser(username='super', password='secret', email='super@example.com')
+        self.superuser = User.objects.create_superuser(
+            username='super', password='secret', email='super@example.com')
         self.client.force_login(self.superuser)
 
     def test_export_xls_finances_admin(self):
@@ -35,33 +39,41 @@ class GBSAdminTests(TestCase):
         response = self.client.get(xls_url)
         self.assertIsInstance(response, HttpResponse)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response['Content-Type'], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        self.assertEqual(
+            response['Content-Type'],
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         self.assertIsInstance(response.content, bytes)
 
         wb = load_workbook(BytesIO(response.content))
         self.assertEqual(wb.get_sheet_names()[0], "FinanceSheet2018")
 
+
 class InvoiceAdminTests(TestCase):
 
     def setUp(self):
-        self.superuser = User.objects.create_superuser(username='super', password='secret', email='super@example.com')
+        self.superuser = User.objects.create_superuser(
+            username='super', password='secret', email='super@example.com')
         self.client.force_login(self.superuser)
-        customer = Customer.objects.create(name="Neil Grogan", street="Ballyda")
+        customer = Customer.objects.create(
+            name="Neil Grogan", street="Ballyda")
         self.invoice = Invoice.objects.create(
-                date=date(2018, 8, 1),
-                customer=customer,
-                invoice_id='130DFC',
-                invoiced=False,
-                draft=False,
-                paid_date=date(2018, 9, 1)
-                )
+            date=date(2018, 8, 1),
+            customer=customer,
+            invoice_id='130DFC',
+            invoiced=False,
+            draft=False,
+            paid_date=date(2018, 9, 1)
+        )
         self.site = AdminSite()
 
     def test_default_fields(self):
         ma = ModelAdmin(Invoice, self.site)
-        self.assertEqual(list(ma.get_form(request).base_fields), ['date', 'customer', 'invoiced', 'draft', 'paid_date'])
-        self.assertEqual(list(ma.get_fields(request)), ['date', 'customer', 'invoiced', 'draft', 'paid_date'])
-        self.assertEqual(list(ma.get_fields(request, self.invoice)), ['date', 'customer', 'invoiced', 'draft', 'paid_date'])
+        self.assertEqual(list(ma.get_form(request).base_fields), [
+                         'date', 'customer', 'invoiced', 'draft', 'paid_date'])
+        self.assertEqual(list(ma.get_fields(request)), [
+                         'date', 'customer', 'invoiced', 'draft', 'paid_date'])
+        self.assertEqual(list(ma.get_fields(request, self.invoice)), [
+                         'date', 'customer', 'invoiced', 'draft', 'paid_date'])
         self.assertIsNone(ma.get_exclude(request, self.invoice))
 
     def test_add_invoice_admin(self):
@@ -97,7 +109,9 @@ class InvoiceAdminTests(TestCase):
         """
         Ensure CHANGE on admin works.
         """
-        change_url = reverse('gbsadmin:gbs_invoice_change', args=[self.invoice.id])
+        change_url = reverse(
+            'gbsadmin:gbs_invoice_change', args=[
+                self.invoice.id])
         self.assertTrue(change_url.endswith('/change/'))
         response = self.client.get(change_url)
         self.assertIsInstance(response, TemplateResponse)
@@ -107,7 +121,9 @@ class InvoiceAdminTests(TestCase):
         """
         Ensure HISTORY on admin works.
         """
-        history_url = reverse('gbsadmin:gbs_invoice_history', args=[self.invoice.id])
+        history_url = reverse(
+            'gbsadmin:gbs_invoice_history', args=[
+                self.invoice.id])
         self.assertTrue(history_url.endswith('/history/'))
         response = self.client.get(history_url)
         self.assertIsInstance(response, TemplateResponse)
@@ -135,9 +151,10 @@ class InvoiceAdminTests(TestCase):
         """
         Ensure DELETE on admin works.
         """
-        delete_url = reverse('gbsadmin:gbs_invoice_delete', args=[self.invoice.id])
+        delete_url = reverse(
+            'gbsadmin:gbs_invoice_delete', args=[
+                self.invoice.id])
         self.assertTrue(delete_url.endswith('/delete/'))
         response = self.client.get(delete_url)
         self.assertIsInstance(response, TemplateResponse)
         self.assertEqual(response.status_code, 200)
-

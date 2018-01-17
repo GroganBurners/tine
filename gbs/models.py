@@ -11,6 +11,7 @@ from .utils import format_currency
 from gbs.comm import email
 from gbs.comm import sms
 
+
 class ContactInfo(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True)
@@ -20,20 +21,27 @@ class ContactInfo(models.Model):
     phone_number = models.CharField(validators=[phone_regex], max_length=16,
                                     blank=True, default='353')
     street = models.CharField(max_length=200, blank=True)
-    county = models.CharField(choices=COUNTIES, max_length=30, blank=True, default='KK')
+    county = models.CharField(
+        choices=COUNTIES,
+        max_length=30,
+        blank=True,
+        default='KK')
     eircode = models.CharField(max_length=12, blank=True, default='R95 XXXX')
     country = models.CharField(max_length=200, blank=True, default='Ireland')
 
     class Meta:
         abstract = True
 
+
 class Customer(ContactInfo):
     def __str__(self):
         return self.name + " (" + self.street + ")"
 
+
 class Supplier(ContactInfo):
     def __str__(self):
         return self.name
+
 
 class Bill(models.Model):
     date = models.DateField(default=date.today)
@@ -48,7 +56,7 @@ class Bill(models.Model):
         return format_currency(self.total_ex_vat())
 
     def total_vat(self):
-        total = self.total()-self.total_ex_vat()
+        total = self.total() - self.total_ex_vat()
         return total.quantize(Decimal('0.01'))
 
     def total_vat_amount(self):
@@ -67,17 +75,19 @@ class Bill(models.Model):
         abstract = True
         ordering = ['-date']
 
+
 class BillItem(models.Model):
     description = models.CharField(max_length=100)
     unit_price = models.DecimalField(max_digits=8, decimal_places=2)
-    vat_rate = models.DecimalField(max_digits=5, decimal_places=2, default=13.5)
+    vat_rate = models.DecimalField(
+        max_digits=5, decimal_places=2, default=13.5)
     quantity = models.DecimalField(max_digits=8, decimal_places=2, default=1)
 
     def unit_price_amount(self):
         return format_currency(self.unit_price)
 
     def vat_rate_amount(self):
-        return ('%f' % self.vat_rate).rstrip('0').rstrip('.') +'%'
+        return ('%f' % self.vat_rate).rstrip('0').rstrip('.') + '%'
 
     def quantity_amount(self):
         return ('%f' % self.quantity).rstrip('0').rstrip('.')
@@ -90,16 +100,16 @@ class BillItem(models.Model):
         return format_currency(self.total_ex_vat())
 
     def total_vat(self):
-        percentage = self.vat_rate/Decimal(100)
+        percentage = self.vat_rate / Decimal(100)
         total_ex_vat = self.total_ex_vat()
-        total = Decimal(str(total_ex_vat*percentage))
+        total = Decimal(str(total_ex_vat * percentage))
         return total.quantize(Decimal('0.01'))
 
     def total_vat_amount(self):
         return format_currency(self.total_vat())
 
     def total(self):
-        total = Decimal(str(self.total_ex_vat()+self.total_vat()))
+        total = Decimal(str(self.total_ex_vat() + self.total_vat()))
         return total.quantize(Decimal('0.01'))
 
     def total_amount(self):
@@ -111,24 +121,32 @@ class BillItem(models.Model):
     class Meta:
         abstract = True
 
+
 class ExpenseType(models.Model):
     type = models.CharField(max_length=100)
 
     def __str__(self):
         return self.type
 
+
 class Expense(Bill):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
     notes = models.CharField(max_length=300, blank=True, null=True)
 
+
 class ExpenseItem(BillItem):
-    expense = models.ForeignKey(Expense, related_name='items', unique=False, on_delete=models.CASCADE)
+    expense = models.ForeignKey(
+        Expense,
+        related_name='items',
+        unique=False,
+        on_delete=models.CASCADE)
+
 
 class Invoice(Bill):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     invoice_id = models.CharField(unique=True, max_length=6, null=True,
-                                              blank=True, editable=False)
+                                  blank=True, editable=False)
     invoiced = models.BooleanField(default=False)
     draft = models.BooleanField(default=False)
     paid_date = models.DateField(blank=True, null=True)
@@ -137,7 +155,10 @@ class Invoice(Bill):
         super(Invoice, self).save(*args, **kwargs)
 
         if not self.invoice_id:
-            hashids = Hashids(alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', min_length=6, salt='this is my salt 2')
+            hashids = Hashids(
+                alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+                min_length=6,
+                salt='this is my salt 2')
             self.invoice_id = hashids.encode(self.id)
             super(Invoice, self).save(*args, **kwargs)
 
@@ -153,7 +174,7 @@ class Invoice(Bill):
                 0876341300 or email mick@grogan.ie'
         resp = sms.send_sms(str(self.customer.phone_number), message)
 
-        if resp['success'] == True:
+        if resp['success']:
             self.invoiced = True
             self.save()
             return True, resp
@@ -166,11 +187,18 @@ class Invoice(Bill):
         self.save()
 
     def __str__(self):
-        desc = "Invoice: " + str(self.invoice_id) + " (" + str(self.customer) + ")"
+        desc = "Invoice: " + str(self.invoice_id) + \
+            " (" + str(self.customer) + ")"
         return desc
 
+
 class InvoiceItem(BillItem):
-    invoice = models.ForeignKey(Invoice, related_name='items', unique=False, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(
+        Invoice,
+        related_name='items',
+        unique=False,
+        on_delete=models.CASCADE)
+
 
 class Price(models.Model):
     type = models.CharField(choices=SERVICES, max_length=30)
@@ -180,12 +208,21 @@ class Price(models.Model):
     def __str__(self):
         d = dict(SERVICES)
         ser_name = d[self.type]
-        return ser_name + " " + "€" + ('%f' % self.cost).rstrip('0').rstrip('.')
+        return ser_name + " " + "€" + ('%f' %
+                                       self.cost).rstrip('0').rstrip('.')
+
 
 class Carousel(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
-    image = models.ImageField(upload_to='images/carousel', blank=False, null=False)
-    img_alt = models.CharField("Image alternative text (for screen readers)", max_length=50, blank=True, null=True)
+    image = models.ImageField(
+        upload_to='images/carousel',
+        blank=False,
+        null=False)
+    img_alt = models.CharField(
+        "Image alternative text (for screen readers)",
+        max_length=50,
+        blank=True,
+        null=True)
     teaser_text = models.CharField(max_length=200, blank=False, null=False)
     active = models.BooleanField(blank=False, null=False, default=False)
     order = models.PositiveSmallIntegerField(blank=False, null=False)

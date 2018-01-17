@@ -1,8 +1,6 @@
-from django.shortcuts import get_object_or_404, render
-from gbs.models import Carousel, Price, Invoice
+from django.shortcuts import render
+from gbs.models import Carousel, Price
 from decimal import Decimal
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 ADMIN_LOGIN_URL = '/admin/login/'
 
 
@@ -25,7 +23,7 @@ def index(request):
                                       cost__gt=Decimal('0.00'))[0]
     # season = get_season()
     carousels = Carousel.objects.filter(active=True).order_by('order')
-    context = { 'carousels': carousels, 'gas_prices': gas_prices, 
-                'oil_prices': oil_prices, 'summer_gas': summer_gas, 
-                'summer_oil': summer_oil, 'repair_fee': repair_fee }
+    context = {'carousels': carousels, 'gas_prices': gas_prices,
+               'oil_prices': oil_prices, 'summer_gas': summer_gas,
+               'summer_oil': summer_oil, 'repair_fee': repair_fee}
     return render(request, 'index.html', context)

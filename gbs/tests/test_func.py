@@ -23,5 +23,6 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.selenium.get_screenshot_as_file('/tmp/website.png')
         wait = WebDriverWait(self.selenium, 10)
         print("TITLE:", self.selenium.title)
-        wait.until(lambda selenium: self.selenium.title.lower().startswith('n'))
+        wait.until(
+            lambda selenium: self.selenium.title.lower().startswith('n'))
         self.assertIn("Grogan Burner Services", self.selenium.title)

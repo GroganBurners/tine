@@ -3,6 +3,6 @@ from .admin import admin_site
 from . import views
 
 urlpatterns = [
-  path('', views.index, name='index'),
-  path('admin/', admin_site.urls),
+    path('', views.index, name='index'),
+    path('admin/', admin_site.urls),
 ]

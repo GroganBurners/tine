@@ -16,4 +16,5 @@ class ViewsTest(unittest.TestCase):
 
         # Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(str(response.context['repair_fee']), "Repair Call Out Fee (First Hour) €80")
+        self.assertEqual(
+            str(response.context['repair_fee']), "Repair Call Out Fee (First Hour) €80")

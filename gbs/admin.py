@@ -11,6 +11,7 @@ from gbs.utils import excel_response, pdf_response, zip_response
 from gbs.export.excel_export import export_finances
 from gbs.export.pdf import export_invoice
 
+
 class GBSAdminSite(AdminSite):
     site_header = "Grogan Burner Services Admin Site"
 
@@ -19,24 +20,27 @@ class GBSAdminSite(AdminSite):
 
     def get_urls(self):
         return [
-                path('export/xls/',
-                    self.admin_view(self.export_finances_xls),
-                    name='export-finances'
-                    ),
+            path('export/xls/',
+                 self.admin_view(self.export_finances_xls),
+                 name='export-finances'
+                 ),
         ] + super().get_urls()
 
+
 admin_site = GBSAdminSite(name="gbsadmin")
+
 
 class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
     extra = 1
 
+
 class InvoiceAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
-    readonly_fields=('invoice_id',)
-    inlines = [ InvoiceItemInline ]
+    readonly_fields = ('invoice_id',)
+    inlines = [InvoiceItemInline]
     list_display = [
-        'invoice_id', 'customer', 'date', 
+        'invoice_id', 'customer', 'date',
         'draft', 'invoiced', 'paid_date', 'total',
         'invoice_actions'
     ]
@@ -62,11 +66,18 @@ class InvoiceAdmin(admin.ModelAdmin):
         invoice = self.get_object(request, invoice_id)
         if invoice.customer.phone_number:
             if invoice.send_sms():
-                messages.add_message(request, messages.INFO, 'Invoice SMS Sent.')
+                messages.add_message(
+                    request, messages.INFO, 'Invoice SMS Sent.')
             else:
-                messages.add_message(request, messages.ERROR, 'SMS sending failed. Please check the logs and try later.')
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    'SMS sending failed. Please check the logs and try later.')
         else:
-            messages.add_message(request, messages.ERROR, 'No phone number present for customer.')
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'No phone number present for customer.')
         return HttpResponseRedirect("../")
 
     def email_invoice(self, request, invoice_id):
@@ -83,18 +94,18 @@ class InvoiceAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
-                path('<int:invoice_id>/pdf/',
-                    self.admin_site.admin_view(self.print_invoice),
-                    name='invoice-pdf'
-                    ),
-                path('<int:invoice_id>/email/',
-                    self.admin_site.admin_view(self.email_invoice),
-                    name='invoice-email'
-                    ),
-                path('<int:invoice_id>/sms/',
-                    self.admin_site.admin_view(self.sms_invoice),
-                    name='invoice-sms'
-                    )
+            path('<int:invoice_id>/pdf/',
+                 self.admin_site.admin_view(self.print_invoice),
+                 name='invoice-pdf'
+                 ),
+            path('<int:invoice_id>/email/',
+                 self.admin_site.admin_view(self.email_invoice),
+                 name='invoice-email'
+                 ),
+            path('<int:invoice_id>/sms/',
+                 self.admin_site.admin_view(self.sms_invoice),
+                 name='invoice-sms'
+                 )
         ] + super().get_urls()
 
     def invoice_actions(self, obj):
@@ -109,21 +120,25 @@ class InvoiceAdmin(admin.ModelAdmin):
     invoice_actions.short_description = 'Invoice Actions'
     invoice_actions.allow_tags = True
 
+
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
     list_display = ['name', 'street', 'county']
     search_fields = ('name', 'street')
 
+
 class ExpenseItemInline(admin.TabularInline):
     model = ExpenseItem
     extra = 1
 
+
 class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
-    inlines = [ ExpenseItemInline ]
-    autocomplete_fields = ['type','supplier']
+    inlines = [ExpenseItemInline]
+    autocomplete_fields = ['type', 'supplier']
     list_display = ['date', 'supplier', 'total']
     search_fields = ('supplier', 'total')
+
 
 class ExpenseTypeAdmin(admin.ModelAdmin):
     model = ExpenseType
@@ -135,19 +150,23 @@ class ExpenseTypeAdmin(admin.ModelAdmin):
         """
         return {}
 
+
 class PriceAdmin(admin.ModelAdmin):
     model = Price
     list_display = ['type', 'cost', 'summer_offer']
+
 
 class SupplierAdmin(admin.ModelAdmin):
     model = Supplier
     list_display = ['name', 'email', 'phone_number']
     search_fields = ('name', 'email')
 
+
 class CarouselAdmin(admin.ModelAdmin):
     model = Carousel
-    ordering = ('active','order')
+    ordering = ('active', 'order')
     list_display = ['title', 'active', 'order', 'image', 'teaser_text']
+
 
 admin_site.register(Customer, CustomerAdmin)
 admin_site.register(Carousel, CarouselAdmin)

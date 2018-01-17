@@ -3,12 +3,14 @@ from datetime import date
 from django.test import TestCase
 from gbs.models import Customer, Expense, ExpenseItem, ExpenseType, Invoice, InvoiceItem, Price, Supplier
 
+
 class CustomerTest(TestCase):
     def setUp(self):
         Customer.objects.create(name="Neil Grogan", email="neil@grogan.ie",
                                 phone_number="+353871234567", street="Ballyda",
                                 county="KK", eircode="R95 CX65",
                                 country="IE")
+
     def test_customer_values_set_correctly(self):
         cust = Customer.objects.get(name="Neil Grogan")
         self.assertEqual(cust.email, "neil@grogan.ie")
@@ -21,13 +23,18 @@ class CustomerTest(TestCase):
     def tearDown(self):
         Customer.objects.all().delete()
 
+
 class SupplierTest(TestCase):
 
     def setUp(self):
-        Supplier.objects.create(name="Heating Parts Ltd.", email="info@example.com",
-                                phone_number="+44871234567", street="1 Huddersfield",
-                                county="KK", eircode="BT1 XYZ",
-                                country="UK")
+        Supplier.objects.create(
+            name="Heating Parts Ltd.",
+            email="info@example.com",
+            phone_number="+44871234567",
+            street="1 Huddersfield",
+            county="KK",
+            eircode="BT1 XYZ",
+            country="UK")
 
     def test_supplier_values_set_correctly(self):
         suppl = Supplier.objects.get(name="Heating Parts Ltd.")
@@ -41,25 +48,44 @@ class SupplierTest(TestCase):
     def tearDown(self):
         Supplier.objects.all().delete()
 
+
 class InvoiceTest(TestCase):
     def setUp(self):
-        cust = Customer.objects.create(name="Neil Grogan", email="neil@grogan.ie",
-                                phone_number="+353871234567", street="Ballyda",
-                                county="KK", eircode="R95 CX65",
-                                country="IE")
-        self.invoice = Invoice.objects.create(customer=cust, date=date(2018,1,1),
-                invoice_id='R11D23', invoiced=False, draft=False,
-                paid_date=date(2018,1,1))
-        InvoiceItem.objects.create(description="Service", unit_price=Decimal(70.48),
-                vat_rate=Decimal(13.5), quantity=Decimal(1.00), invoice=self.invoice)
-                                              
+        cust = Customer.objects.create(
+            name="Neil Grogan",
+            email="neil@grogan.ie",
+            phone_number="+353871234567",
+            street="Ballyda",
+            county="KK",
+            eircode="R95 CX65",
+            country="IE")
+        self.invoice = Invoice.objects.create(
+            customer=cust,
+            date=date(
+                2018,
+                1,
+                1),
+            invoice_id='R11D23',
+            invoiced=False,
+            draft=False,
+            paid_date=date(
+                2018,
+                1,
+                1))
+        InvoiceItem.objects.create(
+            description="Service",
+            unit_price=Decimal(70.48),
+            vat_rate=Decimal(13.5),
+            quantity=Decimal(1.00),
+            invoice=self.invoice)
+
     def test_invoice_values_set_correctly(self):
         invoice = Invoice.objects.get(invoice_id="R11D23")
-        self.assertEqual(invoice.date, date(2018,1,1))
+        self.assertEqual(invoice.date, date(2018, 1, 1))
         self.assertEqual(invoice.invoice_id, 'R11D23')
         self.assertFalse(invoice.invoiced)
         self.assertFalse(invoice.draft)
-        self.assertEqual(invoice.paid_date, date(2018,1,1))
+        self.assertEqual(invoice.paid_date, date(2018, 1, 1))
 
         item = invoice.items.all()[0]
         self.assertEqual(item.description, "Service")
@@ -69,30 +95,39 @@ class InvoiceTest(TestCase):
 
         # self.assertEqual(item.total_amount(), "€ 80")
 
-
     def tearDown(self):
         Customer.objects.all().delete()
         Invoice.objects.all().delete()
         InvoiceItem.objects.all().delete()
 
+
 class ExpenseTest(TestCase):
     def setUp(self):
-        suppl = Supplier.objects.create(name="Heating Parts Ltd.", email="info@example.com",
-                                phone_number="+44871234567", street="1 Huddersfield",
-                                county="KK", eircode="BT1 XYZ",
-                                country="UK")
+        suppl = Supplier.objects.create(
+            name="Heating Parts Ltd.",
+            email="info@example.com",
+            phone_number="+44871234567",
+            street="1 Huddersfield",
+            county="KK",
+            eircode="BT1 XYZ",
+            country="UK")
         exp_type = ExpenseType.objects.create(type='Parts')
-        self.expense = Expense.objects.create(supplier=suppl, date=date(2018,1,1),
-                                type=exp_type, notes='Ferroli Part')
-        ExpenseItem.objects.create(description="Boiler Parts", unit_price=Decimal(70.48),
-                vat_rate=Decimal(9.5), quantity=Decimal(1.00), expense=self.expense)
-                                              
+        self.expense = Expense.objects.create(
+            supplier=suppl, date=date(
+                2018, 1, 1), type=exp_type, notes='Ferroli Part')
+        ExpenseItem.objects.create(
+            description="Boiler Parts",
+            unit_price=Decimal(70.48),
+            vat_rate=Decimal(9.5),
+            quantity=Decimal(1.00),
+            expense=self.expense)
+
     def test_expense_values_set_correctly(self):
         expense = Expense.objects.get(id=1)
         supp = Supplier.objects.get(name="Heating Parts Ltd.")
         e_type = ExpenseType.objects.get(id=1)
         self.assertEqual(expense.supplier, supp)
-        self.assertEqual(expense.date, date(2018,1,1))
+        self.assertEqual(expense.date, date(2018, 1, 1))
         self.assertEqual(expense.type, e_type)
         self.assertEqual(expense.notes, "Ferroli Part")
         item = expense.items.all()[0]
@@ -103,16 +138,19 @@ class ExpenseTest(TestCase):
 
         # self.assertEqual(item.total_amount(), "€ 80")
 
-
     def tearDown(self):
         Supplier.objects.all().delete()
         Expense.objects.all().delete()
         ExpenseItem.objects.all().delete()
 
+
 class PriceTest(TestCase):
     def setUp(self):
         Price.objects.create(type="gas_service", cost=0.00, summer_offer=True)
-        Price.objects.create(type="oil_service", cost=20.00, summer_offer=False)
+        Price.objects.create(
+            type="oil_service",
+            cost=20.00,
+            summer_offer=False)
 
     def test_gas_service_values_set_correctly(self):
         gas_price = Price.objects.get(type="gas_service")

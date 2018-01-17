@@ -7,11 +7,12 @@ from gbs.conf import settings as app_settings
 from io import BytesIO
 from gbs.export.pdf import export_invoice
 
+
 def send_invoice(invoice):
     pdf = export_invoice(invoice)
     attachment = MIMEApplication(pdf)
     attachment.add_header("Content-Disposition", "attachment",
-                                          filename=invoice.file_name())
+                          filename=invoice.file_name())
 
     subject = f'Your Grogan Burner Services Invoice {invoice.invoice_id} is ready'
     email_kwargs = {
@@ -24,8 +25,11 @@ def send_invoice(invoice):
     html_body = template.render(email_kwargs)
     body = render_to_string("email/txt/invoice.txt", email_kwargs)
 
-    email = EmailMultiAlternatives(subject=subject, body=strip_tags(body), from_email='mick@grogan.ie', to=['neil@grogan.ie'])
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body=strip_tags(body),
+        from_email='mick@grogan.ie',
+        to=['neil@grogan.ie'])
     email.attach_alternative(html_body, "text/html")
     email.attach(attachment)
     email.send(fail_silently=False)
-
