@@ -23,7 +23,6 @@ services:
     restart: always
     container_name: django
     build: .
-    command: bash -c './manage.py makemigrations && ./manage.py migrate && ./manage.py loaddata db && gunicorn tine.wsgi:application -w 2 -b :8000 --log-level DEBUG'
     volumes:
       - /usr/src/app/static
     env_file: .env

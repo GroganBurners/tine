@@ -28,7 +28,6 @@ services:
     restart: always
     container_name: gbs-dj
     build: .
-    command: bash -c './manage.py makemigrations && ./manage.py migrate && ./manage.py loaddata db && gunicorn tine.wsgi:application -w 2 -b :8000 --reload --log-level DEBUG'
     volumes:
       - ".:/usr/src/app"
       - "/usr/src/app/static"
