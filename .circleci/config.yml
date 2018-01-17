@@ -6,7 +6,7 @@ jobs:
       - WORKON_HOME: "~/.venvs"
       - SECRET_KEY: test
       - DJANGO_DEBUG: true
-      - DB_HOST: localhost
+      - DB_HOST: 127.0.0.1
       - DB_PORT: 5432
       - DB_NAME: gbs
       - DB_USER: ubuntu
@@ -17,7 +17,7 @@ jobs:
           WORKON_HOME: "~/.venvs"
           SECRET_KEY: test
           DJANGO_DEBUG: true
-          DB_HOST: localhost
+          DB_HOST: 127.0.0.1
           DB_PORT: 5432
           DB_NAME: gbs
           DB_USER: ubuntu
