@@ -22,6 +22,9 @@ jobs:
       # - restore_cache:
       #     key: deps1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
+         name: Setup
+         command: python setup.py install
+      - run:
           name: Install Pipenv
           command: pip install pipenv
       - run:
