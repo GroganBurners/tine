@@ -16,9 +16,9 @@ install:
   - pip install pipenv --upgrade
   - pipenv install --dev --skip-lock
   - psql -c 'create database gbs;' -U postgres
-  - python manage.py makemigrations
-  - python manage.py migrate
+  - pipenv run python manage.py makemigrations
+  - pipenv run python manage.py migrate
 # command to run tests
 script:
-  - python manage.py check
-  - python manage.py test gbs
+  - pipenv run python manage.py check
+  - pipenv run python manage.py test gbs
