@@ -23,16 +23,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY", 'testsecretkeyfortesting')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['.groganburners.com','groganburners.com', '.groganburners.ie','groganburners.ie','gbs.ballyda.com']
+ALLOWED_HOSTS = [
+    '.groganburners.com',
+    'groganburners.com',
+    '.groganburners.ie',
+    'groganburners.ie',
+    'gbs.ballyda.com']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/src/app/static/'
-MEDIA_URL = '/uploads/' 
+MEDIA_URL = '/uploads/'
 MEDIA_ROOT = '/usr/src/app/static'
 
 # Application definition
@@ -80,21 +85,21 @@ WSGI_APPLICATION = 'tine.wsgi.application'
 
 # Email Settings
 EMAIL_USE_TLS = True
-EMAIL_HOST = os.environ.get("EMAIL_HOST",'smtp.gmail.com')
-EMAIL_HOST_USER = os.environ.get("EMAIL_ADDR",'')
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS",'')
+EMAIL_HOST = os.environ.get("EMAIL_HOST", 'smtp.gmail.com')
+EMAIL_HOST_USER = os.environ.get("EMAIL_ADDR", '')
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS", '')
 EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 DATABASES = {
     'default': {
-	'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DB_NAME",''),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("DB_NAME", ''),
         'USER': os.environ.get("DB_USER", ''),
-        'PASSWORD': os.environ.get("DB_PASS",''),
-        'HOST': os.environ.get("DB_HOST",''),
-        'PORT': os.environ.get("DB_PORT",'')
+        'PASSWORD': os.environ.get("DB_PASS", ''),
+        'HOST': os.environ.get("DB_HOST", ''),
+        'PORT': os.environ.get("DB_PORT", '')
     }
 }
 
@@ -130,4 +135,3 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
