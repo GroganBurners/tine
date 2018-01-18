@@ -6,11 +6,6 @@ python:
 cache: pip
 env:
   global:
-    - SECRET_KEY="test"
-    - POSTGRES_HOST="127.0.0.1"
-    - POSTGRES_PORT="5432"
-    - POSTGRES_NAME="gbs"
-    - POSTGRES_USER="postgres"
     - POSTGRES_PASSWORD=""
 install:
   - pip install pipenv --upgrade
