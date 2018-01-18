@@ -11,5 +11,6 @@ COPY Pipfile.lock Pipfile.lock
 RUN set -ex && pipenv install --deploy --system
 
 COPY . /usr/src/app
+RUN set -ex && python manage.py collectstatic
 
 CMD python manage.py makemigrations && python manage.py migrate && python manage.py loaddata db && gunicorn tine.wsgi:application -w 2 -b :8000 --reload --log-level DEBUG
