@@ -2,6 +2,8 @@ version: 2
 jobs:
   build:
     working_directory: ~/tine
+    environment:
+      CC_TEST_REPORTER_ID: 47d365ee744329d4f4592e8948185c5767ee57d573f01691d51959cff40ce7f7
     docker:
       - image: circleci/python:3.6
       - image: circleci/postgres:9.6.2
@@ -18,6 +20,11 @@ jobs:
           command: |
               echo 'export PATH=$HOME/.local/bin:$PATH' >> $BASH_ENV
               echo 'export WORKON_HOME=$HOME/.venvs' >> $BASH_ENV
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
       - run:
           name: Install Pipenv
           command: |
@@ -37,7 +44,10 @@ jobs:
           command: pipenv run python manage.py migrate
       - run:
           name: Django Run Tests
-          command: pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
+          command: |
+             ./cc-test-reporter before-build
+             pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
+             ./cc-test-reporter after-build --exit-code $?
       - run:
           name: Generate Code Coverage Report
           command: pipenv run coverage html
