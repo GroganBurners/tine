@@ -27,5 +27,5 @@ class FunctionalTest(StaticLiveServerTestCase):
         wait = WebDriverWait(self.selenium, 10)
         print("TITLE:", self.selenium.title)
         wait.until(
-            lambda selenium: self.selenium.title.lower().startswith('n'))
+            lambda selenium: self.selenium.title.lower().startswith('g'))
         self.assertIn("Grogan Burner Services", self.selenium.title)
