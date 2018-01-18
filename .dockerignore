@@ -1,10 +1,8 @@
 docker/
 .git/
-docker-compose*
 .env-sample
 Makefile
 .circleci/
 README.md
-appveyor.yml
-.travis.yml
+*.yml
 .editorconfig
