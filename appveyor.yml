@@ -17,11 +17,6 @@ skip_tags: true
 environment:
   matrix:
     - PYTHON: "C:/Python36-x64"
-  SECRET_KEY: "test"
-  POSTGRES_HOST: "127.0.0.1"
-  POSTGRES_PORT: "5432"
-  POSTGRES_NAME: "gbs"
-  POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "Password12!"
 
 # enable service required for build/tests
