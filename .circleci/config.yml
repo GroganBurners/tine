@@ -7,8 +7,8 @@ jobs:
       - image: circleci/postgres:9.6.2
         environment:
           POSTGRES_DB: gbs
-          POSTGRES_USER: gbs
-          POSTGRES_PASSWORD: gbs
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
     steps:
       - checkout
       - restore_cache:
@@ -18,12 +18,6 @@ jobs:
           command: |
               echo 'export PATH=$HOME/.local/bin:$PATH' >> $BASH_ENV
               echo 'export WORKON_HOME=$HOME/.venvs' >> $BASH_ENV
-              echo 'export SECRET_KEY=test' >> $BASH_ENV
-              echo 'export POSTGRES_HOST=localhost' >> $BASH_ENV
-              echo 'export POSTGRES_NAME=gbs' >> $BASH_ENV
-              echo 'export POSTGRES_USER=gbs' >> $BASH_ENV
-              echo 'export POSTGRES_PASSWORD=gbs' >> $BASH_ENV
-              echo 'export POSTGRES_PORT=5432' >> $BASH_ENV
       - run:
           name: Install Pipenv
           command: |
