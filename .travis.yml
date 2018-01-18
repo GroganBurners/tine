@@ -12,7 +12,7 @@ cache: pip
 env:
   global:
   - POSTGRES_PASSWORD=""
-  - DJANGO_SELENIUM_TESTS=""
+  - DJANGO_SELENIUM_TESTS="true"
 install:
 - pip install pipenv --upgrade
 - pipenv install --dev --skip-lock
@@ -23,4 +23,5 @@ script:
 - pipenv run python manage.py check
 - pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py
   test gbs
+after_script:
 - coveralls
