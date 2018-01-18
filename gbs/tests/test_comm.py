@@ -11,5 +11,4 @@ class SMSTest(unittest.TestCase):
     @responses.activate
     def test_sms_send(self):
         response = sms.send_sms("Hello, World!", "+353890000000")
-        print(response)
         self.assertEqual(response['success'], True)
