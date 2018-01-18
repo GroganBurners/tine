@@ -1,20 +1,26 @@
 language: python
 services:
-    - postgresql
+- postgresql
 python:
-  - "3.6"
+- '3.6'
+addons:
+  sauce_connect:
+    username: groganburners
+  jwt:
+    secure: wB94dYrwLyPgaC/IFOMCGFPiaNLio13PMjxCkZrbdPw6Z9hZjCsyNKG1/2E7ZvuIxm0Te2/cevv6dRLl4dUBnxSKYIuL6mAOs4Emd59h6u/ym2XrxrijF4hJ5wSG0bZ2bl2ZRMBe9CgiQULkPlXJ/JPoLnddgM3WboXPjZxHgXZiEinK4mDz/Z+LXfNgJDxa5/6lktbqReAG/6iuDWu7bE2UKOBqHtVFKrpkoh7GGaItX07gkZsZ3VwoPkrP89EEXFwDLUx1jvKRCTvL9Ytex4wSyYWxlW/j9b0HCu5fsjPahtaV3Zfjtb6EKRplnpnLDX2sWuyX54DhAADyEKmUfyQllXtT6Xdl6rqzVzDWBAOBaEy7SJiMgg/YHJVfyK4kp/8zKX2+f7b5lkvGZKYB6lQdsfXKT53UCMRGx42EGdrGkesI6W9ENugRCMV75rpAgcA2+lMBHbkRn7k+fN3gdKCdczz2ZS8+924K6rbEZEZ8EljiKXbCQ4vlWNYofAhcknyJIJJ4wkvgGkRE/BGFDXj33e6ri8Sg9AkzN3sD1zRaD8nqSC8qTHoEVdPuwK8Vux25SMXhY2vFTDUDlsMZnsH09yzRXkVFW+U8hXdg1O8Nod+/wOb/C10Ge4URyFi5lfaG82NknQ1gEIsl+i5N5pTc4WP7i9d8L8MlH/dYvAA=
 cache: pip
 env:
   global:
-    - POSTGRES_PASSWORD=""
+  - POSTGRES_PASSWORD=""
+  - DJANGO_SELENIUM_TESTS=""
 install:
-  - pip install pipenv --upgrade
-  - pipenv install --dev --skip-lock
-  - psql -c 'create database gbs;' -U postgres
-  - pipenv run python manage.py makemigrations
-  - pipenv run python manage.py migrate
-# command to run tests
+- pip install pipenv --upgrade
+- pipenv install --dev --skip-lock
+- psql -c 'create database gbs;' -U postgres
+- pipenv run python manage.py makemigrations
+- pipenv run python manage.py migrate
 script:
-  - pipenv run python manage.py check
-  - pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
-  - coveralls
+- pipenv run python manage.py check
+- pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py
+  test gbs
+- coveralls
