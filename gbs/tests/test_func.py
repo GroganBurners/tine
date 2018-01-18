@@ -11,10 +11,11 @@ from unittest import skipUnless
 class FunctionalTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
+        super(FunctionalTest, cls).setUpClass()
         options = Options()
         options.add_argument('-headless')
         cls.selenium = WebDriver(options=options)
-        super(FunctionalTest, cls).setUpClass()
+        cls.selenium.implicitly_wait(10)
 
     @classmethod
     def tearDownClass(cls):
