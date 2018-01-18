@@ -18,12 +18,11 @@ environment:
   matrix:
     - PYTHON: "C:/Python36-x64"
   SECRET_KEY: "test"
-  DB_HOST: "127.0.0.1"
-  DB_PORT: "5432"
-  DB_NAME: "gbs"
-  DB_TABLE: "gbs"
-  DB_USER: "postgres"
-  DB_PASS: "Password12!"
+  POSTGRES_HOST: "127.0.0.1"
+  POSTGRES_PORT: "5432"
+  POSTGRES_NAME: "gbs"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASS: "Password12!"
 
 # enable service required for build/tests
 services:
@@ -35,7 +34,7 @@ init:
 
 build_script:
   - SET PGUSER=postgres
-  - SET PGPASSWORD=Password12! 
+  - SET PGPASSWORD=Password12!
   - PATH=C:\Program Files\PostgreSQL\9.6\bin\;%PATH%
   - createdb gbs
 install:

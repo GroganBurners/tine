@@ -7,11 +7,11 @@ cache: pip
 env:
   global:
     - SECRET_KEY="test"
-    - DB_HOST="127.0.0.1"
-    - DB_PORT="5432"
-    - DB_NAME="gbs"
-    - DB_USER="postgres"
-    - DB_PASS=""
+    - POSTGRES_HOST="127.0.0.1"
+    - POSTGRES_PORT="5432"
+    - POSTGRES_NAME="gbs"
+    - POSTGRES_USER="postgres"
+    - POSTGRES_PASS=""
 install:
   - pip install pipenv --upgrade
   - pipenv install --dev --skip-lock
