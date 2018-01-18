@@ -2,31 +2,13 @@ version: 2
 jobs:
   build:
     working_directory: ~/tine
-    enviroment:
-      - WORKON_HOME: "~/.venvs"
-      - SECRET_KEY: test
-      - DJANGO_DEBUG: true
-      - DB_HOST: 127.0.0.1
-      - DB_PORT: 5432
-      - DB_NAME: gbs
-      - DB_USER: ubuntu
-      - DB_PASS: 12345
     docker:
       - image: circleci/python:3.6
-        enviroment:
-          WORKON_HOME: "~/.venvs"
-          SECRET_KEY: test
-          DJANGO_DEBUG: true
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
-          DB_NAME: gbs
-          DB_USER: ubuntu
-          DB_PASS: 12345
       - image: circleci/postgres:9.6.2
         environment:
           POSTGRES_DB: gbs
-          POSTGRES_USER: ubuntu
-          POSTGRES_PASSWORD: 12345
+          POSTGRES_USER: gbs
+          POSTGRES_PASSWORD: gbs
     steps:
       - checkout
       - restore_cache:
@@ -35,6 +17,13 @@ jobs:
           name: add user installs to PATH
           command: |
               echo 'export PATH=$HOME/.local/bin:$PATH' >> $BASH_ENV
+              echo 'export WORKON_HOME=$HOME/.venvs' >> $BASH_ENV
+              echo 'export SECRET_KEY=test' >> $BASH_ENV
+              echo 'export DB_HOST=localhost' >> $BASH_ENV
+              echo 'export DB_NAME=gbs' >> $BASH_ENV
+              echo 'export DB_USER=gbs' >> $BASH_ENV
+              echo 'export DB_PASS=gbs' >> $BASH_ENV
+              echo 'export DB_PORT=gbs' >> $BASH_ENV
       - run:
           name: Install Pipenv
           command: |
