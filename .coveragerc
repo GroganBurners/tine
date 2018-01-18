@@ -1,8 +1,0 @@
-[run]
-branch = True
-omit =
-    tine/*
-    gbs/tests/*
-    gbs/migrations/*
-source = django
-
