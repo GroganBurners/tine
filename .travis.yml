@@ -16,4 +16,5 @@ install:
 # command to run tests
 script:
   - pipenv run python manage.py check
-  - pipenv run python manage.py test gbs
+  - pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
+  - coveralls

@@ -24,6 +24,7 @@ requests = "==2.18.4"
 codecov = "==2.0.13"
 coverage = "==4.4.2"
 selenium = "==3.8.0"
+coveralls = "*"
 
 
 [dev-packages]
