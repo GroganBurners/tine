@@ -16,8 +16,8 @@ def get_driver():
 
             url = f'http://{user}:{key}@ondemand.saucelabs.com:80/wd/hub'
 
-            self = webdriver.Remote(command_executor=url, desired_capabilities=desired_cap)
+            return webdriver.Remote(command_executor=url, desired_capabilities=desired_cap)
         else:
             options = Options()
             options.add_argument('-headless')
-            self = webdriver.Firefox(options=options)
+            return webdriver.Firefox(options=options)
