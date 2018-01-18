@@ -30,7 +30,6 @@ jobs:
           command: |
             pip install --user pipenv
             pipenv install -d
-            env
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
@@ -47,8 +46,8 @@ jobs:
           command: |
              ./cc-test-reporter before-build
              pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
-             pipenv coverage report
-             pipenv coverage xml
+             pipenv run coverage report
+             pipenv run coverage xml
              ./cc-test-reporter after-build --coverage-input-type coverage.py --exit-code $?
       - run:
           name: Generate Code Coverage Report
