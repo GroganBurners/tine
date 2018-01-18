@@ -2,7 +2,7 @@ import os
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 from unittest import skipUnless
-from gbs.tests.funcdriver import FuncDriver
+from gbs.tests.funcdriver import get_driver
 
 
 @skipUnless(os.environ.get('DJANGO_SELENIUM_TESTS', False),
@@ -11,7 +11,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super(FunctionalTest, cls).setUpClass()
-        cls.selenium = FuncDriver()
+        cls.selenium = get_driver()
 
     @classmethod
     def tearDownClass(cls):

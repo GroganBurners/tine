@@ -3,8 +3,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 
 
-class FuncDriver():
-    def __init__(self):
+def get_driver():
         if os.getenv("SAUCE_ACCESS_KEY"):
             desired_cap = {
                 'platform': "Mac OS X 10.9",
