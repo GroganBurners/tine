@@ -15,7 +15,6 @@ class FunctionalTest(StaticLiveServerTestCase):
         options = Options()
         options.add_argument('-headless')
         cls.selenium = WebDriver(options=options)
-        cls.selenium.implicitly_wait(10)
 
     @classmethod
     def tearDownClass(cls):
@@ -23,6 +22,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         super(FunctionalTest, cls).tearDownClass()
 
     def test_index(self):
+        print(self.live_server_url)
         self.selenium.get(self.live_server_url)
         self.selenium.get_screenshot_as_file('/tmp/website.png')
         wait = WebDriverWait(self.selenium, 10)
