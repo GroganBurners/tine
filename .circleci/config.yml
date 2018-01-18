@@ -47,7 +47,7 @@ jobs:
           command: |
              ./cc-test-reporter before-build
              pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
-             ./cc-test-reporter after-build --exit-code $?
+             ./cc-test-reporter after-build --coverage-input-type coverage.py --exit-code $?
       - run:
           name: Generate Code Coverage Report
           command: pipenv run coverage html
