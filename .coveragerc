@@ -1,8 +1,8 @@
 [run]
 branch = True
 omit =
-    tine/
-    gbs/tests
-    gbs/migrations
+    tine/*
+    gbs/tests/*
+    gbs/migrations/*
 source = django
 
