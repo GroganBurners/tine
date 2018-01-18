@@ -22,7 +22,7 @@ jobs:
               echo 'export POSTGRES_HOST=localhost' >> $BASH_ENV
               echo 'export POSTGRES_NAME=gbs' >> $BASH_ENV
               echo 'export POSTGRES_USER=gbs' >> $BASH_ENV
-              echo 'export POSTGRES_PASS=gbs' >> $BASH_ENV
+              echo 'export POSTGRES_PASSWORD=gbs' >> $BASH_ENV
               echo 'export POSTGRES_PORT=5432' >> $BASH_ENV
       - run:
           name: Install Pipenv

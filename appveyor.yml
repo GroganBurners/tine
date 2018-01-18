@@ -22,7 +22,7 @@ environment:
   POSTGRES_PORT: "5432"
   POSTGRES_NAME: "gbs"
   POSTGRES_USER: "postgres"
-  POSTGRES_PASS: "Password12!"
+  POSTGRES_PASSWORD: "Password12!"
 
 # enable service required for build/tests
 services:
