@@ -1,9 +1,8 @@
 import os
-from selenium.webdriver.support.ui import WebDriverWait
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.support.ui import WebDriverWait
 from unittest import skipUnless
+from gbs.tests.funcdriver import FuncDriver
 
 
 @skipUnless(os.environ.get('DJANGO_SELENIUM_TESTS', False),
@@ -12,9 +11,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super(FunctionalTest, cls).setUpClass()
-        options = Options()
-        options.add_argument('-headless')
-        cls.selenium = WebDriver(options=options)
+        cls.selenium = FuncDriver()
 
     @classmethod
     def tearDownClass(cls):
