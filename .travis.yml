@@ -4,6 +4,7 @@ services:
 python:
 - '3.6'
 addons:
+  firefox: latest
   sauce_connect:
     username: groganburners
   jwt:
@@ -11,6 +12,7 @@ addons:
 cache: pip
 env:
   global:
+  - MOZ_HEADLESS=1
   - POSTGRES_PASSWORD=""
   - DJANGO_SELENIUM_TESTS="true"
 install:
