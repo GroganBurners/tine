@@ -37,8 +37,11 @@ jobs:
           command: pipenv run python manage.py migrate
       - run:
           name: Django Run Tests
-          command: pipenv run python manage.py test
-      # - store_artifacts:
-      #     path: test-reports/
-      #     destination: tr1
+          command: pipenv run coverage run --source='.' manage.py test
+      - run:
+          name: Generate Code Coverage Report
+          command: pipenv run coverage html
+      - store_artifacts:
+          path: htmlcov/
+          destination: tr1
 
