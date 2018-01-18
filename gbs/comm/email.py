@@ -32,4 +32,5 @@ def send_invoice(invoice):
         to=['neil@grogan.ie'])
     email.attach_alternative(html_body, "text/html")
     email.attach(attachment)
-    email.send(fail_silently=False)
+    result = email.send(fail_silently=False)
+    return result
