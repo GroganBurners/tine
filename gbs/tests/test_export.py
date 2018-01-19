@@ -1,5 +1,6 @@
 from django.test import TestCase
-from gbs.models import Customer, Invoice, InvoiceItem
+from gbs.models import (Customer, Expense, ExpenseType, ExpenseItem,
+                        Invoice, InvoiceItem, Supplier)
 from gbs.export import excel_export
 from openpyxl import load_workbook
 from datetime import date
@@ -24,9 +25,35 @@ class XLSExportTest(TestCase):
             vat_rate=Decimal(13.5),
             quantity=Decimal(1.00),
             invoice=self.invoice)
+        suppl = Supplier.objects.create(
+            name="Heating Parts Ltd.",
+            email="info@example.com",
+            phone_number="+44871234567",
+            street="1 Huddersfield",
+            county="KK",
+            eircode="BT1 XYZ",
+            country="UK")
+        exp_type = ExpenseType.objects.create(type='Parts')
+        self.expense = Expense.objects.create(
+            supplier=suppl, date=date(
+                2018, 1, 1), type=exp_type, notes='Ferroli Part')
+        ExpenseItem.objects.create(
+            description="Boiler Parts",
+            unit_price=Decimal(70.48),
+            vat_rate=Decimal(9.5),
+            quantity=Decimal(1.00),
+            expense=self.expense)
 
     def test_export_xls_correctly(self):
         result = excel_export.export_finances()
         self.assertIsInstance(result, bytes)
         wb = load_workbook(BytesIO(result))
         self.assertEqual(wb.get_sheet_names()[0], "FinanceSheet2018")
+
+    def tearDown(self):
+        Customer.objects.all().delete()
+        Invoice.objects.all().delete()
+        InvoiceItem.objects.all().delete()
+        Supplier.objects.all().delete()
+        Expense.objects.all().delete()
+        ExpenseItem.objects.all().delete()
