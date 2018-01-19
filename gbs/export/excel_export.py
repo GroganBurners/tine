@@ -63,7 +63,6 @@ def export_finances():
                 invoices,
                 expenses)),
         key=attrgetter('date'))
-    logger.error(result_list)
 
     total = Decimal(0)
 
