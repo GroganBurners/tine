@@ -57,8 +57,6 @@ def export_finances():
 
     invoices = Invoice.objects.all()
     expenses = Expense.objects.all()
-    logger.error(invoices)
-    logger.error(expenses)
     result_list = sorted(
         list(
             chain(
