@@ -125,7 +125,7 @@ class ExpenseTest(TestCase):
     def test_expense_values_set_correctly(self):
         expense = Expense.objects.get(notes='Ferroli Part')
         supp = Supplier.objects.get(name="Heating Parts Ltd.")
-        e_type = ExpenseType.objects.get(id=1)
+        e_type = ExpenseType.objects.get(type='Parts')
         self.assertEqual(expense.supplier, supp)
         self.assertEqual(expense.date, date(2018, 1, 1))
         self.assertEqual(expense.type, e_type)
