@@ -76,7 +76,7 @@ class HelloSauceTest(LiveServerTestCase):
         self.desired_capabilities['tags'] = \
             [os.environ['TRAVIS_PYTHON_VERSION'], 'CI']
 
-        print self.desired_capabilities
+        print(self.desired_capabilities)
 
         sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
         self.driver = webdriver.Remote(
