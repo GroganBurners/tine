@@ -3,6 +3,7 @@ import sys
 
 from unittest import skipUnless
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 RUN_LOCAL = os.environ.get('RUN_TESTS_LOCAL') == 'True'
@@ -112,3 +113,10 @@ class HelloSauceTest(StaticLiveServerTestCase):
     def test_sauce(self):
         self.driver.get(self.live_server_url + '/admin')
         assert "Log in" in self.driver.title
+
+    def test_homepage(self):
+        self.driver.get(self.live_server_url)
+        self.driver.get_screenshot_as_file('/tmp/website.png')
+        wait = WebDriverWait(self.selenium, 10)
+        wait.until(lambda driver: self.driver.title.lower().startswith('g'))
+        self.assertIn("Grogan Burner Services", self.driver.title)
