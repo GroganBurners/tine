@@ -12,10 +12,11 @@ if RUN_LOCAL:
     # could add Chrome, PhantomJS etc... here
     browsers = ['Firefox']
 else:
-    from sauceclient import SauceClient
-    USERNAME = os.environ.get('SAUCE_USERNAME')
-    ACCESS_KEY = os.environ.get('SAUCE_ACCESS_KEY')
-    sauce = SauceClient(USERNAME, ACCESS_KEY)
+    if os.getenv("SAUCE_ACCESS_KEY"):
+        from sauceclient import SauceClient
+        USERNAME = os.environ.get('SAUCE_USERNAME')
+        ACCESS_KEY = os.environ.get('SAUCE_ACCESS_KEY')
+        sauce = SauceClient(USERNAME, ACCESS_KEY)
 
     browsers = [
         {"platform": "Mac OS X 10.9",
@@ -72,12 +73,13 @@ class HelloSauceTest(StaticLiveServerTestCase):
             self.tearDownSauce()
 
     def setUpSauce(self):
-        self.desired_capabilities['name'] = self.id()
-        self.desired_capabilities['tunnel-identifier'] = \
-            os.environ['TRAVIS_JOB_NUMBER']
-        self.desired_capabilities['build'] = os.environ['TRAVIS_BUILD_NUMBER']
-        self.desired_capabilities['tags'] = \
-            [os.environ['TRAVIS_PYTHON_VERSION'], 'CI']
+        if os.getenv("TRAVIS"):
+            self.desired_capabilities['name'] = self.id()
+            self.desired_capabilities['tunnel-identifier'] = \
+                os.environ['TRAVIS_JOB_NUMBER']
+            self.desired_capabilities['build'] = os.environ['TRAVIS_BUILD_NUMBER']
+            self.desired_capabilities['tags'] = \
+                [os.environ['TRAVIS_PYTHON_VERSION'], 'CI']
 
         print(self.desired_capabilities)
 
