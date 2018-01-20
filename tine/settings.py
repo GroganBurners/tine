@@ -83,6 +83,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tine.wsgi.application'
 
+os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = "localhost:8000-8010,8080"
+
 # Email Settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = os.environ.get("EMAIL_HOST", 'smtp.gmail.com')

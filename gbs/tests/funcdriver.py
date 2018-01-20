@@ -6,9 +6,9 @@ from selenium import webdriver
 def get_driver():
         if os.getenv("SAUCE_ACCESS_KEY"):
             desired_cap = {
-                'platform': "Mac OS X 10.9",
-                'browserName': "chrome",
-                'version': "31",
+                'platform': "Mac OS X 10.12",
+                'browserName': "safari",
+                'version': "11",
             }
 
             user = os.environ.get('SAUCE_USERNAME')
