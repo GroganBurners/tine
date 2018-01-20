@@ -4,9 +4,8 @@ jobs:
     working_directory: ~/tine
     environment:
       CC_TEST_REPORTER_ID: 47d365ee744329d4f4592e8948185c5767ee57d573f01691d51959cff40ce7f7
-      DJANGO_SELENIUM_TESTS: true
     docker:
-      - image: circleci/python:3.6-browsers
+      - image: circleci/python:3.6
       - image: circleci/postgres:9.6.2
         environment:
           POSTGRES_DB: gbs
@@ -21,13 +20,6 @@ jobs:
           command: |
               echo 'export PATH=$HOME/.local/bin:$PATH' >> $BASH_ENV
               echo 'export WORKON_HOME=$HOME/.venvs' >> $BASH_ENV
-      - run:
-          name: Fetch GeckoDriver
-          command: |
-              curl --silent --show-error --location --fail --retry 3 --output geckodriver-v0.19.1-linux64.tar.gz https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz
-              tar -xzf geckodriver-v0.19.1-linux64.tar.gz
-              chmod +x geckodriver
-              sudo mv geckodriver /usr/local/bin/
       - run:
           name: Setup Code Climate test-reporter
           command: |
