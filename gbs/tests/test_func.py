@@ -117,6 +117,6 @@ class HelloSauceTest(StaticLiveServerTestCase):
     def test_homepage(self):
         self.driver.get(self.live_server_url)
         self.driver.get_screenshot_as_file('/tmp/website.png')
-        wait = WebDriverWait(self.selenium, 10)
+        wait = WebDriverWait(self.driver, 10)
         wait.until(lambda driver: self.driver.title.lower().startswith('g'))
         self.assertIn("Grogan Burner Services", self.driver.title)
