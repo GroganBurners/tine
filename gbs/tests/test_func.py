@@ -1,8 +1,9 @@
 import os
 import sys
 
+from unittest import skipUnless
 from selenium import webdriver
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 RUN_LOCAL = os.environ.get('RUN_TESTS_LOCAL') == 'True'
 
@@ -50,8 +51,10 @@ def on_platforms(platforms, local):
     return decorator
 
 
+@skipUnless(os.environ.get('DJANGO_SELENIUM_TESTS', False),
+                    "Skipping Selenium tests")
 @on_platforms(browsers, RUN_LOCAL)
-class HelloSauceTest(LiveServerTestCase):
+class HelloSauceTest(StaticLiveServerTestCase):
     """
     Runs a test using travis-ci and saucelabs
     """
