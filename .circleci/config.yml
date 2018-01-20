@@ -4,8 +4,9 @@ jobs:
     working_directory: ~/tine
     environment:
       CC_TEST_REPORTER_ID: 47d365ee744329d4f4592e8948185c5767ee57d573f01691d51959cff40ce7f7
+      DJANGO_SELENIUM_TESTS: true
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:3.6-browsers
       - image: circleci/postgres:9.6.2
         environment:
           POSTGRES_DB: gbs
