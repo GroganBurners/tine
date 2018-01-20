@@ -113,14 +113,14 @@ def export_invoice(invoice):
     for item in invoice.items.all():
         data.append([
             item.description,
-            item.quantity_amount(),
-            item.vat_rate_amount(),
-            item.unit_price_amount(),
-            item.total_ex_vat_amount(),
+            item.quantity_amount,
+            item.vat_rate_amount,
+            item.unit_price_amount,
+            item.total_ex_vat_amount,
         ])
-    data.append([u'', u'', u'', u'Subtotal:', invoice.total_ex_vat_amount()])
-    data.append([u'', u'', u'', u'VAT Total:', invoice.total_vat_amount()])
-    data.append([u'', u'', u'', u'Total:', invoice.total_amount()])
+    data.append([u'', u'', u'', u'Subtotal:', invoice.total_ex_vat_amount])
+    data.append([u'', u'', u'', u'VAT Total:', invoice.total_vat_amount])
+    data.append([u'', u'', u'', u'Total:', invoice.total_amount])
     table = Table(data, colWidths=[10 * cm, 2 * cm, 2 * cm, 2 * cm, 2.5 * cm])
     table.setStyle([
         ('FONT', (0, 0), (-1, -1), 'Helvetica'),

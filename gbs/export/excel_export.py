@@ -69,28 +69,28 @@ def export_finances():
     for res in result_list:
         items = res.items.all()
         if type(res) == Invoice:
-            total = total + res.total()
+            total = total + res.total
             row = [
                 res.date,
                 items[0].description,
                 'Customer',
                 '',
-                res.total(),
+                res.total,
                 '',
-                res.total_vat(),
+                res.total_vat,
                 '',
                 total]
             ws.append(row)
             row_num = row_num + 1
         else:
-            total = total - res.total()
+            total = total - res.total
             row = [
                 res.date,
                 items[0].description,
                 'SUPPLIER',
-                res.total(),
+                res.total,
                 '',
-                res.total_vat(),
+                res.total_vat,
                 '',
                 '',
                 total]

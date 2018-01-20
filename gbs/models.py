@@ -46,30 +46,36 @@ class Supplier(ContactInfo):
 class Bill(models.Model):
     date = models.DateField(default=date.today)
 
+    @property
     def total_ex_vat(self):
         total = Decimal('0.00')
         for item in self.items.all():
-            total = total + item.total_ex_vat()
+            total = total + item.total_ex_vat
         return total.quantize(Decimal('0.01'))
 
+    @property
     def total_ex_vat_amount(self):
-        return format_currency(self.total_ex_vat())
+        return format_currency(self.total_ex_vat)
 
+    @property
     def total_vat(self):
-        total = self.total() - self.total_ex_vat()
+        total = self.total - self.total_ex_vat
         return total.quantize(Decimal('0.01'))
 
+    @property
     def total_vat_amount(self):
-        return format_currency(self.total_vat())
+        return format_currency(self.total_vat)
 
+    @property
     def total(self):
         total = Decimal('0.00')
         for item in self.items.all():
-            total = total + item.total()
+            total = total + item.total
         return total.quantize(0, ROUND_HALF_UP)
 
+    @property
     def total_amount(self):
-        return format_currency(self.total())
+        return format_currency(self.total)
 
     class Meta:
         abstract = True
@@ -83,37 +89,46 @@ class BillItem(models.Model):
         max_digits=5, decimal_places=2, default=13.5)
     quantity = models.DecimalField(max_digits=8, decimal_places=2, default=1)
 
+    @property
     def unit_price_amount(self):
         return format_currency(self.unit_price)
 
+    @property
     def vat_rate_amount(self):
         return ('%f' % self.vat_rate).rstrip('0').rstrip('.') + '%'
 
+    @property
     def quantity_amount(self):
         return ('%f' % self.quantity).rstrip('0').rstrip('.')
 
+    @property
     def total_ex_vat(self):
         total = Decimal(str(self.unit_price * self.quantity))
         return total.quantize(Decimal('0.01'))
 
+    @property
     def total_ex_vat_amount(self):
-        return format_currency(self.total_ex_vat())
+        return format_currency(self.total_ex_vat)
 
+    @property
     def total_vat(self):
         percentage = self.vat_rate / Decimal(100)
-        total_ex_vat = self.total_ex_vat()
+        total_ex_vat = self.total_ex_vat
         total = Decimal(str(total_ex_vat * percentage))
         return total.quantize(Decimal('0.01'))
 
+    @property
     def total_vat_amount(self):
-        return format_currency(self.total_vat())
+        return format_currency(self.total_vat)
 
+    @property
     def total(self):
-        total = Decimal(str(self.total_ex_vat() + self.total_vat()))
+        total = Decimal(str(self.total_ex_vat + self.total_vat))
         return total.quantize(Decimal('0.01'))
 
+    @property
     def total_amount(self):
-        return format_currency(self.total())
+        return format_currency(self.total)
 
     def __str__(self):
         return self.description
@@ -170,7 +185,7 @@ class Invoice(Bill):
             return False, None
 
         message = f'Your invoice {self.invoice_id} is now due, \
-                please pay {self.total()}. Any queries, please call \
+                please pay {self.total}. Any queries, please call \
                 0876341300 or email mick@grogan.ie'
         resp = sms.send_sms(str(self.customer.phone_number), message)
 
