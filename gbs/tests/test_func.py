@@ -83,12 +83,13 @@ class HelloSauceTest(StaticLiveServerTestCase):
 
         print(self.desired_capabilities)
 
-        sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
-        self.driver = webdriver.Remote(
-            desired_capabilities=self.desired_capabilities,
-            command_executor=sauce_url % (USERNAME, ACCESS_KEY)
-        )
-        self.driver.implicitly_wait(5)
+        if os.getenv("SAUCE_ACCESS_KEY"):
+            sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
+            self.driver = webdriver.Remote(
+                desired_capabilities=self.desired_capabilities,
+                command_executor=sauce_url % (USERNAME, ACCESS_KEY)
+            )
+            self.driver.implicitly_wait(5)
 
     def setUpLocal(self):
         self.driver = getattr(webdriver, self.browser)()
