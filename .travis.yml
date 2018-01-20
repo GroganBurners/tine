@@ -4,7 +4,7 @@ services:
 python:
 - '3.6'
 addons:
-  firefox: latest
+  # firefox: latest
   sauce_connect:
     username: groganburners
   jwt:
