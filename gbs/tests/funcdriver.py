@@ -28,6 +28,7 @@ def get_driver():
             key = os.environ.get('SAUCE_ACCESS_KEY')
 
             url = f'http://{user}:{key}@ondemand.saucelabs.com:80/wd/hub'
+            print(desired_cap)
 
             return webdriver.Remote(command_executor=url, desired_capabilities=desired_cap)
         else:
