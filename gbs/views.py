@@ -19,11 +19,11 @@ def index(request):
     summer_oil = Price.objects.filter(type__startswith="oil",
                                       summer_offer=True,
                                       cost__gt=Decimal('0.00'))
-    repair_fee = Price.objects.filter(type__startswith="repair",
-                                      cost__gt=Decimal('0.00'))[0]
+    repair_fees = Price.objects.filter(type__startswith="repair",
+                                      cost__gt=Decimal('0.00'))
     # season = get_season()
     carousels = Carousel.objects.filter(active=True).order_by('order')
     context = {'carousels': carousels, 'gas_prices': gas_prices,
                'oil_prices': oil_prices, 'summer_gas': summer_gas,
-               'summer_oil': summer_oil, 'repair_fee': repair_fee}
+               'summer_oil': summer_oil, 'repair_fees': repair_fees}
     return render(request, 'index.html', context)
