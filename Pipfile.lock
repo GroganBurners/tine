@@ -1,20 +1,20 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c66752954fc76d6e1dd03b8eb8f94fef0687a161fd63485b305de27ffb486863"
+            "sha256": "79dc9634ec5f73ae6ce834fc1897f15e230e43bb8e5193d5a9ad46b31395600b"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.5.2",
+            "implementation_version": "3.6.3",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
-            "platform_release": "4.4.0-97-generic",
-            "platform_system": "Linux",
-            "platform_version": "#120-Ubuntu SMP Tue Sep 19 17:28:18 UTC 2017",
-            "python_full_version": "3.5.2",
-            "python_version": "3.5",
-            "sys_platform": "linux"
+            "platform_release": "17.3.0",
+            "platform_system": "Darwin",
+            "platform_version": "Darwin Kernel Version 17.3.0: Thu Nov  9 18:09:22 PST 2017; root:xnu-4570.31.3~1/RELEASE_X86_64",
+            "python_full_version": "3.6.3",
+            "python_version": "3.6",
+            "sys_platform": "darwin"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -436,6 +436,12 @@
                 "sha256:a64029dbc6bed7133e2c971ee52153f30e779434ad55a5abf40322bcff91d029"
             ],
             "version": "==0.8.1"
+        },
+        "sauceclient": {
+            "hashes": [
+                "sha256:af04accdcc6aaa16f98d010fbfdbd3fdb52367fcf95ebbaf05a9964c33845982"
+            ],
+            "version": "==1.0.0"
         },
         "selenium": {
             "hashes": [
