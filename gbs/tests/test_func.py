@@ -52,9 +52,9 @@ def on_platforms(platforms, local):
     return decorator
 
 
+@on_platforms(browsers, RUN_LOCAL)
 @skipUnless(os.environ.get('DJANGO_SELENIUM_TESTS', False),
                     "Skipping Selenium tests")
-@on_platforms(browsers, RUN_LOCAL)
 class HelloSauceTest(StaticLiveServerTestCase):
     """
     Runs a test using travis-ci and saucelabs
