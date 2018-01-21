@@ -1,0 +1,251 @@
+:root {
+  --yellow: #ffc600;
+  --black: #272727;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  box-sizing: border-box;
+}
+
+/*
+  WAT IS THIS?!
+  We inherit box-sizing: border-box; from our <html> selector
+  Apparently this is a bit better than applying box-sizing: border-box; directly to the * selector
+*/
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-size: 15px;
+}
+
+h1 a {
+  text-decoration: none;
+  font-size: 1.25rem;
+  padding-left: 10px;
+  color: #fff !important;
+}
+
+a.button {
+  background: #ffc600;
+  border: 0;
+  padding: 10px 20px;
+  appearance: button;
+  text-decoration: none;
+  color: initial;
+}
+
+img {
+  max-width:100%;
+  height: 100%; 
+  object-fit: contain;
+}
+
+/* .wrapper */
+
+.wrapper {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.top {
+  display: grid;
+  background-color: #343a40 !important;
+  grid-template-rows: 60px 1fr;
+  align-items: center;
+  grid-template-columns: 280px;
+  grid-template-areas:
+    "header menu"
+}
+
+.header {
+  grid-area: header;
+}
+
+
+
+
+
+/* Navigation */
+
+nav {
+  display: grid;
+}
+
+
+.menu ul {
+  display: grid;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 100px));
+}
+
+.menu a {
+  display: block;
+  color: #fff !important;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1rem !important;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--black);
+}
+
+[aria-controls="menu-list"] {
+  display: none;
+}
+
+/* Hero Image */
+.hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 1fr);
+  grid-auto-rows: repeat(auto-fill, 1fr);
+  grid-column-gap: -20px -20px;
+  margin-top: -20px;
+}
+
+.hero img {
+  grid-column: span 3;
+  grid-row: span 3;
+  width: 100%;
+  z-index: 2;
+}
+
+.hero-text {
+  color: white;
+  grid-column: 2;
+  grid-row: 2;
+  z-index: 3;
+}
+
+
+/* Teasers */
+
+.teasers {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.teaser {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 150px 30px 150px 40px;
+  background: white;
+  padding: 10px;
+  border: 1px solid white;
+  text-align: center;
+  box-shadow: 0 0 4px  rgba(0,0,0,0.1);
+}
+
+.teaser img {
+  margin: auto;
+}
+
+.teaser p {
+  color: rgba(0,0,0,0.5);
+}
+
+/* Features */
+
+.features {
+  background: white;
+  padding: 50px;
+  display: grid;
+  grid-row-gap: 50px;
+  grid-template-columns: 400px 1fr;
+  align-items: center;
+}
+
+.features h2 {
+  font-size: 2rem;
+}
+
+.feature__details{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: ;
+  min-width: 0;
+  padding-left:30px;
+}
+
+.feature__details .lead {
+  padding: 10px 0;
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+.feature__details ul {
+  padding-left: 10px;
+}
+
+.text-muted {
+    color: #868e96 !important;
+}
+
+
+@media (max-width: 1000px) {
+  
+
+}
+
+@media (max-width: 700px) {
+  .top {
+    grid-template-areas:
+      "header menu"
+  }
+  
+  /* About */
+  .features {
+    grid-template-columns: 1fr;
+  }
+  
+  .menu {
+    order: -1;
+    perspective: 800px;
+  }
+  [aria-controls="menu-list"] {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .menu ul {
+    max-height: 0;
+    overflow: hidden;
+    transform: rotateX(90deg);
+    transition: all 0.5s;
+  }
+
+  [aria-expanded="true"] ~ ul {
+    display: grid;
+    max-height: 500px;
+    transform: rotateX(0);
+  }
+
+  [aria-expanded="false"] .close {
+    display: none;
+  }
+
+  [aria-expanded="true"] .close {
+    display: inline-block;
+  }
+
+  [aria-expanded="true"] .open {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .top {
+    grid-template-areas:
+      "header"
+      "menu"
+  }
+}
