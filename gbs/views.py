@@ -28,7 +28,7 @@ def index(request):
                'summer_oil': summer_oil, 'repair_fees': repair_fees}
     return render(request, 'index.html', context)
 
-def new_index(request):
+def newindex(request):
     gas_prices = Price.objects.filter(type__startswith="gas",
                                       summer_offer=False,
                                       cost__gt=Decimal('0.00')
