@@ -24,6 +24,7 @@ html {
 
 body {
   font-size: 15px;
+  color: #5a5a5a;
 }
 
 h1 a {
@@ -124,11 +125,16 @@ nav {
   align-self: center;
   justify-self: center;
   border-radius: 25px;
-  background: #73AD21;
+  text-align: center;
+  background-color:rgba(0,0,0,0.6);
   padding: 20px;
   color: white;
 }
 
+.hero-text .button {
+  display: inline-block;
+  margin-top: 1em;
+}
 
 /* Teasers */
 
@@ -230,6 +236,10 @@ footer {
   .top {
     grid-template-areas:
       "header menu"
+  }
+
+  .hero-text {
+    grid-column: col 1 / span 3;
   }
 
   .feature {
