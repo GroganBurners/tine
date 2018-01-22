@@ -239,6 +239,13 @@ footer {
       "feature";
   }
 
+  .feature.flipped {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "feature-img"
+      "feature";
+  }
+
   .menu {
     order: -1;
     perspective: 800px;
