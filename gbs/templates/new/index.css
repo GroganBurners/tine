@@ -70,16 +70,16 @@ img {
   grid-area: header;
 }
 
-
-
-
+.menu-opener {
+  grid-area: menubutton;
+  display: none;
+}
 
 /* Navigation */
 
 nav {
   display: grid;
 }
-
 
 .menu ul {
   display: grid;
@@ -97,10 +97,6 @@ nav {
   font-weight: 400;
   line-height: 1.5;
   color: var(--black);
-}
-
-[aria-controls="menu-list"] {
-  display: none;
 }
 
 /* Hero Image */
@@ -125,6 +121,7 @@ nav {
   align-self: center;
   justify-self: center;
   border-radius: 25px;
+  margin: 0 2rem;
   text-align: center;
   background-color:rgba(0,0,0,0.6);
   padding: 20px;
@@ -161,6 +158,10 @@ nav {
 
 .teaser p {
   color: rgba(0,0,0,0.5);
+}
+
+.teaser .button {
+  margin: 0 2rem;
 }
 
 /* Features */
@@ -234,15 +235,18 @@ footer {
 }
 
 
-@media (max-width: 1000px) {
+/* @media (max-width: 1000px) { */
 
 
-}
+/* } */
 
 @media (max-width: 700px) {
   .top {
+    grid-template-rows: 2fr;
+    grid-template-columns: 2fr;
     grid-template-areas:
-      "header menu"
+      "header menubutton"
+      "menu"
   }
 
   .hero-text {
@@ -276,7 +280,7 @@ footer {
   .menu ul {
     max-height: 0;
     overflow: hidden;
-    transform: rotateX(90deg);
+    transform: rotateX(0deg);
     transition: all 0.5s;
   }
 
