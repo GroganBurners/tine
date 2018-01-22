@@ -181,6 +181,13 @@ nav {
   grid-template-areas: "feature feature-img";
 }
 
+.feature-divider {
+  margin: 2rem 3rem;
+  box-sizing: content-box;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+
 .feature h2 {
   font-size: 2rem;
 }
