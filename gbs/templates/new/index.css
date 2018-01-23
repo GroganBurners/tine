@@ -1,6 +1,7 @@
 :root {
   --yellow: #ffc600;
   --black: #272727;
+  --murky: #343a40;
 }
 
 html {
@@ -58,7 +59,7 @@ img {
 
 .top {
   display: grid;
-  background-color: #343a40 !important;
+  background-color: var(--murky) !important;
   align-items: center;
   grid-template: 60px 1fr / auto auto 1fr;
   grid-template-areas:
@@ -246,32 +247,38 @@ footer {
 @media (max-width: 1000px) {
 
   .top {
-    grid-template-columns: repeat(auto-fit, auto);
+    grid-template-columns: auto;
     grid-template-areas:
       "header"
       "menu"
   }
 
-  /* .menu { */
-  /*   order: -1; */
-  /*   perspective: 800px; */
-  /* } */
+}
+
+@media (max-width: 700px) {
+  .top {
+    grid-template-columns: repeat(2,auto);
+    grid-template-areas:
+      "header menubtn"
+      "menu .";
+  }
 
   [aria-controls="menu-list"] {
-    display: none;
+    display: inline-block;
     margin-bottom: 10px;
     max-width: 100px;
   }
 
-  .menu ul {
+  nav {
     overflow: hidden;
+    display: none;
     /* transform: rotateX(90deg); */
     /* transition: all 0.5s; */
   }
 
-  [aria-expanded="true"] ~ ul {
+  [aria-expanded="true"] ~ nav {
+    display: inline;
     max-height: 500px;
-    max-width: 30%;
     /* transform: rotateX(0); */
   }
 
@@ -287,13 +294,13 @@ footer {
     display: none;
   }
 
-}
+  .menu ul {
+    grid-template: repeat(auto-fill, minmax(70px, 100px)) / 1fr;
+  }
 
-@media (max-width: 700px) {
-  .top {
-    grid-template-areas:
-      "header menubutton"
-      "menu";
+  .menu li {
+    align-self: center;
+    justify-self: center;
   }
 
   .hero-text {
@@ -316,4 +323,7 @@ footer {
 }
 
 @media (max-width: 500px) {
+  h1 a {
+    font-size: 1rem;
+  }
 }
