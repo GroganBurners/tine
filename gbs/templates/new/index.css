@@ -295,6 +295,7 @@ footer {
   }
 
   .feature {
+    grid-template-columns: 1fr;
     grid-template-areas:
       "feature-img"
       "feature";
