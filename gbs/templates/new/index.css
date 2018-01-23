@@ -59,15 +59,15 @@ img {
 .top {
   display: grid;
   background-color: #343a40 !important;
-  grid-template-rows: 60px 1fr;
   align-items: center;
-  grid-template-columns: 280px;
+  grid-template: 60px 1fr / auto 1fr;
   grid-template-areas:
     "header menu"
 }
 
 .header {
   grid-area: header;
+  min-width: 280px;
 }
 
 .menu-opener {
@@ -148,8 +148,7 @@ nav {
 
 .teaser {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 150px 30px 150px 40px;
+  grid-template: 150px 30px 150px 40px / 1fr;
   background: white;
   padding: 10px;
   border: 1px solid white;
@@ -176,8 +175,7 @@ nav {
   padding: 50px;
   display: grid;
   grid-gap: 20px;
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: auto;
+  grid-template: auto / 1fr 3fr;
   grid-template-areas: "feature-img feature";
   align-items: center;
 }
@@ -295,7 +293,6 @@ footer {
   }
 
   .feature {
-    grid-template-columns: 1fr;
     grid-template-areas:
       "feature-img"
       "feature";
