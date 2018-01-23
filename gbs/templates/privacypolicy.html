@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+{% block styles %}
+{% include "css/carousel.css" %}
+{% endblock %}
+{% block content %}
+<h2>Privacy Policy</h2>
+This statement discloses the privacy policies and pratices of Grogan Burner Services, Ltd. Any questions or comments should be directed to us.
+
+<h3>What we collect</h3>
+<ul>
+  <li><strong>Information you give us</strong>, by contacting us. This can be by telephone, web form, email or any other means.</li>
+  <li><strong>Information we get from your use of our website</strong>. We Use Google Analytics, to see visitor statistics to improve our website. This is subject to <a href="https://www.google.com/intl/en/policies/privacy/">Google Privacy Policy</a></li>
+</ul>
+
+<h3>What we don't do</h3>
+<ul>
+  <li>Link your IP address to you personally</li>
+  <li>Share the information we track (via Google Analytics) on this site, in any form with advertisers or other parties.</li>
+  <li>Release personal information in to the public domain</li>
+</ul>
+
+We are not responsible for the content of third party websites.
+
+{% endblock %}
+{% block scripts %}
+ {% include 'js/ga-public.js' %}
+{% endblock %}
