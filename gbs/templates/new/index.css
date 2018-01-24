@@ -63,7 +63,8 @@ img {
   align-items: center;
   grid-template: 60px 1fr / auto auto 1fr;
   grid-template-areas:
-    "header menu"
+    "header menu ."
+    "hero hero hero"
 }
 
 .header {
@@ -112,10 +113,10 @@ nav {
 
 /* Hero Image */
 .hero {
+  grid-area: hero;
   display: grid;
   grid-template: repeat(3, [row] minmax(120px, 1fr)) / repeat(3, [col] 1fr);
   grid-column-gap: -20px -20px;
-  margin-top: -20px;
 }
 
 .hero img {
@@ -251,16 +252,17 @@ footer {
     grid-template-areas:
       "header"
       "menu"
+      "hero"
   }
 
 }
 
 @media (max-width: 700px) {
   .top {
-    grid-template-columns: repeat(2,auto);
+    grid-template-columns: repeat(3,auto);
     grid-template-areas:
-      "header menubtn"
-      "menu .";
+      "header . menubtn"
+      "hero hero hero";
   }
 
   .header {
