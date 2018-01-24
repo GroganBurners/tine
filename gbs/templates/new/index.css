@@ -263,7 +263,18 @@ footer {
       "menu .";
   }
 
+  .header {
+    min-width: 100px;
+  }
+
   [aria-controls="menu-list"] {
+    border: 0;
+    font-size: 1.2rem;
+    padding: 10px 10px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    background-color: var(--murky) !important;
     display: inline-block;
     margin-bottom: 10px;
     max-width: 100px;
@@ -326,5 +337,20 @@ footer {
 @media (max-width: 500px) {
   h1 a {
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 350px){
+
+  .open {
+    font-size: 2rem;
+  }
+
+  .close {
+    font-size: 2rem;
+  }
+
+  .menu-btn-txt {
+    display: none;
   }
 }
