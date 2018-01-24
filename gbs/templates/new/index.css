@@ -2,6 +2,7 @@
   --yellow: #ffc600;
   --black: #272727;
   --murky: #343a40;
+  --header: #343a40;
 }
 
 html {
@@ -11,7 +12,6 @@ html {
 }
 
 /*
-  WAT IS THIS?!
   We inherit box-sizing: border-box; from our <html> selector
   Apparently this is a bit better than applying box-sizing: border-box; directly to the * selector
 */
@@ -87,8 +87,8 @@ nav {
   display: grid;
   padding: 0;
   list-style: none;
-  grid-gap: 0;
-  grid-template-columns: repeat(6, minmax(70px, 100px));
+  grid-gap: 15px;
+  grid-template-columns: repeat(6, minmax(50px, auto));
 }
 
 .menu a {
@@ -102,7 +102,7 @@ nav {
   color: var(--black);
 }
 
-#menu-list {
+nav{
   grid-area: menu;
 }
 
@@ -262,7 +262,7 @@ footer {
     grid-template-columns: repeat(3,auto);
     grid-template-areas:
       "header . menubtn"
-      "hero hero hero";
+      "hero hero menu";
   }
 
   .header {
@@ -285,11 +285,14 @@ footer {
   nav {
     overflow: hidden;
     display: none;
+    grid-column: col 2 / span 2;
+    grid-row: row 2 / span 1;
     /* transform: rotateX(90deg); */
     /* transition: all 0.5s; */
   }
 
   [aria-expanded="true"] ~ nav {
+    grid-area: menu;
     display: inline;
     max-height: 500px;
     /* transform: rotateX(0); */
@@ -337,6 +340,14 @@ footer {
 }
 
 @media (max-width: 500px) {
+
+  .top {
+    grid-template-columns: repeat(2,auto);
+    grid-template-areas:
+      "header menubtn"
+      "hero hero";
+  }
+
   h1 a {
     font-size: 1rem;
   }
