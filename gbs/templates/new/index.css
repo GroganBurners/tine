@@ -324,6 +324,7 @@ footer {
 
   .menu li {
     padding: 0 5px;
+    /* border-bottom: 5px solid red; */
     align-self: center;
     justify-self: center;
   }
@@ -352,13 +353,22 @@ footer {
 
   .top {
     grid-template-columns: repeat(2,auto);
-    grid-template-areas:
-      "header menubtn"
-      "hero hero";
   }
 
   h1 a {
     font-size: 1rem;
+  }
+
+  [aria-controls="menu-list"] {
+    grid-column: 2;
+  }
+
+  [aria-expanded="true"] ~ nav {
+    grid-column: 2 / span 1;
+  }
+
+  .hero {
+    grid-column: 1 / span 2;
   }
 }
 
