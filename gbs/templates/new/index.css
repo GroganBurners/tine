@@ -259,18 +259,22 @@ footer {
 
 @media screen and (max-width: 700px) {
   .top {
-    grid-template-columns: repeat(3,auto);
-    grid-template-areas:
-      "header . menubtn"
-      "hero hero menu";
+    grid-template-columns: repeat(2,auto);
   }
 
   .header {
     min-width: 100px;
   }
 
+  .hero {
+    grid-column: 1 / span 2;
+    grid-row: 2 / span 1;
+  }
+
   [aria-controls="menu-list"] {
     border: 0;
+    grid-column: 2;
+    grid-row: 1;
     font-size: 1.2rem;
     padding: 10px 10px;
     text-align: center;
@@ -285,8 +289,6 @@ footer {
   nav {
     overflow: hidden;
     display: none;
-    grid-column: col 2 / span 2;
-    grid-row: row 2 / span 1;
     /* transform: rotateX(90deg); */
     /* transition: all 0.5s; */
   }
@@ -295,6 +297,12 @@ footer {
     grid-area: menu;
     display: inline;
     max-height: 500px;
+    justify-self: start;
+    align-self: start;
+    grid-column: 2 / span 1;
+    background-color: var(--murky) !important;
+    grid-row: 2 / span 1;
+    z-index: 20;
     /* transform: rotateX(0); */
   }
 
