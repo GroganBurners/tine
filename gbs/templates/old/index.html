@@ -1,0 +1,15 @@
+{% extends "old/layouts/base.html" %}
+{% block styles %}
+{% include "old/css/carousel.css" %}
+{% endblock %}
+{% block content %}
+{% include "old/layouts/components/carousel.html" %}
+<div class="container marketing">
+  {% include "old/layouts/components/marketing.html" %}
+  {% include "old/layouts/components/featurettes.html" %}
+</div>
+{% endblock %}
+{% block scripts %}
+ {% include 'old/js/ga-public.js' %}
+{% endblock %}
+

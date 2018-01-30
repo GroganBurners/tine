@@ -1,15 +1,156 @@
 {% extends "layouts/base.html" %}
-{% block styles %}
-{% include "css/carousel.css" %}
-{% endblock %}
 {% block content %}
-{% include "layouts/components/carousel.html" %}
-<div class="container marketing">
-  {% include "layouts/components/marketing.html" %}
-  {% include "layouts/components/featurettes.html" %}
-</div>
-{% endblock %}
-{% block scripts %}
- {% include 'js/ga-public.js' %}
+    <section class="hero">
+     <img src="https://source.unsplash.com/random/1024x500" alt="">
+     <div class="hero-text">
+       <h1>Winter is here!</h1>
+       <p>See our great oil and gas offers over the cold season - they'll be sure to keep you warm!</p>
+       <a href="#gas" class="button">Learn More →</a>
+    </div>
+    </section>
+
+    <section class="teasers">
+      <div class="teaser">
+        <img src="https://groganburners.com/static/images/teasers/gas.jpg" alt="Gas Hob with flames out of the sides" />
+        <h2>Gas</h2>
+        <p>We do comprehensive gas boiler, gas burner, gas fire and gas appliance servicing. This includes cleaning out the combustion chamber (to improve efficiency) and a full safety and emissions report. Fully insured and RGI registered for safety.</p>
+        <a href="#gas" class="button">Learn More →</a>
+      </div>
+      <div class="teaser">
+        <img src="https://groganburners.com/static/images/teasers/oil.png" alt="Oil Barrel" />
+        <h2>Oil</h2>
+        <p>We do a full service of oil boiler and oil burner appliances. 95% of call outs are less then an hour. Fully insured and OFTEC registered for safety.</p>
+        <a href="#oil" class="button">Learn More →</a>
+      </div>
+      <div class="teaser">
+        <img src="https://groganburners.com/static/images/teasers/repair.png" alt="Exposed motor casing, with gear wheel on right side" />
+        <h2>Repair</h2>
+        <p>We stock a large range of parts for oil and the most most popular parts for gas. Most callouts are under an hour and fixed on the spot.</p>
+        <a href="#repair" class="button">Learn More →</a>
+      </div>
+    </section>
+
+    <section class="features">
+      <hr id="gas" class="feature-divider">
+        <div class="feature">
+        <img class="feature__image" src="https://groganburners.ie/static/images/featurettes/gas.jpg" alt="Gas Hob" >
+        <div class="feature__details">
+        <h2>Gas Servicing. <span class="text-muted">Heat on demand. Value for money.</span></h2>
+        <p class="lead">Gas appliance service charges</p>
+        <ul>
+          <li>Gas Service €80</li>
+          <liGas Combi/Condensing Boiler Service €80</li>
+          <li>Gas Fire Service €65</li>
+          <li>Gas Boiler and Fire service together €120</li>
+        </ul>
+        <a href="#contact" class="button">Book Now</a>
+      </div>
+        </div>
+
+      <hr id="oil" class="feature-divider">
+
+      <div class="feature flipped">
+      <img class="feature__image" src="https://groganburners.ie/static/images/featurettes/oil.jpg" alt="Oil Lamp" >
+        <div class="feature__details">
+        <h2>Oil Servicing. <span class="text-muted">Save money and increase efficiency.</span></h2>
+        <p class="lead">Oil appliance service charges</p>
+        <ul>
+          <li>Oil Service €80</li>
+          <liGas Combi/Condensing Boiler Service €80</li>
+          <li>Gas Fire Service €65</li>
+          <li>Oil Boiler and Fire service together €120</li>
+        </ul>
+        <a href="#contact" class="button">Book Now</a>
+      </div>
+      </div>
+
+      <hr id="repair" class="feature-divider">
+
+      <div class="feature">
+      <img class="feature__image" src="https://groganburners.ie/static/images/featurettes/burner.jpg" alt="Burner with 3 guages" >
+        <div class="feature__details">
+        <h2>Repair. <span class="text-muted">For when the unexpected happens.</span></h2>
+        <p class="lead">Repair charges</p>
+        <ul>
+          <li>Repair Call Out Fee (First Hour) €80 (most call outs require 1hr or less)</li>
+          <li>If parts are required this will be extra</li>
+          <li>If a part needs to be ordered there is no extra charge for the return visit to install the part.</li>
+          <li>We stock  a large number of oil boiler parts so 95% of repairs can be fixed at the first visit.</li>
+          <li>We do stock some gas boiler parts but due to the large number of makes and models of gas boilers on the market it is impossible to stock all gas parts.</li>
+        </ul>
+        <a href="#contact" class="button">Book Now</a>
+      </div>
+      </div>
+
+      <hr id="offers" class="feature-divider">
+
+      <div class="feature flipped">
+      <img class="feature__image" src="https://groganburners.ie/static/images/featurettes/offers.jpg" alt="Childrens Hands showing money" >
+        <div class="feature__details">
+        <h2>Summer Deals. <span class="text-muted">Heat on demand. Value for money</span></h2>
+        <p class="lead">All charges reduced in summer! Prices valid for June, July and August</p>
+        <p class="lead">Oil Deals</p>
+        <ul>
+          <li>Oil Service €70</li>
+          <li>Oil Combi/Condensing Service €70</li>
+        </ul>
+
+        <p class="lead">Gas Deals</p>
+        <ul>
+          <li>Gas Service €70</li>
+          <li>Gas Combi/Condensing Boiler Service €70</li>
+          <li>Gas Fire Service €55</li>
+          <li>Gas Boiler and Fire service together €100</li>
+        </ul>
+        <a href="#contact" class="button">Book Now</a>
+      </div>
+      </div>
+
+      <hr id="contact" class="feature-divider">
+
+      <div class="feature">
+      <img class="feature__image" src="https://groganburners.ie/static/images/featurettes/phone.jpg" alt="Phone in a hand" >
+        <div class="feature__details">
+        <h2>Book Now. <span class="text-muted">A great experience awaits.</span></h2>
+        <p class="lead">
+          <strong>Call us: </strong><a href="tel:+353876341300">087 634 1300</a> or <strong>email: </strong><a href="mailto:info@groganburners.ie">info@groganburners.ie</a>
+        </p>
+      </div>
+      </div>
+
+      <hr id="about" class="feature-divider">
+
+      <div class="feature flipped">
+      <img class="feature__image logo" src="https://groganburners.ie/static/images/featurettes/logo.png" alt="Grogan Burners Fire Logo">
+        <div class="feature__details">
+        <h2>About us. <span class="text-muted">Over 40 years experience.</span></h2>
+        <p class="lead">Grogan Burners is based in Ballyda, Danesfort, Co. Kilkenny. We serve Kilkenny City and the surrounding counties in the Leinster region. Started over 40 years ago by Milo Grogan, his son Michael now runs the business, after setting up the limited company in 2007. We take pride in our service and many of our customers have been with us for years - we like to keep people loyal!</p>
+        <p class="lead">We provide:</p>
+        <ul>
+          <li>Gas boiler service</li>
+          <li>Gas burner service</li>
+          <li>Gas boiler repair</li>
+          <li>Gas burner repair</li>
+          <li>Gas combi boiler service</li>
+          <li>Gas fire service</li>
+          <li>Oil boiler service</li>
+          <li>Oil burner service</li>
+          <li>Oil boiler repair</li>
+          <li>Oil burner repair</li>
+          <li>Oil combi boiler service</li>
+          <li>Oil condensing boiler service</li>
+        </ul>
+        <p class="lead">
+          Service area includes: parts of Loais, Offaly, Kilkenny, Tipperary, Carlow, Waterford.
+        </p>
+        <p>We also take safety as the number one priority. All of our engineers are RGI (gas) and OFTEC (oil) certified and carry work out to the highest standard.</p>
+      </div>
+      <div class="spacer"></div>
+      <div class="membership">
+      <img src="https://groganburners.ie/static/images/cert/oftec.jpg" alt="OFTEC Logo - certifies oil installers">
+      <img src="https://groganburners.ie/static/images/cert/rgii.jpg" lt="RGI Certified Logo - certifies gas installers">
+      </div>
+      </div>
+    </section>
 {% endblock %}
 
