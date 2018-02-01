@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
 
-RUN set -ex && pipenv install --deploy --system
+RUN set -ex && pipenv install --dev --deploy --system
 
 COPY . /usr/src/app
 RUN set -ex && python manage.py collectstatic

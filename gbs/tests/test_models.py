@@ -1,7 +1,8 @@
 from decimal import Decimal
 from datetime import date
 from django.test import TestCase
-from gbs.models import Customer, Expense, ExpenseItem, ExpenseType, Invoice, InvoiceItem, Price, Supplier
+from gbs.models import (Customer, Expense, ExpenseItem, ExpenseType,
+                        HeroImage, Invoice, InvoiceItem, Price, Supplier)
 
 
 class CustomerTest(TestCase):
@@ -161,3 +162,28 @@ class PriceTest(TestCase):
         oil_price = Price.objects.get(type="oil_service")
         self.assertEqual(oil_price.cost, 20.00)
         self.assertFalse(oil_price.summer_offer)
+
+    def tearDown(self):
+        Price.objects.all().delete()
+
+
+class HeroImageTest(TestCase):
+    def setUp(self):
+        HeroImage.objects.create(title="Gas Offers", image="/img/test.jpg",
+                                 teaser_text="Buy Now!",
+                                 active=True,
+                                 use_button=False,
+                                 button_text="Gas Offers",
+                                 button_link="#gas")
+
+    def test_hero_image_values_set_correctly(self):
+        himg = HeroImage.objects.get(title="Gas Offers")
+        self.assertEqual(himg.image, "/img/test.jpg")
+        self.assertTrue(himg.active)
+        self.assertFalse(himg.use_button)
+        self.assertEqual(himg.teaser_text, "Buy Now!")
+        self.assertEqual(himg.button_text, "Gas Offers")
+        self.assertEqual(himg.button_link, "#gas")
+
+    def tearDown(self):
+        HeroImage.objects.all().delete()

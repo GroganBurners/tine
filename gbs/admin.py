@@ -3,10 +3,9 @@ from django.contrib.admin import AdminSite
 from django.utils.html import format_html
 from django.urls import reverse, path
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.contrib import messages
-from io import BytesIO
-from .models import Carousel, Customer, Expense, ExpenseItem, ExpenseType, Invoice, InvoiceItem, Supplier, Price
+from .models import (Carousel, Customer, Expense, ExpenseItem, ExpenseType,
+                     HeroImage, Invoice, InvoiceItem, Supplier, Price)
 from gbs.utils import excel_response, pdf_response, zip_response
 from gbs.export.excel_export import export_finances
 from gbs.export.pdf import export_invoice
@@ -162,6 +161,12 @@ class SupplierAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email')
 
 
+class HeroImageAdmin(admin.ModelAdmin):
+    model = HeroImage
+    ordering = ('title', 'active')
+    list_display = ['title', 'active', 'image', 'teaser_text']
+
+
 class CarouselAdmin(admin.ModelAdmin):
     model = Carousel
     ordering = ('active', 'order')
@@ -172,6 +177,7 @@ admin_site.register(Customer, CustomerAdmin)
 admin_site.register(Carousel, CarouselAdmin)
 admin_site.register(Expense, ExpenseAdmin)
 admin_site.register(ExpenseType, ExpenseTypeAdmin)
+admin_site.register(HeroImage, HeroImageAdmin)
 admin_site.register(Invoice, InvoiceAdmin)
 admin_site.register(Price, PriceAdmin)
 admin_site.register(Supplier, SupplierAdmin)
