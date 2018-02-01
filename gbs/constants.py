@@ -1,6 +1,7 @@
 
 COUNTIES = (
     ('D', 'Dublin'),
+    ('KY', 'Kerry'),
     ('KE', 'Kildare'),
     ('KK', 'Kilkenny'),
     ('L', 'Limerick'),

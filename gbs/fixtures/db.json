@@ -1,204 +1,44 @@
 [
-  {
-    "model": "gbs.price", 
-    "pk": 1, 
-    "fields": 
-    {
-      "type": "gas_service", 
-      "cost": "80.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 2, 
-    "fields": 
-    {
-      "type": "gas_combi_service", 
-      "cost": "80.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 3, 
-    "fields": 
-    {
-      "type": "gas_fire", 
-      "cost": "65.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 4, 
-    "fields": 
-    {
-      "type": "gas_service_fire", 
-      "cost": "120.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 5, 
-    "fields": 
-    {
-      "type": "gas_install", 
-      "cost": "120.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 6, 
-    "fields": 
-    {
-      "type": "oil_service", 
-      "cost": "80.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 7, 
-    "fields": 
-    {
-      "type": "oil_combi_service", 
-      "cost": "80.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 8, 
-    "fields": 
-    {
-      "type": "oil_install", 
-      "cost": "120.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 9, 
-    "fields": 
-    {
-      "type": "repair_call_out", 
-      "cost": "80.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 10, 
-    "fields": 
-    {
-      "type": "ber", 
-      "cost": "120.00", 
-      "summer_offer": false
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 11, 
-    "fields": 
-    {
-      "type": "gas_service", 
-      "cost": "70.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 12, 
-    "fields": 
-    {
-      "type": "gas_combi_service", 
-      "cost": "70.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 13, 
-    "fields": 
-    {
-      "type": "gas_fire", 
-      "cost": "55.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 14, 
-    "fields": 
-    {
-      "type": "gas_service_fire", 
-      "cost": "100.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 15, 
-    "fields": 
-    {
-      "type": "gas_install", 
-      "cost": "100.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 16, 
-    "fields": 
-    {
-      "type": "oil_service", 
-      "cost": "70.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 17, 
-    "fields": 
-    {
-      "type": "oil_combi_service", 
-      "cost": "70.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 18, 
-    "fields": 
-    {
-      "type": "oil_install", 
-      "cost": "100.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 19, 
-    "fields": 
-    {
-      "type": "repair_call_out", 
-      "cost": "70.00", 
-      "summer_offer": true
-    }
-  },
-  {
-    "model": "gbs.price", 
-    "pk": 20, 
-    "fields": 
-    {
-      "type": "ber", 
-      "cost": "100.00", 
-      "summer_offer": true
-    }
-  },
+  { "model": "gbs.price", "pk": 1, "fields": { "type": "gas_service",
+      "cost": "80.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 2, "fields": { "type": "gas_combi_service",
+      "cost": "80.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 3, "fields": { "type": "gas_fire",
+      "cost": "65.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 4, "fields": { "type": "gas_service_fire",
+      "cost": "120.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 5, "fields": { "type": "gas_install",
+      "cost": "120.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 6, "fields": { "type": "oil_service",
+      "cost": "80.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 7, "fields": { "type": "oil_combi_service",
+      "cost": "80.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 8, "fields": { "type": "oil_install",
+      "cost": "120.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 9, "fields": { "type": "repair_call_out",
+      "cost": "80.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 10, "fields": { "type": "ber",
+      "cost": "120.00", "summer_offer": false } },
+  { "model": "gbs.price", "pk": 11, "fields": { "type": "gas_service",
+      "cost": "70.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 12, "fields": { "type": "gas_combi_service",
+      "cost": "70.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 13, "fields": { "type": "gas_fire",
+      "cost": "55.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 14, "fields": { "type": "gas_service_fire",
+      "cost": "100.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 15, "fields": { "type": "gas_install",
+      "cost": "100.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 16, "fields": { "type": "oil_service",
+      "cost": "70.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 17, "fields": { "type": "oil_combi_service",
+      "cost": "70.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 18, "fields": { "type": "oil_install",
+      "cost": "100.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 19, "fields": { "type": "repair_call_out",
+      "cost": "70.00", "summer_offer": true } },
+  { "model": "gbs.price", "pk": 20, "fields": { "type": "ber",
+      "cost": "100.00", "summer_offer": true } },
   {"model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$100000$J2DiIJ76k3Lr$E359ey8IrgQcvPj9TuP6xTyv760rLCEkI+VP1/tgHrY=", "last_login": "2017-12-19T23:42:42.545Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "admin@example.com", "is_staff": true, "is_active": true, "date_joined": "2017-12-19T23:42:13.854Z", "groups": [], "user_permissions": []}},
   {"model": "gbs.carousel", "pk": 1, "fields":{ "title": "Winter is here!", "image": "images/carousel/winter.jpg", "img_alt": "alt", "teaser_text": "See our great oil and gas offers over the cold season - they'll be sure to keep you warm!", "active": true, "order": 1, "use_button": true, "button_text": "See Gas Offers >", "button_link": "#gas"}},
   {"model": "gbs.carousel", "pk": 2, "fields":{ "title": "Spring is here!", "image": "images/carousel/spring.jpg", "img_alt": "alt", "teaser_text": "See our great oil and gas offers over the spring season - they'll be sure to keep you warm!", "active": false, "order": 1, "use_button": true, "button_text": "See Oil Offers >", "button_link": "#oil"}},
@@ -229,6 +69,16 @@
   {"model": "gbs.expensetype", "pk": 18, "fields": {"type": "Telephone & Broadband" }},
   {"model": "gbs.expensetype", "pk": 19, "fields": {"type": "Training" }},
   {"model": "gbs.customer", "pk": 1, "fields": {"name": "Neil Grogan", "street": "Ballyda" }},
-  {"model": "gbs.invoice", "pk": 1, "fields": {"customer": 1, "invoice_id": "E1301R", "date": "2018-01-11", "invoiced": false, "draft": false, "paid_date": null}}, 
+  {"model": "gbs.supplier", "pk": 1, "fields": {"name": "RGII", "email": "", "phone_number": "", "street": "UNIT 9, KCR ESTATE, RAVENSDALE PARK", "county": "D", "eircode": "D12 E958", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 2, "fields": {"name": "Heat Merchants", "email": "", "phone_number": "", "street": "GROUP WHAREHOUSE, KILKENNY COMMERCIAL CENTRE, DUBLIN ROAD", "county": "KK", "eircode": "R95 F258", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 3, "fields": {"name": "Woodies DIY", "email": "", "phone_number": "", "street": "Kilkenny Retial & Business Park, Ring Road", "county": "KK", "eircode": "R95 T62R", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 4, "fields": {"name": "Chadwicks", "email": "", "phone_number": "", "street": "UNIT 1, ORMONDE BUSINESS PARK, DUBLIN ROAD", "county": "KK", "eircode": "R95 KP23", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 5, "fields": {"name": "Applegreen", "email": "", "phone_number": "", "street": "BLACKQUARRY SERVICE STATION, BENNETTSBRIDGE ROAD", "county": "KK", "eircode": "R95 C9RR", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 6, "fields": {"name": "Aldi", "email": "", "phone_number": "", "street": "WATERFORD ROAD", "county": "KK", "eircode": "R95 K295", "country": "Ireland"}}, {"model": "gbs.supplier", "pk": 7, "fields": {"name": "Imagine Broadband Services Ltd.", "email": "", "phone_number": "", "street": "UNIT 5/6, SANDYFORD BUSINESS CENTRE, BLACKTHORN ROAD, SANDYFORD INDUSTRIAL ESTATE", "county": "D", "eircode": "D18 AW89", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 8, "fields": {"name": "Amazon Web Services Ireland Ltd.", "email": "", "phone_number": "", "street": "2 GRAND PARADE, DUBLIN 6", "county": "D", "eircode": "D06 CX34", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 9, "fields": {"name": "Kellihers Electrical", "email": "", "phone_number": "", "street": "UNIT 1, LOUGHBOY INDUSTRIAL ESTATE, RING ROAD", "county": "KK", "eircode": "R95 FY70", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 10, "fields": {"name": "Slattery's Garage", "email": "", "phone_number": "", "street": "DANESFORT", "county": "KK", "eircode": "R95 VK13", "country": "Ireland"}},
+  {"model": "gbs.supplier", "pk": 11, "fields": {"name": "RVR Energy Technology Ltd.", "email": "", "phone_number": "", "street": "GORTAMULLEN, KENMARE", "county": "KY", "eircode": "V93 F386", "country": "Ireland"}},
+  {"model": "gbs.invoice", "pk": 1, "fields": {"customer": 1, "invoice_id": "E1301R", "date": "2018-01-11", "invoiced": false, "draft": false, "paid_date": null}},
   {"model": "gbs.invoiceitem", "pk": 1, "fields": {"invoice": 1, "description": "Service", "unit_price": "70.48", "vat_rate": "13.50", "quantity": "1.00"}}
 ]
