@@ -15,7 +15,7 @@ class GBSAdminSite(AdminSite):
     site_header = "Grogan Burner Services Admin Site"
 
     def export_finances_xls(self, request):
-        return excel_response(export_finances, "FinanceSheet.xlsx")
+        return excel_response(export_finances, "FinanceSheetExport.xlsx")
 
     def get_urls(self):
         return [

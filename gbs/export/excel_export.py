@@ -14,6 +14,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def add_header_row(ws, row='2'):
+    ws.append([])
+    ws.append(['','Date', 'Details', 'Company', 'Money Out', 'Money In',
+               'VAT Due In', 'VAT Due Out', 'VAT Total', 'Total'])
+    font = Font(name='Calibri', size=11, bold=True)
+    for cell_no in ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
+        cell = ws[cell_no + row]
+        cell.font = font
 
 def apply_border_format(ws, row, column, style='thin'):
     thin_border = Border(left=Side(style=style),
@@ -24,10 +32,13 @@ def apply_border_format(ws, row, column, style='thin'):
 
 
 def print_total_row(ws, row_num):
-    ws["A" + str(row_num)] = "Total"
-    for let in list(string.ascii_uppercase[3:9]):
+    ws["B" + str(row_num)] = "Total"
+    for let in list(string.ascii_uppercase[4:10]):
         start_cell = f'{let}{row_num}'
-        ws[start_cell] = f"=SUM({let}2:{let}{row_num-1})"
+        if let is 'I':
+            ws[start_cell] = f"=H{row_num}-G{row_num}"
+        else:
+            ws[start_cell] = f"=SUM({let}2:{let}{row_num-1})"
 
 
 def adjust_column_widths(ws):
@@ -43,18 +54,7 @@ def adjust_column_widths(ws):
         adjusted_width = (max_length + 2) * 1.2
         ws.column_dimensions[column].width = adjusted_width
 
-
-def export_finances():
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "FinanceSheet2018"
-
-    # Sheet header, first row
-    row_num = 1
-    ws.append(['Date', 'Details', 'Company', 'Money Out', 'Money In',
-               'VAT Due In', 'VAT Due Out', 'VAT Total', 'Total'])
-    adjust_column_widths(ws)
-
+def get_invoices_expenses():
     invoices = Invoice.objects.all()
     expenses = Expense.objects.all()
     result_list = sorted(
@@ -63,39 +63,55 @@ def export_finances():
                 invoices,
                 expenses)),
         key=attrgetter('date'))
+    return result_list
+
+
+def export_finances():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "FinanceSheet2018"
+
+    # Sheet header, first row
+    row_num = 2
+
+    add_header_row(ws)
+
+    result_list = get_invoices_expenses()
 
     total = Decimal(0)
 
     for res in result_list:
         items = res.items.all()
+        row_num = row_num + 1
+        formula = f'=F{row_num}+G{row_num}-E{row_num}-H{row_num}'
         if type(res) == Invoice:
             total = total + res.total
             row = [
+                '',
                 res.date,
                 items[0].description,
-                'Customer',
+                res.customer.name,
                 '',
                 res.total,
                 '',
                 res.total_vat,
                 '',
-                total]
+                formula]
             ws.append(row)
-            row_num = row_num + 1
         else:
             total = total - res.total
             row = [
+                '',
                 res.date,
                 items[0].description,
-                'SUPPLIER',
+                res.supplier.name,
                 res.total,
                 '',
                 res.total_vat,
                 '',
                 '',
-                total]
+                formula]
             ws.append(row)
-            row_num = row_num + 1
 
     row_num = row_num + 1
     print_total_row(ws, row_num)
@@ -106,6 +122,7 @@ def export_finances():
     # tab.tableStyleInfo = style
     # ws.add_table(tab)
     apply_border_format(ws, 3, 2)
+    adjust_column_widths(ws)
 
     buffer = BytesIO()
     wb.save(buffer)
