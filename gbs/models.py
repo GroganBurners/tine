@@ -147,6 +147,7 @@ class ExpenseType(models.Model):
 class Expense(Bill):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
+    cash = models.BooleanField(default=False)
     notes = models.CharField(max_length=300, blank=True, null=True)
 
 
@@ -164,6 +165,7 @@ class Invoice(Bill):
                                   blank=True, editable=False)
     invoiced = models.BooleanField(default=False)
     draft = models.BooleanField(default=False)
+    cash = models.BooleanField(default=False)
     paid_date = models.DateField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
