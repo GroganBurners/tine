@@ -30,7 +30,8 @@ ALLOWED_HOSTS = [
     'groganburners.com',
     '.groganburners.ie',
     'groganburners.ie',
-    'gbs.ballyda.com']
+    'gbs.ballyda.com',
+    '127.0.0.1']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
