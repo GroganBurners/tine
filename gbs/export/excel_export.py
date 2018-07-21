@@ -65,22 +65,10 @@ def get_invoices_expenses():
         key=attrgetter('date'))
     return result_list
 
-
-def export_finances():
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "FinanceSheet2018"
-
-    # Sheet header, first row
-    row_num = 2
-
-    add_header_row(ws)
-
-    result_list = get_invoices_expenses()
-
+def print_invoice_expense(ws, row_num):
     total = Decimal(0)
 
-    for res in result_list:
+    for res in get_invoices_expenses():
         items = res.items.all()
         row_num = row_num + 1
         formula = f'=F{row_num}+G{row_num}-E{row_num}-H{row_num}'
@@ -88,7 +76,7 @@ def export_finances():
             total = total + res.total
             row = [
                 '',
-                res.date,
+                f'{res.date:%-d/%-m/%Y}',
                 items[0].description,
                 res.customer.name,
                 '',
@@ -102,7 +90,7 @@ def export_finances():
             total = total - res.total
             row = [
                 '',
-                res.date,
+                f'{res.date:%-d/%-m/%Y}',
                 items[0].description,
                 res.supplier.name,
                 res.total,
@@ -112,7 +100,19 @@ def export_finances():
                 '',
                 formula]
             ws.append(row)
+    return row_num
 
+
+def export_finances():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "FinanceSheet2018"
+
+    # Sheet header, first row
+    row_num = 2
+
+    add_header_row(ws)
+    row_num = print_invoice_expense(ws, row_num)
     row_num = row_num + 1
     print_total_row(ws, row_num)
 
