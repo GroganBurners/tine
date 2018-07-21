@@ -1,12 +1,9 @@
 [[source]]
-
 verify_ssl = true
 name = "pypi"
 url = "https://pypi.python.org/simple"
 
-
 [packages]
-
 django = "==2.0"
 djangorestframework = "==3.7.3"
 et-xmlfile = "==1.0.1"
@@ -25,9 +22,7 @@ codecov = "==2.0.13"
 coverage = "==4.4.2"
 coveralls = "*"
 
-
 [dev-packages]
-
 "flake8" = "*"
 "autopep8" = "*"
 coverage = "*"
@@ -35,3 +30,4 @@ responses = "*"
 selenium = "*"
 sauceclient = "*"
 csscompressor = "*"
+pylint = "*"
