@@ -1,4 +1,4 @@
-FROM python:3.6.3
+FROM python:3.7
 
 RUN set -ex && pip install pipenv --upgrade
 RUN set -ex && mkdir /usr/src/app
