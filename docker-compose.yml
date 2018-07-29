@@ -31,7 +31,7 @@ services:
     volumes:
       - ".:/usr/src/app"
       - "/usr/src/app/static"
-    env_file: .env
+    env_file: .envrc
     links:
       - psql:psql
     expose:
@@ -45,8 +45,8 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
       - pg_backup:/backups
-    env_file: .env
-    expose: 
+    env_file: .envrc
+    expose:
       - "5432"
     networks:
       - areio_default
