@@ -69,11 +69,11 @@ class InvoiceAdminTests(TestCase):
     def test_default_fields(self):
         ma = ModelAdmin(Invoice, self.site)
         self.assertEqual(list(ma.get_form(request).base_fields), [
-                         'date', 'customer', 'invoiced', 'draft', 'paid_date'])
+                         'date', 'customer', 'invoiced', 'draft', 'cash', 'paid_date'])
         self.assertEqual(list(ma.get_fields(request)), [
-                         'date', 'customer', 'invoiced', 'draft', 'paid_date'])
+                         'date', 'customer', 'invoiced', 'draft', 'cash', 'paid_date'])
         self.assertEqual(list(ma.get_fields(request, self.invoice)), [
-                         'date', 'customer', 'invoiced', 'draft', 'paid_date'])
+                         'date', 'customer', 'invoiced', 'draft', 'cash', 'paid_date'])
         self.assertIsNone(ma.get_exclude(request, self.invoice))
 
     def test_add_invoice_admin(self):
