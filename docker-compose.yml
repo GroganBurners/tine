@@ -41,7 +41,7 @@ services:
   psql:
     restart: always
     container_name: gbs-psql
-    image: postgres:9.5
+    image: postgres:10.4
     volumes:
       - pg_data:/var/lib/postgresql/data
       - pg_backup:/backups
