@@ -7,9 +7,9 @@ def get_driver():
         if os.getenv("SAUCE_ACCESS_KEY"):
             # Set capabilities on sauce
             desired_cap = {
-                'platform': "Mac OS X 10.12",
+                'platform': "macOS 10.14",
                 'browserName': "safari",
-                'version': "11",
+                'version': "12.0",
             }
 
             # Add Travis metadata to the build
