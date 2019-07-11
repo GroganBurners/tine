@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import re
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -93,16 +94,19 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_ADDR", '')
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS", '')
 EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
 
+# Database Settings
+DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME = re.match("^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$", os.environ.get("DATABASE_URL", "")).groups()
+
 # Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.0/ref/settings/#databases    
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("POSTGRES_NAME", 'gbs'),
-        'USER': os.environ.get("POSTGRES_USER", 'postgres'),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'postgres'),
-        'HOST': os.environ.get("POSTGRES_HOST", 'localhost'),
-        'PORT': os.environ.get("POSTGRES_PORT", 5432)
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASS,
+        'HOST': DB_HOST,
+        'PORT': int(DB_PORT),
     }
 }
 
