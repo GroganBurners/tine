@@ -28,8 +28,7 @@ init:
   - ps: "ls C:/Python*"
 
 build_script:
-  - SET PGUSER=postgres
-  - SET PGPASSWORD=Password12!
+  - SET DATABASE_URL=postgres://postgres:Password12!@localhost:5432/gbs
   - PATH=C:\Program Files\PostgreSQL\9.6\bin\;%PATH%
   - createdb gbs
 install:
