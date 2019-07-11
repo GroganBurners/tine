@@ -5,7 +5,7 @@ url = "https://pypi.python.org/simple"
 
 [packages]
 django = "==2.0.12"
-djangorestframework = "==3.7.3"
+djangorestframework = "==3.9.1"
 et-xmlfile = "==1.0.1"
 gunicorn = "==19.7.1"
 hashids = "==1.2.0"
