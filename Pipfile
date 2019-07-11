@@ -18,6 +18,8 @@ pillow = "==4.3.0"
 pytz = "==2017.3"
 reportlab = "==3.4.0"
 requests = "==2.20.0"
+whitenoise = {extras = ["brotli"],version = "*"}
+pipfile = "*"
 
 [dev-packages]
 "flake8" = "*"

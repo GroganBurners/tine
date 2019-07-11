@@ -5,7 +5,7 @@ ARG PORT=5000
 ARG DATABASE_URL=postgres://postgres:postgres@postgres:5432/gbs
 
 RUN set -ex && pip install pipenv --upgrade
-RUN set -ex && mkdir /usr/src/app
+RUN set -ex && mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 

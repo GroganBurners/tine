@@ -3,49 +3,33 @@ volumes:
   pg_data: {}
   pg_backup: {}
 services:
-  nginx:
-    restart: always
-    build: ./docker/nginx
-    container_name: gbs-web
-    environment:
-      - VIRTUAL_PORT=80
-      - VIRTUAL_HOST=gbs.ballyda.com
-      - LETSENCRYPT_HOST=gbs.ballyda.com
-    expose:
-      - "80"
-      - "443"
-    volumes:
-       - "/etc/letsencrypt/:/etc/letsencrypt/:ro"
-       - "/var/www/html:/var/www/html:ro"
-       - "/etc/ssl/:/etc/ssl/:ro"
-    volumes_from:
-      - "django"
-    links:
-      - "django:django"
-    networks:
-      - areio_default
   django:
     restart: always
-    container_name: gbs-dj
+    container_name: tine
     build: .
     volumes:
       - ".:/usr/src/app"
-      - "/usr/src/app/static"
-    env_file: .envrc
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/gbs
+      PORT: 5000
+      SECRET_KEY: testmeimasecretkey
     links:
       - psql:psql
     expose:
-      - "8000"
+      - "5000"
     networks:
       - areio_default
   psql:
     restart: always
-    container_name: gbs-psql
+    container_name: psql
     image: postgres:10.4
     volumes:
       - pg_data:/var/lib/postgresql/data
       - pg_backup:/backups
-    env_file: .envrc
+    environment:
+      POSTGRES_DB: gbs
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     expose:
       - "5432"
     networks:

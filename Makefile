@@ -2,10 +2,13 @@ D:=docker
 DEC:= exec -it
 G:=git
 DC:=docker-compose
-D_DJANGO:=gbs-dj
-D_POSTGRES:=gbs-psql
+D_DJANGO:=tine
+D_POSTGRES:=psql
 
-.PHONY:= build cleanfiles cleandjango run dj db dev clean deploy
+.PHONY:= build cleanfiles cleandjango run dj db dev clean
+
+run: build
+	${DC} up -d
 
 build:
 	${DC} build
@@ -16,9 +19,6 @@ cleanfiles:
 cleandjango:
 	${D} rm -f ${D_DJANGO} ${D_POSTGRES}
 	${D} volume rm -f tine_pg_data tine_pg_backup
-
-run:
-	${DC} up -d
 
 test:
 	${D} ${DEC} ${D_DJANGO} python manage.py test gbs
@@ -42,8 +42,3 @@ clean: cleanfiles
 	${DC} rm -f
 	${D} volume rm -f tine_pg_data tine_pg_backup
 
-deploy:
-	${G} pull
-	${G} reset --hard origin/master
-	${DC} build
-	${DC} -f docker-compose-prod.yml up -d
