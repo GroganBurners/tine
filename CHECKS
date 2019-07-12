@@ -1,0 +1,6 @@
+WAIT=10
+TIMEOUT=20
+ATTEMPTS=10
+
+/ Grogan Burner Services
+/admin/login/ Username
