@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
           name: add user installs to PATH
           command: |
@@ -28,35 +28,34 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
       - run:
-          name: Install Pipenv
+          name: Install Requirements
           command: |
-            pip install --user pipenv
-            pipenv install -d
+            pip install -r requirements.txt
       - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - "~/.venvs"
             - "~/.local"
       - run:
-          name: Make Needed Directories
-          command: mkdir -p $PWD/staticfiles
+          name: Collect Static Files
+          command: mkdir -p $PWD/staticfiles && python manage.py collectstatic
       - run:
           name: Django Make Migrations
-          command: pipenv run python manage.py makemigrations
+          command: python manage.py makemigrations
       - run:
           name: Django Migrate
-          command: pipenv run python manage.py migrate
+          command: python manage.py migrate
       - run:
           name: Django Run Tests
           command: |
              ./cc-test-reporter before-build
-             pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
-             pipenv run coverage report
-             pipenv run coverage xml
+             coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
+             coverage report
+             coverage xml
              ./cc-test-reporter after-build --coverage-input-type coverage.py --exit-code $?
       - run:
           name: Generate Code Coverage Report
-          command: pipenv run coverage html
+          command: coverage html
       - store_artifacts:
           path: htmlcov/
           destination: tr1
