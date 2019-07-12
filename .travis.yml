@@ -4,6 +4,7 @@ services:
 - postgresql
 python:
 - '3.7'
+cache: pip
 addons:
   # firefox: latest
   sauce_connect:
@@ -15,7 +16,7 @@ env:
   global:
   - MOZ_HEADLESS=1
   - POSTGRES_PASSWORD=""
-  - DJANGO_SELENIUM_TESTS="true"
+  - DJANGO_SELENIUM_TESTS="false"
   - DATABASE_URL="postgres://postgres:@localhost:5432/gbs"
 before_install:
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
@@ -23,14 +24,13 @@ before_install:
   - tar -xzf geckodriver-v0.24.0-linux64.tar.gz -C geckodriver
   - export PATH=$PATH:$PWD/geckodriver
 install:
-- pip install pipenv --upgrade
-- pipenv install --dev --system --skip-lock
+- pip install -r requirements.txt
 - psql -c 'create database gbs;' -U postgres
-- pipenv run python manage.py makemigrations
-- pipenv run python manage.py migrate
+- python manage.py makemigrations
+- python manage.py migrate
 script:
-- pipenv run python manage.py check
-- pipenv run coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py
+- python manage.py check
+- coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py
   test gbs
 after_script:
 - coveralls
