@@ -112,11 +112,13 @@ class HelloSauceTest(StaticLiveServerTestCase):
 
     def test_sauce(self):
         self.driver.get(self.live_server_url + '/admin')
+        print("TITLE IS " + self.driver.title)
         assert "Log in" in self.driver.title
 
     def test_homepage(self):
         self.driver.get(self.live_server_url)
         self.driver.get_screenshot_as_file('/tmp/website.png')
         wait = WebDriverWait(self.driver, 10)
+        print("TITLE IS " + self.driver.title)
         wait.until(lambda driver: self.driver.title.lower().startswith('g'))
         self.assertIn("Grogan Burner Services", self.driver.title)
