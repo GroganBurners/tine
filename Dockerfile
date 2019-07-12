@@ -8,7 +8,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 COPY requirements.txt ./
-COPY pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
 RUN python manage.py collectstatic
