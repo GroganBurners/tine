@@ -21,6 +21,7 @@ pytz==2017.3
 reportlab==3.4.0
 requests==2.20.0
 responses==0.10.6
+sauceclient==1.0.0
 selenium==3.141.0
 six==1.12.0
 toml==0.10.0
