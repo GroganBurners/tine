@@ -13,20 +13,26 @@ branches:
 # Do not build on tags (GitHub only)
 skip_tags: true
 
-# environment variables
-environment:
-  DATABASE_URL: postgres://postgres:Password12!@localhost:5432/gbs
-  matrix:
-    - PYTHON: "C:/Python36-x64"
 # enable service required for build/tests
 services:
     - postgresql101
+
+# environment variables
+environment:
+  DATABASE_URL: "postgres://postgres:Password12!@127.0.0.1:5432/gbs"
+  matrix:
+    - PYTHON: "C:/Python36-x64"
 
 init:
   - "SET PGUSER=postgres"
   - "SET PGPASSWORD=Password12!"
   - "ECHO %PYTHON%"
   - ps: "ls C:/Python*"
+
+cache:
+  # Cache Pip install
+  - '%LOCALAPPDATA%\pip\Cache\http'
+  - '%LOCALAPPDATA%\pip\Cache\wheels'
 
 build_script:
   - "SET PATH=C:\\Program Files\\PostgreSQL\\10\\bin\\;%PATH%"
