@@ -15,17 +15,17 @@ skip_tags: true
 
 # enable service required for build/tests
 services:
-    - postgresql101
+    - postgresql
 
 # environment variables
 environment:
-  DATABASE_URL: "postgres://postgres:Password12!@127.0.0.1:5432/gbs"
+  PGUSER: postgres
+  PGPASSWORD: Password12!
+  DATABASE_URL: postgres://postgres:Password12!@localhost:5432/gbs
   matrix:
-    - PYTHON: "C:/Python36-x64"
+    - PYTHON: "C:/Python37-x64"
 
 init:
-  - "SET PGUSER=postgres"
-  - "SET PGPASSWORD=Password12!"
   - "ECHO %PYTHON%"
   - ps: "ls C:/Python*"
 
