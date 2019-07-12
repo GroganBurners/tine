@@ -2,7 +2,7 @@ language: python
 services:
 - postgresql
 python:
-- '3.6'
+- '3.7'
 addons:
   # firefox: latest
   sauce_connect:
