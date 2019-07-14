@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     '.groganburners.ie',
     'groganburners.ie',
     'gbs.ballyda.com',
+    'localhost',
     '127.0.0.1']
 
 # Static files (CSS, JavaScript, Images)
