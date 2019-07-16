@@ -79,7 +79,7 @@ def print_invoice_expense(ws, row_num):
             total = total + res.total
             row = [
                 '',
-                f'{res.date:%-d/%-m/%Y}',
+                res.date.strftime('%d/%m/%Y'),
                 items[0].description,
                 res.customer.name,
                 '',
@@ -96,7 +96,7 @@ def print_invoice_expense(ws, row_num):
             total = total - res.total
             row = [
                 '',
-                f'{res.date:%-d/%-m/%Y}',
+                res.date.strftime('%d/%m/%Y'),
                 items[0].description,
                 res.supplier.name,
                 res.total,
