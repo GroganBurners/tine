@@ -18,7 +18,7 @@ pipfile==0.0.2
 psycopg2==2.7.3.2
 PyPDF2==1.26.0
 pytz==2017.3
-reportlab==3.4.0
+reportlab==3.5.23
 requests==2.20.0
 responses==0.10.6
 sauceclient==1.0.0
