@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 volumes:
   pg_data: {}
   pg_backup: {}
@@ -7,6 +7,8 @@ services:
     restart: always
     container_name: tine
     build: .
+    depends_on:
+      - psql
     volumes:
       - ".:/app"
     environment:
@@ -19,9 +21,10 @@ services:
       - "5000:5000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
   psql:
     restart: always
     container_name: psql
