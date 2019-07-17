@@ -11,6 +11,8 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
-RUN python manage.py collectstatic
+COPY misc/dokku/app.json /app
+COPY misc/dokku/Procfile /app
+COPY misc/dokku/DOKKU_SCALE /app
 
-CMD python manage.py makemigrations && python manage.py migrate && python manage.py loaddata db && gunicorn tine.wsgi:application -w 2 -b :$PORT --reload --log-level DEBUG
+CMD gunicorn tine.wsgi:application -w 2 -b :$PORT --reload --log-level DEBUG
