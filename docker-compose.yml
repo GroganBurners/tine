@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 volumes:
   pg_data: {}
   pg_backup: {}
@@ -15,8 +15,13 @@ services:
       SECRET_KEY: testmeimasecretkey
     links:
       - psql:psql
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
   psql:
     restart: always
     container_name: psql
