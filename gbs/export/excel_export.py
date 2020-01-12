@@ -37,9 +37,9 @@ def print_total_row(ws, row_num):
     for let in list(string.ascii_uppercase[4:10]):
         start_cell = f'{let}{row_num}'
         ws[start_cell].number_format = CURR_FORMAT
-        if let is 'I':
+        if let == 'I':
             ws[start_cell] = f"=H{row_num}-G{row_num}"
-        elif let is 'J':
+        elif let == 'J':
             ws[start_cell] = f"=J{row_num-1}"
         else:
             ws[start_cell] = f"=SUM({let}2:{let}{row_num-1})"
