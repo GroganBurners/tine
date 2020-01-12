@@ -1,11 +1,13 @@
 {% extends "layouts/base.html" %}
 {% block content %}
     <section class="hero">
-     <img src="https://source.unsplash.com/random/1024x500" alt="">
+     <img src="{{ hero.image.url }}" alt="{{ hero.image_alt }}">
      <div class="hero-text">
-       <h2>Winter is here!</h2>
-       <p>See our great oil and gas offers over the cold season - they'll be sure to keep you warm!</p>
-       <a href="#gas" class="button">Learn More →</a>
+       <h2>{{ hero.title }}</h2>
+       <p>{{ hero.teaser_text }}</p>
+       {% if hero.use_button %}
+        <a href="{{ hero.button_link }}" class="button">{{ hero.button_text }}</a>
+       {% endif %}
     </div>
     </section>
 

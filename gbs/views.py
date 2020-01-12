@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from gbs.models import Carousel, Price
+from gbs.models import Carousel, HeroImage, Price
 from decimal import Decimal
 ADMIN_LOGIN_URL = '/admin/login/'
 
@@ -63,8 +63,8 @@ def newindex(request):
                                       cost__gt=Decimal('0.00'))
     
     # season = get_season()
-    carousels = Carousel.objects.filter(active=True).order_by('order')
-    context = {'carousels': carousels, 'gas_prices': gas_prices,
+    hero = HeroImage.objects.filter(active=True).first()
+    context = {'hero': hero, 'gas_prices': gas_prices,
                'oil_prices': oil_prices, 'summer_gas': summer_gas,
                'summer_oil': summer_oil, 'repair_fees': repair_fees,
                'summer_repair': summer_repair }
