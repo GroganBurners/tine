@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.urls import reverse, path
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import (Carousel, Customer, Expense, ExpenseItem, ExpenseType,
+from .models import (Customer, Expense, ExpenseItem, ExpenseType,
                      HeroImage, Invoice, InvoiceItem, Supplier, Price)
 from gbs.utils import excel_response, pdf_response, zip_response
 from gbs.export.excel_export import export_finances
@@ -167,14 +167,7 @@ class HeroImageAdmin(admin.ModelAdmin):
     list_display = ['title', 'active', 'image', 'teaser_text']
 
 
-class CarouselAdmin(admin.ModelAdmin):
-    model = Carousel
-    ordering = ('active', 'order')
-    list_display = ['title', 'active', 'order', 'image', 'teaser_text']
-
-
 admin_site.register(Customer, CustomerAdmin)
-admin_site.register(Carousel, CarouselAdmin)
 admin_site.register(Expense, ExpenseAdmin)
 admin_site.register(ExpenseType, ExpenseTypeAdmin)
 admin_site.register(HeroImage, HeroImageAdmin)

@@ -232,7 +232,7 @@ class Price(models.Model):
 class HeroImage(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
     image = models.ImageField(
-        upload_to='images/carousel',
+        upload_to='images/hero',
         blank=False,
         null=False)
     img_alt = models.CharField(
@@ -242,28 +242,6 @@ class HeroImage(models.Model):
         null=True)
     teaser_text = models.CharField(max_length=200, blank=False, null=False)
     active = models.BooleanField(blank=False, null=False, default=False)
-    use_button = models.BooleanField()
-    button_text = models.CharField(max_length=50)
-    button_link = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.title
-
-
-class Carousel(models.Model):
-    title = models.CharField(max_length=50, blank=False, null=False)
-    image = models.ImageField(
-        upload_to='images/carousel',
-        blank=False,
-        null=False)
-    img_alt = models.CharField(
-        "Image alternative text (for screen readers)",
-        max_length=50,
-        blank=True,
-        null=True)
-    teaser_text = models.CharField(max_length=200, blank=False, null=False)
-    active = models.BooleanField(blank=False, null=False, default=False)
-    order = models.PositiveSmallIntegerField(blank=False, null=False)
     use_button = models.BooleanField()
     button_text = models.CharField(max_length=50)
     button_link = models.CharField(max_length=20)
