@@ -389,10 +389,14 @@ footer {
     background-color: rgba(var(--dbrownrgb), 0.7);
   }
 
+  .teaser p {
+    color: #e4e4e4;
+  }
+
   .feature {
     background-color: rgba(var(--dbrownrgb), 0.7);
   }
-  
+
 }
 
 @media screen and (max-width: 500px) {
