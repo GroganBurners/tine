@@ -168,6 +168,7 @@ nav {
   background-color: rgba(var(--dbrownrgb), 0.6);
   padding: 20px;
   color: white;
+  z-index: 99;
 }
 
 .hero-text .button {
@@ -379,6 +380,10 @@ footer {
   }
   img {
     filter: grayscale(30%);
+  }
+
+  .feature {
+    background-color: rgba(var(--dbrownrgb), 0.7);
   }
 }
 
