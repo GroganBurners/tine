@@ -38,10 +38,9 @@
         <h2>Gas Servicing. <span class="text-muted">Heat on demand. Value for money.</span></h2>
         <p class="lead">Gas appliance service charges</p>
         <ul>
-          <li>Gas Service €80</li>
-          <liGas Combi/Condensing Boiler Service €80</li>
-          <li>Gas Fire Service €65</li>
-          <li>Gas Boiler and Fire service together €120</li>
+          {% for price in gas_prices %}
+            <li>{{ price }}</li>
+          {% endfor %}
         </ul>
         <a href="#contact" class="button">Book Now</a>
       </div>
@@ -55,10 +54,9 @@
         <h2>Oil Servicing. <span class="text-muted">Save money and increase efficiency.</span></h2>
         <p class="lead">Oil appliance service charges</p>
         <ul>
-          <li>Oil Service €80</li>
-          <liGas Combi/Condensing Boiler Service €80</li>
-          <li>Gas Fire Service €65</li>
-          <li>Oil Boiler and Fire service together €120</li>
+          {% for price in oil_prices %}
+            <li>{{ price }}</li>
+          {% endfor %}
         </ul>
         <a href="#contact" class="button">Book Now</a>
       </div>
@@ -72,7 +70,9 @@
         <h2>Repair. <span class="text-muted">For when the unexpected happens.</span></h2>
         <p class="lead">Repair charges</p>
         <ul>
-          <li>Repair Call Out Fee (First Hour) €80 (most call outs require 1hr or less)</li>
+          {% for fee in repair_fees %}
+            <li>{{ fee }} (most call outs require 1hr or less)</li>
+          {% endfor %}
           <li>If parts are required this will be extra</li>
           <li>If a part needs to be ordered there is no extra charge for the return visit to install the part.</li>
           <li>We stock  a large number of oil boiler parts so 95% of repairs can be fixed at the first visit.</li>
@@ -91,16 +91,22 @@
         <p class="lead">All charges reduced in summer! Prices valid for June, July and August</p>
         <p class="lead">Oil Deals</p>
         <ul>
-          <li>Oil Service €70</li>
-          <li>Oil Combi/Condensing Service €70</li>
+          {% for price in summer_oil %}
+            <li>{{ price }}</li>
+          {% endfor %}
         </ul>
 
         <p class="lead">Gas Deals</p>
         <ul>
-          <li>Gas Service €70</li>
-          <li>Gas Combi/Condensing Boiler Service €70</li>
-          <li>Gas Fire Service €55</li>
-          <li>Gas Boiler and Fire service together €100</li>
+          {% for price in summer_gas %}
+            <li>{{ price }}</li>
+          {% endfor %}
+        </ul>
+        <p class="lead">Repair deals</p>
+        <ul>
+          {% for fee in summer_repair %}
+            <li>{{ fee }} (most call outs require 1hr or less)</li>
+          {% endfor %}
         </ul>
         <a href="#contact" class="button">Book Now</a>
       </div>
