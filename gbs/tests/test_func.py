@@ -22,13 +22,13 @@ else:
     browsers = [
         {"platform": "macOS 10.14",
          "browserName": "chrome",
-         "version": "75.0"},
+         "version": "79.0"},
         {"platform": "Windows 10",
          "browserName": "MicrosoftEdge",
-         "version": "16.16299"},
-        {"platform": "Linux",
+         "version": "17.17134"},
+        {"platform": "macOS 10.14",
          "browserName": "firefox",
-         "version": "45.0"}]
+         "version": "72.0"}]
 
 
 def on_platforms(platforms, local):
