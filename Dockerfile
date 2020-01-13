@@ -11,6 +11,6 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
-COPY misc/dokku/* /app
+COPY misc/dokku/* /app/
 
 CMD gunicorn tine.wsgi:application -w 2 -b :$PORT --reload --log-level DEBUG
