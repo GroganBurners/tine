@@ -7,3 +7,21 @@ A Django web application for Grogan Burner Services, a heating systems installat
 
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/groganburners.svg)](https://saucelabs.com/u/groganburners)
+
+# Deployment
+## Local Deployment
+1. use `docker-compose build && docker-compose up -d` to build and bring up Django/Postgres containers.
+2. Open `http://localhost:5000`
+
+## Server Deployment
+### On Server:
+1. Get Dokku Install script: `wget https://raw.githubusercontent.com/dokku/dokku/v0.19.11/bootstrap.sh`
+2. Run Dokku Install script: `sudo DOKKU_TAG=v0.19.11 bash bootstrap.sh`
+3. Create Dokku app: `sudo dokku apps:create tine`
+4. Install Postgres Dokku plugin: `sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git`
+5. Create Database: `sudo dokku postgres:create gbs`
+6. Link Database to app: `dokku postgres:link gbs tine`
+
+### On local machine:
+1. Add `git remote add dokku dokku@dokku.me:tine`
+2. Push `git push dokku master`
