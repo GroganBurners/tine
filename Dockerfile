@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.8
 
 # set the argument default
 ARG PORT=5000
