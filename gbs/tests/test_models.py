@@ -192,6 +192,10 @@ class HeroImageTest(TestCase):
         self.assertEqual(himg.teaser_text, "Buy Now!")
         self.assertEqual(himg.button_text, "Gas Offers")
         self.assertEqual(himg.button_link, "#gas")
+    
+    def test_hero_image_str_value_set_correctly(self):
+        himg = HeroImage.objects.get(title="Gas Offers")
+        self.assertEqual(himg.__str__(), "Gas Offers")
 
     def tearDown(self):
         HeroImage.objects.all().delete()
