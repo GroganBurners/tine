@@ -20,6 +20,10 @@ class CustomerTest(TestCase):
         self.assertEqual(cust.county, "KK")
         self.assertEqual(cust.eircode, "R95 CX65")
         self.assertEqual(cust.country, "IE")
+        
+    def test_customer_str_value_set_correctly(self):
+        cust = Customer.objects.get(name="Neil Grogan")
+        self.assertEqual(cust.__str__(), "Neil Grogan (Ballyda)")
 
     def tearDown(self):
         Customer.objects.all().delete()
@@ -45,6 +49,10 @@ class SupplierTest(TestCase):
         self.assertEqual(suppl.county, "KK")
         self.assertEqual(suppl.eircode, "BT1 XYZ")
         self.assertEqual(suppl.country, "UK")
+    
+    def test_supplier_str_value_set_correctly(self):
+        suppl = Supplier.objects.get(name="Heating Parts Ltd.")
+        self.assertEqual(suppl.__str__(), "Heating Parts Ltd.")
 
     def tearDown(self):
         Supplier.objects.all().delete()
