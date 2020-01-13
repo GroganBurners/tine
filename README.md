@@ -25,3 +25,6 @@ A Django web application for Grogan Burner Services, a heating systems installat
 ### On local machine:
 1. Add `git remote add dokku dokku@dokku.me:tine`
 2. Push `git push dokku master`
+
+# License
+This project is MIT licensed for all the source code. Images and Artwork are full copyright of their owners.
