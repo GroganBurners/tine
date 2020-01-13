@@ -170,6 +170,10 @@ class PriceTest(TestCase):
         oil_price = Price.objects.get(type="oil_service")
         self.assertEqual(oil_price.cost, 20.00)
         self.assertFalse(oil_price.summer_offer)
+        
+    def test_oil_service_str_value_set_correctly(self):
+        oil_price = Price.objects.get(type="oil_service")
+        self.assertEqual(oil_price.__str__(), "Oil Service €20")
 
     def tearDown(self):
         Price.objects.all().delete()
