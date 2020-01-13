@@ -23,9 +23,9 @@ environment:
     SECRET_KEY: BetPJpkaldjcnksjsdkk3jknj12
     DATABASE_URL: postgres://postgres:Password12!@localhost:5432/gbs
   matrix:
-    - PYTHON: "C:\\Python37-x64"
+    - PYTHON: "C:\\Python38-x64"
       POSTGRES: "C:\\Program Files\\PostgreSQL\\10"
-      PYTHON_VERSION: "3.7.X"
+      PYTHON_VERSION: "3.8.X"
       PYTHON_ARCH: "64"
       WINDOWS_SDK_VERSION: "v7.1"
 
