@@ -146,6 +146,10 @@ class ExpenseTest(TestCase):
         self.assertEqual(item.quantity, Decimal(1.00))
 
         # self.assertEqual(item.total_amount(), "€ 80")
+   
+    def test_expense_type_str_value_set_correctly(self):
+        e_type = ExpenseType.objects.get(type='Parts')
+        self.assertEqual(e_type.__str__(), "Parts")
 
     def tearDown(self):
         Supplier.objects.all().delete()
