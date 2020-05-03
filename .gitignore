@@ -24,6 +24,7 @@ sdist/
 staticfiles/
 var/
 wheels/
+.vagrant/
 *.egg-info/
 .installed.cfg
 *.egg
