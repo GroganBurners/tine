@@ -1,0 +1,21 @@
+name: Dependency Version Check
+
+on:
+  schedule:
+    - cron: '0 20 * * 5'
+
+jobs:
+  outdated:
+    runs-on: ubuntu-latest
+    if: startsWith(github.head_ref, 'renovate') == false
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8.2
+
+    - name: pip install
+      run: pip install -r requirements.txt --user
+
+    - name: outdated
+      run: pip list --outdated --not-required --user | grep . && echo "there are outdated packages" && exit 1 || echo "all packages up to date"
