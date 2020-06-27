@@ -3,6 +3,6 @@ docker/
 .env-sample
 Makefile
 .circleci/
-README.md
+*.md
 *.yml
 .editorconfig
