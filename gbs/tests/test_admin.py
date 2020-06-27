@@ -1,7 +1,6 @@
 from datetime import date
 from io import BytesIO
 
-import django.urls
 import PyPDF2
 from django.contrib.admin.options import ModelAdmin
 from django.contrib.admin.sites import AdminSite

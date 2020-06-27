@@ -21,8 +21,6 @@ class UtilsTest(unittest.TestCase):
         self.assertEqual(utils.format_currency(2), "€ 2.00")
 
     def test_season(self):
-        from datetime import date
-
         doy = date.today().timetuple().tm_yday
         # "day of year" ranges for the northern hemisphere
         spring = range(80, 172)
