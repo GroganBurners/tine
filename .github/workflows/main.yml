@@ -9,7 +9,8 @@ jobs:
       max-parallel: 4
       matrix:
         python_version: [3.7]
-    
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/gbs
     services:
       # Label used to access the service container
       postgres:
@@ -50,8 +51,6 @@ jobs:
         python manage.py makemigrations
         python manage.py migrate
     - name: Django Testing project
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/gbs
       run: |
         python3 manage.py test gbs && coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
     - name: Coveralls
