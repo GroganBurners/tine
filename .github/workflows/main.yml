@@ -125,4 +125,6 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: docker build
-      run: docker build . --file Dockerfile -t ${{ github.repository }} -t ${{ github.repository }}:$(date +%s)
+      run: |
+        GITHUB_REPOSITORY_LOWERCASE=`echo ${{ github.repository }} | awk '{print tolower($0)}'`
+        docker build . --file Dockerfile -t $GITHUB_REPOSITORY_LOWERCASE -t $GITHUB_REPOSITORY_LOWERCASE:$(date +%s)
