@@ -53,11 +53,18 @@ jobs:
         python manage.py migrate
     - name: Django Testing project
       run: |
-        python3 manage.py test gbs && coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
+        python3 manage.py test gbs
+    - name: Generate Code Coverage Report
+      run: |
+        coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
+        coverage report
+        coverage html
+    - name: upload report
+      if:  ${{ success() || failure() }}
+      uses: actions/upload-artifact@v2
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        name: Code Coverage Report
+        path: htmlcov/
   isort:
     runs-on: ubuntu-latest
     steps:
