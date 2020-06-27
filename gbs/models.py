@@ -1,33 +1,34 @@
-from django.db import models
-from django.core.validators import RegexValidator
-from .constants import COUNTIES, SERVICES
-from hashids import Hashids
 from datetime import date
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
+
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.validators import RegexValidator
+from django.db import models
+from gbs.comm import email, sms
+from hashids import Hashids
+
 from .conf import settings as app_settings
+from .constants import COUNTIES, SERVICES
 from .utils import format_currency
-from gbs.comm import email
-from gbs.comm import sms
 
 
 class ContactInfo(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone" +
-                                 " number must be entered in the format:" +
-                                 " '+999999999'. Up to 15 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=16,
-                                    blank=True, default='353')
+    phone_regex = RegexValidator(
+        regex=r"^\+?1?\d{9,15}$",
+        message="Phone"
+        + " number must be entered in the format:"
+        + " '+999999999'. Up to 15 digits allowed.",
+    )
+    phone_number = models.CharField(
+        validators=[phone_regex], max_length=16, blank=True, default="353"
+    )
     street = models.CharField(max_length=200, blank=True)
-    county = models.CharField(
-        choices=COUNTIES,
-        max_length=30,
-        blank=True,
-        default='KK')
-    eircode = models.CharField(max_length=12, blank=True, default='R95 XXXX')
-    country = models.CharField(max_length=200, blank=True, default='Ireland')
+    county = models.CharField(choices=COUNTIES, max_length=30, blank=True, default="KK")
+    eircode = models.CharField(max_length=12, blank=True, default="R95 XXXX")
+    country = models.CharField(max_length=200, blank=True, default="Ireland")
 
     class Meta:
         abstract = True
@@ -48,10 +49,10 @@ class Bill(models.Model):
 
     @property
     def total_ex_vat(self):
-        total = Decimal('0.00')
+        total = Decimal("0.00")
         for item in self.items.all():
             total = total + item.total_ex_vat
-        return total.quantize(Decimal('0.01'))
+        return total.quantize(Decimal("0.01"))
 
     @property
     def total_ex_vat_amount(self):
@@ -60,7 +61,7 @@ class Bill(models.Model):
     @property
     def total_vat(self):
         total = self.total - self.total_ex_vat
-        return total.quantize(Decimal('0.01'))
+        return total.quantize(Decimal("0.01"))
 
     @property
     def total_vat_amount(self):
@@ -68,7 +69,7 @@ class Bill(models.Model):
 
     @property
     def total(self):
-        total = Decimal('0.00')
+        total = Decimal("0.00")
         for item in self.items.all():
             total = total + item.total
         return total.quantize(0, ROUND_HALF_UP)
@@ -79,14 +80,13 @@ class Bill(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['-date']
+        ordering = ["-date"]
 
 
 class BillItem(models.Model):
     description = models.CharField(max_length=100)
     unit_price = models.DecimalField(max_digits=8, decimal_places=2)
-    vat_rate = models.DecimalField(
-        max_digits=5, decimal_places=2, default=13.5)
+    vat_rate = models.DecimalField(max_digits=5, decimal_places=2, default=13.5)
     quantity = models.DecimalField(max_digits=8, decimal_places=2, default=1)
 
     @property
@@ -95,16 +95,16 @@ class BillItem(models.Model):
 
     @property
     def vat_rate_amount(self):
-        return ('%f' % self.vat_rate).rstrip('0').rstrip('.') + '%'
+        return ("%f" % self.vat_rate).rstrip("0").rstrip(".") + "%"
 
     @property
     def quantity_amount(self):
-        return ('%f' % self.quantity).rstrip('0').rstrip('.')
+        return ("%f" % self.quantity).rstrip("0").rstrip(".")
 
     @property
     def total_ex_vat(self):
         total = Decimal(str(self.unit_price * self.quantity))
-        return total.quantize(Decimal('0.01'))
+        return total.quantize(Decimal("0.01"))
 
     @property
     def total_ex_vat_amount(self):
@@ -115,7 +115,7 @@ class BillItem(models.Model):
         percentage = self.vat_rate / Decimal(100)
         total_ex_vat = self.total_ex_vat
         total = Decimal(str(total_ex_vat * percentage))
-        return total.quantize(Decimal('0.01'))
+        return total.quantize(Decimal("0.01"))
 
     @property
     def total_vat_amount(self):
@@ -124,7 +124,7 @@ class BillItem(models.Model):
     @property
     def total(self):
         total = Decimal(str(self.total_ex_vat + self.total_vat))
-        return total.quantize(Decimal('0.01'))
+        return total.quantize(Decimal("0.01"))
 
     @property
     def total_amount(self):
@@ -153,16 +153,15 @@ class Expense(Bill):
 
 class ExpenseItem(BillItem):
     expense = models.ForeignKey(
-        Expense,
-        related_name='items',
-        unique=False,
-        on_delete=models.CASCADE)
+        Expense, related_name="items", unique=False, on_delete=models.CASCADE
+    )
 
 
 class Invoice(Bill):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    invoice_id = models.CharField(unique=True, max_length=6, null=True,
-                                  blank=True, editable=False)
+    invoice_id = models.CharField(
+        unique=True, max_length=6, null=True, blank=True, editable=False
+    )
     invoiced = models.BooleanField(default=False)
     draft = models.BooleanField(default=False)
     cash = models.BooleanField(default=False)
@@ -173,25 +172,26 @@ class Invoice(Bill):
 
         if not self.invoice_id:
             hashids = Hashids(
-                alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+                alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
                 min_length=6,
-                salt='this is my salt 2')
+                salt="this is my salt 2",
+            )
             self.invoice_id = hashids.encode(self.id)
             super(Invoice, self).save(*args, **kwargs)
 
     def file_name(self):
-        return f'Invoice {self.invoice_id}.pdf'
+        return f"Invoice {self.invoice_id}.pdf"
 
     def send_sms(self):
         if self.customer.phone_number:
             return False, None
 
-        message = f'Your invoice {self.invoice_id} is now due, \
+        message = f"Your invoice {self.invoice_id} is now due, \
                 please pay {self.total}. Any queries, please call \
-                0876341300 or email mick@grogan.ie'
+                0876341300 or email mick@grogan.ie"
         resp = sms.send_sms(str(self.customer.phone_number), message)
 
-        if resp['success']:
+        if resp["success"]:
             self.invoiced = True
             self.save()
             return True, resp
@@ -204,17 +204,14 @@ class Invoice(Bill):
         self.save()
 
     def __str__(self):
-        desc = "Invoice: " + str(self.invoice_id) + \
-            " (" + str(self.customer) + ")"
+        desc = "Invoice: " + str(self.invoice_id) + " (" + str(self.customer) + ")"
         return desc
 
 
 class InvoiceItem(BillItem):
     invoice = models.ForeignKey(
-        Invoice,
-        related_name='items',
-        unique=False,
-        on_delete=models.CASCADE)
+        Invoice, related_name="items", unique=False, on_delete=models.CASCADE
+    )
 
 
 class Price(models.Model):
@@ -225,21 +222,18 @@ class Price(models.Model):
     def __str__(self):
         d = dict(SERVICES)
         ser_name = d[self.type]
-        return ser_name + " " + "€" + ('%f' %
-                                       self.cost).rstrip('0').rstrip('.')
+        return ser_name + " " + "€" + ("%f" % self.cost).rstrip("0").rstrip(".")
 
 
 class HeroImage(models.Model):
     title = models.CharField(max_length=50, blank=False, null=False)
-    image = models.ImageField(
-        upload_to='images/hero',
-        blank=False,
-        null=False)
+    image = models.ImageField(upload_to="images/hero", blank=False, null=False)
     img_alt = models.CharField(
         "Image alternative text (for screen readers)",
         max_length=50,
         blank=True,
-        null=True)
+        null=True,
+    )
     teaser_text = models.CharField(max_length=200, blank=False, null=False)
     active = models.BooleanField(blank=False, null=False, default=False)
     use_button = models.BooleanField()

@@ -1,12 +1,12 @@
 import unittest
 from datetime import date
+
 from gbs import utils
 
-class UtilsTest(unittest.TestCase):
 
+class UtilsTest(unittest.TestCase):
     def test_generate_zip(self):
         pass
-
 
     def test_excel_response(self):
         pass
@@ -22,6 +22,7 @@ class UtilsTest(unittest.TestCase):
 
     def test_season(self):
         from datetime import date
+
         doy = date.today().timetuple().tm_yday
         # "day of year" ranges for the northern hemisphere
         spring = range(80, 172)
@@ -30,12 +31,12 @@ class UtilsTest(unittest.TestCase):
         # winter = everything else
 
         if doy in spring:
-            season = 'spring'
+            season = "spring"
         elif doy in summer:
-            season = 'summer'
+            season = "summer"
         elif doy in autumn:
-            season = 'autumn'
+            season = "autumn"
         else:
-            season = 'winter'
+            season = "winter"
 
         self.assertEqual(utils.get_season(), season)

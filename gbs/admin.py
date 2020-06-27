@@ -1,14 +1,14 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import AdminSite
-from django.utils.html import format_html
-from django.urls import reverse, path
 from django.http import HttpResponseRedirect
-from django.contrib import messages
-from .models import (Customer, Expense, ExpenseItem, ExpenseType,
-                     HeroImage, Invoice, InvoiceItem, Supplier, Price)
-from gbs.utils import excel_response, pdf_response, zip_response
+from django.urls import path, reverse
+from django.utils.html import format_html
 from gbs.export.excel_export import export_finances
 from gbs.export.pdf import export_invoice
+from gbs.utils import excel_response, pdf_response, zip_response
+
+from .models import (Customer, Expense, ExpenseItem, ExpenseType, HeroImage,
+                     Invoice, InvoiceItem, Price, Supplier)
 
 
 class GBSAdminSite(AdminSite):
@@ -19,10 +19,11 @@ class GBSAdminSite(AdminSite):
 
     def get_urls(self):
         return [
-            path('export/xls/',
-                 self.admin_view(self.export_finances_xls),
-                 name='export-finances'
-                 ),
+            path(
+                "export/xls/",
+                self.admin_view(self.export_finances_xls),
+                name="export-finances",
+            ),
         ] + super().get_urls()
 
 
@@ -35,16 +36,21 @@ class InvoiceItemInline(admin.TabularInline):
 
 
 class InvoiceAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['customer']
-    readonly_fields = ('invoice_id',)
+    autocomplete_fields = ["customer"]
+    readonly_fields = ("invoice_id",)
     inlines = [InvoiceItemInline]
     list_display = [
-        'invoice_id', 'customer', 'date',
-        'draft', 'invoiced', 'paid_date', 'total',
-        'invoice_actions'
+        "invoice_id",
+        "customer",
+        "date",
+        "draft",
+        "invoiced",
+        "paid_date",
+        "total",
+        "invoice_actions",
     ]
-    search_fields = ('invoice_id', 'customer__name')
-    actions = ['email_invoices', 'print_invoices']
+    search_fields = ("invoice_id", "customer__name")
+    actions = ["email_invoices", "print_invoices"]
     model = Invoice
 
     def print_invoice(self, request, invoice_id):
@@ -57,7 +63,7 @@ class InvoiceAdmin(admin.ModelAdmin):
             pdf = export_invoice(invoice)
             files.append((invoice.file_name(), pdf))
 
-        return zip_response(files, 'invoice.zip')
+        return zip_response(files, "invoice.zip")
 
     print_invoices.short_description = "Generate a Zip of PDF invoice(s)"
 
@@ -65,24 +71,23 @@ class InvoiceAdmin(admin.ModelAdmin):
         invoice = self.get_object(request, invoice_id)
         if invoice.customer.phone_number:
             if invoice.send_sms():
-                messages.add_message(
-                    request, messages.INFO, 'Invoice SMS Sent.')
+                messages.add_message(request, messages.INFO, "Invoice SMS Sent.")
             else:
                 messages.add_message(
                     request,
                     messages.ERROR,
-                    'SMS sending failed. Please check the logs and try later.')
+                    "SMS sending failed. Please check the logs and try later.",
+                )
         else:
             messages.add_message(
-                request,
-                messages.ERROR,
-                'No phone number present for customer.')
+                request, messages.ERROR, "No phone number present for customer."
+            )
         return HttpResponseRedirect("../")
 
     def email_invoice(self, request, invoice_id):
         invoice = self.get_object(request, invoice_id)
         invoice.send_invoice()
-        messages.add_message(request, messages.INFO, 'Invoice Email Sent.')
+        messages.add_message(request, messages.INFO, "Invoice Email Sent.")
         return HttpResponseRedirect("../")
 
     def email_invoices(self, request, queryset):
@@ -93,18 +98,21 @@ class InvoiceAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
-            path('<int:invoice_id>/pdf/',
-                 self.admin_site.admin_view(self.print_invoice),
-                 name='invoice-pdf'
-                 ),
-            path('<int:invoice_id>/email/',
-                 self.admin_site.admin_view(self.email_invoice),
-                 name='invoice-email'
-                 ),
-            path('<int:invoice_id>/sms/',
-                 self.admin_site.admin_view(self.sms_invoice),
-                 name='invoice-sms'
-                 )
+            path(
+                "<int:invoice_id>/pdf/",
+                self.admin_site.admin_view(self.print_invoice),
+                name="invoice-pdf",
+            ),
+            path(
+                "<int:invoice_id>/email/",
+                self.admin_site.admin_view(self.email_invoice),
+                name="invoice-email",
+            ),
+            path(
+                "<int:invoice_id>/sms/",
+                self.admin_site.admin_view(self.sms_invoice),
+                name="invoice-sms",
+            ),
         ] + super().get_urls()
 
     def invoice_actions(self, obj):
@@ -112,18 +120,19 @@ class InvoiceAdmin(admin.ModelAdmin):
             '<a class="button" href="{}">PDF</a> \
              <a class="button" href="{}">Email</a> \
              <a class="button" href="{}">SMS</a>',
-            reverse('gbsadmin:invoice-pdf', args=[obj.pk]),
-            reverse('gbsadmin:invoice-email', args=[obj.pk]),
-            reverse('gbsadmin:invoice-sms', args=[obj.pk]),
+            reverse("gbsadmin:invoice-pdf", args=[obj.pk]),
+            reverse("gbsadmin:invoice-email", args=[obj.pk]),
+            reverse("gbsadmin:invoice-sms", args=[obj.pk]),
         )
-    invoice_actions.short_description = 'Invoice Actions'
+
+    invoice_actions.short_description = "Invoice Actions"
     invoice_actions.allow_tags = True
 
 
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
-    list_display = ['name', 'street', 'county']
-    search_fields = ('name', 'street')
+    list_display = ["name", "street", "county"]
+    search_fields = ("name", "street")
 
 
 class ExpenseItemInline(admin.TabularInline):
@@ -134,14 +143,14 @@ class ExpenseItemInline(admin.TabularInline):
 class ExpenseAdmin(admin.ModelAdmin):
     model = Expense
     inlines = [ExpenseItemInline]
-    autocomplete_fields = ['type', 'supplier']
-    list_display = ['date', 'supplier', 'total']
-    search_fields = ('supplier', 'total')
+    autocomplete_fields = ["type", "supplier"]
+    list_display = ["date", "supplier", "total"]
+    search_fields = ("supplier", "total")
 
 
 class ExpenseTypeAdmin(admin.ModelAdmin):
     model = ExpenseType
-    search_fields = ['type']
+    search_fields = ["type"]
 
     def get_model_perms(self, request):
         """
@@ -152,19 +161,19 @@ class ExpenseTypeAdmin(admin.ModelAdmin):
 
 class PriceAdmin(admin.ModelAdmin):
     model = Price
-    list_display = ['type', 'cost', 'summer_offer']
+    list_display = ["type", "cost", "summer_offer"]
 
 
 class SupplierAdmin(admin.ModelAdmin):
     model = Supplier
-    list_display = ['name', 'email', 'phone_number']
-    search_fields = ('name', 'email')
+    list_display = ["name", "email", "phone_number"]
+    search_fields = ("name", "email")
 
 
 class HeroImageAdmin(admin.ModelAdmin):
     model = HeroImage
-    ordering = ('title', 'active')
-    list_display = ['title', 'active', 'image', 'teaser_text']
+    ordering = ("title", "active")
+    list_display = ["title", "active", "image", "teaser_text"]
 
 
 admin_site.register(Customer, CustomerAdmin)

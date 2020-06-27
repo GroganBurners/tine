@@ -1,20 +1,22 @@
-from django.template.loader import render_to_string, get_template
-from django.template import TemplateDoesNotExist, Context
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
 from email.mime.application import MIMEApplication
-from gbs.conf import settings as app_settings
 from io import BytesIO
+
+from django.core.mail import EmailMultiAlternatives
+from django.template import Context, TemplateDoesNotExist
+from django.template.loader import get_template, render_to_string
+from django.utils.html import strip_tags
+from gbs.conf import settings as app_settings
 from gbs.export.pdf import export_invoice
 
 
 def send_invoice(invoice):
     pdf = export_invoice(invoice)
     attachment = MIMEApplication(pdf)
-    attachment.add_header("Content-Disposition", "attachment",
-                          filename=invoice.file_name())
+    attachment.add_header(
+        "Content-Disposition", "attachment", filename=invoice.file_name()
+    )
 
-    subject = f'Your Grogan Burner Services Invoice {invoice.invoice_id} is ready'
+    subject = f"Your Grogan Burner Services Invoice {invoice.invoice_id} is ready"
     email_kwargs = {
         "invoice": invoice,
         "SITE_NAME": "Grogan Burner Services",
@@ -28,8 +30,9 @@ def send_invoice(invoice):
     email = EmailMultiAlternatives(
         subject=subject,
         body=strip_tags(body),
-        from_email='mick@grogan.ie',
-        to=['neil@grogan.ie'])
+        from_email="mick@grogan.ie",
+        to=["neil@grogan.ie"],
+    )
     email.attach_alternative(html_body, "text/html")
     email.attach(attachment)
     result = email.send(fail_silently=False)

@@ -1,45 +1,62 @@
-from gbs.models import Invoice, Expense
-from openpyxl import Workbook
-from openpyxl.compat import range
-from openpyxl.styles import Font, Fill
-from openpyxl.styles.borders import Border, Side
-from openpyxl.worksheet.table import Table, TableStyleInfo
-from openpyxl.utils import get_column_letter
+import logging
+import string
 from decimal import Decimal
 from io import BytesIO
 from itertools import chain
 from operator import attrgetter
-import string
-import logging
+
+from gbs.models import Expense, Invoice
+from openpyxl import Workbook
+from openpyxl.compat import range
+from openpyxl.styles import Fill, Font
+from openpyxl.styles.borders import Border, Side
+from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.table import Table, TableStyleInfo
 
 logger = logging.getLogger(__name__)
-CURR_FORMAT = '€#,##'
+CURR_FORMAT = "€#,##"
 
-def add_header_row(ws, row='2'):
+
+def add_header_row(ws, row="2"):
     ws.append([])
-    ws.append(['','Date', 'Details', 'Company', 'Money Out', 'Money In',
-               'VAT Due In', 'VAT Due Out', 'VAT Total', 'Total'])
-    font = Font(name='Calibri', size=11, bold=True)
-    for cell_no in ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']:
+    ws.append(
+        [
+            "",
+            "Date",
+            "Details",
+            "Company",
+            "Money Out",
+            "Money In",
+            "VAT Due In",
+            "VAT Due Out",
+            "VAT Total",
+            "Total",
+        ]
+    )
+    font = Font(name="Calibri", size=11, bold=True)
+    for cell_no in ["B", "C", "D", "E", "F", "G", "H", "I", "J"]:
         cell = ws[cell_no + row]
         cell.font = font
 
-def apply_border_format(ws, row, column, style='thin'):
-    thin_border = Border(left=Side(style=style),
-                         right=Side(style=style),
-                         top=Side(style=style),
-                         bottom=Side(style=style))
+
+def apply_border_format(ws, row, column, style="thin"):
+    thin_border = Border(
+        left=Side(style=style),
+        right=Side(style=style),
+        top=Side(style=style),
+        bottom=Side(style=style),
+    )
     ws.cell(row=row, column=column).border = thin_border
 
 
 def print_total_row(ws, row_num):
     ws["B" + str(row_num)] = "Total"
     for let in list(string.ascii_uppercase[4:10]):
-        start_cell = f'{let}{row_num}'
+        start_cell = f"{let}{row_num}"
         ws[start_cell].number_format = CURR_FORMAT
-        if let == 'I':
+        if let == "I":
             ws[start_cell] = f"=H{row_num}-G{row_num}"
-        elif let == 'J':
+        elif let == "J":
             ws[start_cell] = f"=J{row_num-1}"
         else:
             ws[start_cell] = f"=SUM({let}2:{let}{row_num-1})"
@@ -58,57 +75,56 @@ def adjust_column_widths(ws):
         adjusted_width = (max_length + 2) * 1.2
         ws.column_dimensions[column].width = adjusted_width
 
+
 def get_invoices_expenses():
     invoices = Invoice.objects.filter(cash=False)
     expenses = Expense.objects.filter(cash=False)
-    result_list = sorted(
-        list(
-            chain(
-                invoices,
-                expenses)),
-        key=attrgetter('date'))
+    result_list = sorted(list(chain(invoices, expenses)), key=attrgetter("date"))
     return result_list
+
 
 def print_invoice_expense(ws, row_num):
     total = Decimal(0)
     for res in get_invoices_expenses():
         items = res.items.all()
         row_num = row_num + 1
-        formula = f'=IF(ISNUMBER(J{row_num-1}),J{row_num-1}-F{row_num},F{row_num})+G{row_num}-E{row_num}-H{row_num}'
+        formula = f"=IF(ISNUMBER(J{row_num-1}),J{row_num-1}-F{row_num},F{row_num})+G{row_num}-E{row_num}-H{row_num}"
         if type(res) == Invoice:
             total = total + res.total
             row = [
-                '',
-                res.date.strftime('%d/%m/%Y'),
+                "",
+                res.date.strftime("%d/%m/%Y"),
                 items[0].description,
                 res.customer.name,
-                '',
+                "",
                 res.total,
-                '',
+                "",
                 res.total_vat,
-                '',
-                formula]
+                "",
+                formula,
+            ]
             ws.append(row)
-            ws['F' + str(row_num)].number_format = CURR_FORMAT
-            ws['H' + str(row_num)].number_format = CURR_FORMAT
-            ws['J' + str(row_num)].number_format = CURR_FORMAT
+            ws["F" + str(row_num)].number_format = CURR_FORMAT
+            ws["H" + str(row_num)].number_format = CURR_FORMAT
+            ws["J" + str(row_num)].number_format = CURR_FORMAT
         else:
             total = total - res.total
             row = [
-                '',
-                res.date.strftime('%d/%m/%Y'),
+                "",
+                res.date.strftime("%d/%m/%Y"),
                 items[0].description,
                 res.supplier.name,
                 res.total,
-                '',
+                "",
                 res.total_vat,
-                '',
-                '',
-                formula]
+                "",
+                "",
+                formula,
+            ]
             ws.append(row)
-            ws['E' + str(row_num)].number_format = CURR_FORMAT
-            ws['G' + str(row_num)].number_format = CURR_FORMAT
-            ws['J' + str(row_num)].number_format = CURR_FORMAT
+            ws["E" + str(row_num)].number_format = CURR_FORMAT
+            ws["G" + str(row_num)].number_format = CURR_FORMAT
+            ws["J" + str(row_num)].number_format = CURR_FORMAT
     return row_num
 
 
