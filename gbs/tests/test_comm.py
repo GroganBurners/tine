@@ -2,6 +2,7 @@ from datetime import date
 
 import responses
 from django.test import TestCase
+
 from gbs.comm import email, sms
 from gbs.models import Customer, Invoice
 

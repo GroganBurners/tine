@@ -5,8 +5,9 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.validators import RegexValidator
 from django.db import models
-from gbs.comm import email, sms
 from hashids import Hashids
+
+from gbs.comm import email, sms
 
 from .conf import settings as app_settings
 from .constants import COUNTIES, SERVICES

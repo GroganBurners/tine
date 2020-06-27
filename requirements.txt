@@ -5,7 +5,7 @@ Django==3.0.7
 djangorestframework==3.11.0
 gunicorn==20.0.4
 hashids==1.2.0
-isort==4.3.21
+isort[requirements]==4.3.21
 openpyxl==2.4.9
 Pillow>=6.2.0
 pipfile==0.0.2

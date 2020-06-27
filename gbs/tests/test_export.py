@@ -3,10 +3,18 @@ from decimal import Decimal
 from io import BytesIO
 
 from django.test import TestCase
-from gbs.export import excel_export, pdf
-from gbs.models import (Customer, Expense, ExpenseItem, ExpenseType, Invoice,
-                        InvoiceItem, Supplier)
 from openpyxl import load_workbook
+
+from gbs.export import excel_export, pdf
+from gbs.models import (
+    Customer,
+    Expense,
+    ExpenseItem,
+    ExpenseType,
+    Invoice,
+    InvoiceItem,
+    Supplier,
+)
 
 
 class XLSExportTest(TestCase):

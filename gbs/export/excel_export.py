@@ -5,13 +5,14 @@ from io import BytesIO
 from itertools import chain
 from operator import attrgetter
 
-from gbs.models import Expense, Invoice
 from openpyxl import Workbook
 from openpyxl.compat import range
 from openpyxl.styles import Fill, Font
 from openpyxl.styles.borders import Border, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.table import Table, TableStyleInfo
+
+from gbs.models import Expense, Invoice
 
 logger = logging.getLogger(__name__)
 CURR_FORMAT = "€#,##"

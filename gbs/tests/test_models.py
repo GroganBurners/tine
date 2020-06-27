@@ -2,8 +2,18 @@ from datetime import date
 from decimal import Decimal
 
 from django.test import TestCase
-from gbs.models import (Customer, Expense, ExpenseItem, ExpenseType, HeroImage,
-                        Invoice, InvoiceItem, Price, Supplier)
+
+from gbs.models import (
+    Customer,
+    Expense,
+    ExpenseItem,
+    ExpenseType,
+    HeroImage,
+    Invoice,
+    InvoiceItem,
+    Price,
+    Supplier,
+)
 
 
 class CustomerTest(TestCase):

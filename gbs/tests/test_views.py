@@ -1,6 +1,7 @@
 import unittest
 
 from django.test import Client
+
 from gbs.models import Price
 
 

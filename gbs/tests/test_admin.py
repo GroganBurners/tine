@@ -10,8 +10,9 @@ from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from django.test import TestCase
 from django.urls import reverse
-from gbs.models import Customer, Invoice
 from openpyxl import load_workbook
+
+from gbs.models import Customer, Invoice
 
 
 class MockRequest:

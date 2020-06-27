@@ -5,6 +5,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import Context, TemplateDoesNotExist
 from django.template.loader import get_template, render_to_string
 from django.utils.html import strip_tags
+
 from gbs.conf import settings as app_settings
 from gbs.export.pdf import export_invoice
 

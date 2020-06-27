@@ -3,12 +3,21 @@ from django.contrib.admin import AdminSite
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.utils.html import format_html
-from gbs.export.excel_export import export_finances
-from gbs.export.pdf import export_invoice
-from gbs.utils import excel_response, pdf_response, zip_response
 
-from .models import (Customer, Expense, ExpenseItem, ExpenseType, HeroImage,
-                     Invoice, InvoiceItem, Price, Supplier)
+from .export.excel_export import export_finances
+from .export.pdf import export_invoice
+from .models import (
+    Customer,
+    Expense,
+    ExpenseItem,
+    ExpenseType,
+    HeroImage,
+    Invoice,
+    InvoiceItem,
+    Price,
+    Supplier,
+)
+from .utils import excel_response, pdf_response, zip_response
 
 
 class GBSAdminSite(AdminSite):
