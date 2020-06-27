@@ -45,7 +45,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Django Testing project
       env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/gbs
+        DATABASE_URL: postgres://postgres:postgres@postgres:5432/gbs
       run: |
         python3 manage.py test gbs && coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
     - name: Coveralls
