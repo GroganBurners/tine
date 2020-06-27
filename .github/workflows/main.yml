@@ -26,9 +26,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    env:
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/gbs
-
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python_version }}
@@ -48,7 +45,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Django Testing project
       env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/gbs
       run: |
         python3 manage.py test gbs && coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
     - name: Coveralls
