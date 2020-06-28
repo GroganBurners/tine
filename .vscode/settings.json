@@ -10,7 +10,7 @@
     "python.linting.enabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": [
-        "--ignore=E203,E266,E501,W503,F403,F401 ",
+        "--ignore=E203,E231,E266,E501,W503,F403,F401 ",
         "--max-line-length=88",
         "--select=B,C,E,F,W,T4,B9",
         "--max-complexity = 18"
