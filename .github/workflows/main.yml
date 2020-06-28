@@ -51,7 +51,7 @@ jobs:
         pip install -r requirements.txt
     - name: Lint with flake8
       run: |
-        flake8 . --count --select=B,C,E,F,W,T4,B9 --ignore=E203 --ignore=E266 --ignore=E501 --ignore=W503 --max-complexity=18 --max-line-length=88 --show-source --statistics
+        flake8 . --count --select=B,C,E,F,W,T4,B9 --ignore=E203 --ignore=E231 --ignore=E266 --ignore=E501 --ignore=W503 --max-complexity=18 --show-source --statistics
     - name: Migrate Static files and the Database
       run: |
         mkdir -p $PWD/staticfiles && python manage.py collectstatic
