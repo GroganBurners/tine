@@ -100,7 +100,7 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
 
 # Database Settings
 DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME = re.match(
-    "^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$",
+    r"^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$",
     os.environ.get("DATABASE_URL", ""),
 ).groups()
 

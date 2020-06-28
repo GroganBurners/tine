@@ -1,6 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand  # , CommandError
 
-from csscompressor import compress
+# from csscompressor import compress
 
 
 class MinifyCSSCommand(BaseCommand):

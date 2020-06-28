@@ -1,8 +1,6 @@
 from email.mime.application import MIMEApplication
-from io import BytesIO
 
 from django.core.mail import EmailMultiAlternatives
-from django.template import Context, TemplateDoesNotExist
 from django.template.loader import get_template, render_to_string
 from django.utils.html import strip_tags
 
