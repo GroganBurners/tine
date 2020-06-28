@@ -3,6 +3,7 @@ coverage==4.5.3
 coveralls==1.8.1
 Django==3.0.7
 djangorestframework==3.11.0
+flake8==3.8.3
 gunicorn==20.0.4
 hashids==1.2.0
 isort[requirements]==4.3.21
