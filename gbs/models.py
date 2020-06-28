@@ -1,15 +1,11 @@
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 
-from django.conf import settings
-from django.core.mail import send_mail
 from django.core.validators import RegexValidator
 from django.db import models
 from hashids import Hashids
 
-from gbs.comm import email, sms
-
-from .conf import settings as app_settings
+from .comm import email, sms
 from .constants import COUNTIES, SERVICES
 from .utils import format_currency
 
