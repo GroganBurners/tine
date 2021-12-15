@@ -36,6 +36,21 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.groganburners.com",
+    "https://groganburners.com",
+    "http://*.groganburners.com",
+    "http://groganburners.com",
+    "https://*.groganburners.ie",
+    "https://groganburners.ie",
+    "http://*.groganburners.ie",
+    "http://groganburners.ie",
+    "https://gbs.ballyda.com",
+    "http://gbs.ballyda.com",
+    "http://localhost",
+    "http://127.0.0.1",
+]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -99,6 +114,8 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS", "")
 EMAIL_PORT = os.environ.get("EMAIL_PORT", 587)
 
 # Database Settings
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME = re.match(
     r"^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$",
     os.environ.get("DATABASE_URL", ""),
