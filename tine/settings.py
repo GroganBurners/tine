@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     ".groganburners.ie",
     "groganburners.ie",
     "gbs.ballyda.com",
+    "52.17.240.191",
     "localhost",
     "127.0.0.1",
 ]
