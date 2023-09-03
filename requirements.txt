@@ -10,7 +10,7 @@ isort[requirements]==4.3.21
 openpyxl==2.4.9
 Pillow>=8.4.0
 pipfile==0.0.2
-psycopg2==2.8.4
+psycopg2-binary==2.9.7
 PyPDF2==1.27.9
 reportlab==3.6.13
 requests==2.31.0
