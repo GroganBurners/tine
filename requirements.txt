@@ -4,7 +4,7 @@ coveralls==1.8.1
 Django==4.1.13
 djangorestframework==3.14.0
 flake8==3.8.3
-gunicorn==20.0.4
+gunicorn==22.0.0
 hashids==1.2.0
 isort[requirements]==4.3.21
 openpyxl==2.4.9
