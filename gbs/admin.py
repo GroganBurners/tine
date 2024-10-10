@@ -18,6 +18,7 @@ from .models import (
     Supplier,
 )
 from .utils import excel_response, pdf_response, zip_response
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
 
 class GBSAdminSite(AdminSite):
@@ -192,3 +193,5 @@ admin_site.register(HeroImage, HeroImageAdmin)
 admin_site.register(Invoice, InvoiceAdmin)
 admin_site.register(Price, PriceAdmin)
 admin_site.register(Supplier, SupplierAdmin)
+admin_site.register(PeriodicTask)
+admin_site.register(IntervalSchedule)

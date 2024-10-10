@@ -3,5 +3,16 @@
     "dokku":{
       "predeploy": "python /app/manage.py collectstatic --no-input"
     }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    },
+    "beat": {
+      "quantity": 1
+    },
+    "worker": {
+      "quantity": 1
+    }
   }
 }
