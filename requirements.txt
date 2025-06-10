@@ -16,7 +16,7 @@ psycopg2-binary==2.9.7
 PyPDF2==1.27.9
 redis==5.1.1
 reportlab==3.6.13
-requests==2.32.0
+requests==2.32.4
 responses==0.10.6
 sauceclient==1.0.0
 selenium==3.141.0
