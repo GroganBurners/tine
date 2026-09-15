@@ -17,6 +17,6 @@ def send_sms(number, message):
         "senderid": "GrogBurners",
         "message": message,
     }
-    r = requests.post(API_ENDPOINT, data=json.dumps(data), headers=HEADERS)
+    r = requests.post(API_ENDPOINT, data=json.dumps(data), headers=HEADERS, timeout=15)
     r.raise_for_status()
     return r.json()

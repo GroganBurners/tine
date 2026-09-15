@@ -1,7 +1,9 @@
 from datetime import date
+from unittest.mock import patch
 
 import responses
 from django.test import TestCase
+from requests.exceptions import Timeout
 
 from gbs.comm import email, sms
 from gbs.models import Customer, Invoice
@@ -15,8 +17,15 @@ class SMSTest(TestCase):
 
     @responses.activate
     def test_sms_send(self):
-        response = sms.send_sms("Hello, World!", "+353890000000")
+        response = sms.send_sms("+353890000000", "Hello, World!")
         self.assertEqual(response["success"], True)
+
+    @patch("gbs.comm.sms.requests.post", side_effect=Timeout("SMS service timed out"))
+    def test_sms_request_has_timeout_and_propagates_failure(self, post):
+        with self.assertRaises(Timeout):
+            sms.send_sms("+353890000000", "Hello, World!")
+        post.assert_called_once()
+        self.assertEqual(post.call_args.kwargs["timeout"], 15)
 
 
 class EmailTest(TestCase):

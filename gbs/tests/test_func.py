@@ -1,5 +1,7 @@
 import os
 import sys
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest import skipUnless
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -142,7 +144,8 @@ class HelloSauceTest(StaticLiveServerTestCase):
 
     def test_homepage(self):
         self.driver.get(self.live_server_url)
-        self.driver.get_screenshot_as_file("/tmp/website.png")
+        with TemporaryDirectory() as directory:
+            self.driver.get_screenshot_as_file(str(Path(directory) / "website.png"))
         wait = WebDriverWait(self.driver, 15)
         wait.until(lambda driver: self.driver.title.lower().startswith("g"))
         self.assertIn("Grogan Burner Services", self.driver.title)

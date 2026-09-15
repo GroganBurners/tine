@@ -1,5 +1,7 @@
+# CalledProcessError only simulates tool failures; this test starts no processes.
+import sys
 from io import StringIO
-from subprocess import CalledProcessError
+from subprocess import CalledProcessError  # nosec B404
 from unittest.mock import patch
 
 from django.core.management import call_command
@@ -18,6 +20,11 @@ class DevelopmentCommandTests(SimpleTestCase):
                 with patch(f"gbs.management.commands.{command}.check_output") as run:
                     call_command(command, stdout=output)
                 run.assert_called_once()
+                executable, flag, module = run.call_args.args[0][:3]
+                self.assertEqual(executable, sys.executable)
+                self.assertEqual(flag, "-m")
+                self.assertEqual(module, "flake8" if command == "lint" else "black")
+                self.assertIs(run.call_args.kwargs["shell"], False)
                 self.assertIn(expected, output.getvalue())
 
     def test_checks_report_failure_details(self):

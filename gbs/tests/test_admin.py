@@ -34,7 +34,7 @@ request.user = MockSuperUser()
 class GBSAdminTests(TestCase):
     def setUp(self):
         self.superuser = User.objects.create_superuser(
-            username="super", password="secret", email="super@example.com"
+            username="super", password=None, email="super@example.com"
         )
         self.client.force_login(self.superuser)
 
@@ -57,7 +57,7 @@ class GBSAdminTests(TestCase):
 class InvoiceAdminTests(TestCase):
     def setUp(self):
         self.superuser = User.objects.create_superuser(
-            username="super", password="secret", email="super@example.com"
+            username="super", password=None, email="super@example.com"
         )
         self.client.force_login(self.superuser)
         customer = Customer.objects.create(name="Neil Grogan", street="Ballyda")
