@@ -1,6 +1,8 @@
 from datetime import date
 from decimal import Decimal
+from unittest.mock import patch
 
+from django.core import mail
 from django.test import TestCase
 
 from gbs.models import (
@@ -222,3 +224,73 @@ class HeroImageTest(TestCase):
 
     def tearDown(self):
         HeroImage.objects.all().delete()
+
+
+class InvoiceDeliveryTests(TestCase):
+    def setUp(self):
+        self.customer = Customer.objects.create(
+            name="Customer", phone_number="+353871234567", email="customer@example.com"
+        )
+        self.invoice = Invoice.objects.create(customer=self.customer)
+
+    def test_generated_invoice_ids_are_unique_and_stable(self):
+        other = Invoice.objects.create(customer=self.customer)
+        original_id = self.invoice.invoice_id
+        self.assertEqual(len(original_id), 6)
+        self.assertNotEqual(original_id, other.invoice_id)
+        self.invoice.save()
+        self.invoice.refresh_from_db()
+        self.assertEqual(self.invoice.invoice_id, original_id)
+
+    def test_item_display_amounts(self):
+        item = InvoiceItem.objects.create(
+            invoice=self.invoice,
+            description="Service",
+            unit_price=Decimal("100"),
+            quantity=Decimal("2"),
+            vat_rate=Decimal("13.5"),
+        )
+        self.assertEqual(str(item), "Service")
+        self.assertEqual(item.total_vat_amount, "€ 27.00")
+        self.assertEqual(item.total_amount, "€ 227.00")
+
+    @patch("gbs.models.sms.send_sms", return_value={"success": True})
+    def test_sms_success_marks_invoice_as_sent(self, send):
+        result = self.invoice.send_sms()
+        self.assertEqual(result, (True, {"success": True}))
+        number, message = send.call_args.args
+        self.assertEqual(number, self.customer.phone_number)
+        self.assertIn(self.invoice.invoice_id, message)
+        self.invoice.refresh_from_db()
+        self.assertTrue(self.invoice.invoiced)
+
+    @patch("gbs.models.sms.send_sms", return_value={"success": False})
+    def test_sms_failure_does_not_mark_invoice_as_sent(self, send):
+        self.assertEqual(self.invoice.send_sms(), (False, {"success": False}))
+        send.assert_called_once()
+        self.invoice.refresh_from_db()
+        self.assertFalse(self.invoice.invoiced)
+
+    @patch("gbs.models.sms.send_sms")
+    def test_missing_phone_does_not_attempt_sms(self, send):
+        self.customer.phone_number = ""
+        self.customer.save()
+        self.assertEqual(self.invoice.send_sms(), (False, None))
+        send.assert_not_called()
+        self.invoice.refresh_from_db()
+        self.assertFalse(self.invoice.invoiced)
+
+    def test_email_delivery_marks_invoice_as_sent(self):
+        self.invoice.send_invoice()
+        self.invoice.refresh_from_db()
+        self.assertTrue(self.invoice.invoiced)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(self.invoice.invoice_id, mail.outbox[0].subject)
+        self.assertEqual(len(mail.outbox[0].attachments), 1)
+
+    @patch("gbs.models.email.send_invoice", side_effect=OSError("Mail unavailable"))
+    def test_email_error_does_not_mark_invoice_as_sent(self, send):
+        with self.assertRaisesMessage(OSError, "Mail unavailable"):
+            self.invoice.send_invoice()
+        self.invoice.refresh_from_db()
+        self.assertFalse(self.invoice.invoiced)

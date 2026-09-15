@@ -174,13 +174,13 @@ class Invoice(Bill):
                 salt="this is my salt 2",
             )
             self.invoice_id = hashids.encode(self.id)
-            super(Invoice, self).save(*args, **kwargs)
+            super().save(using=self._state.db, update_fields=["invoice_id"])
 
     def file_name(self):
         return f"Invoice {self.invoice_id}.pdf"
 
     def send_sms(self):
-        if self.customer.phone_number:
+        if not self.customer.phone_number:
             return False, None
 
         message = f"Your invoice {self.invoice_id} is now due, \
@@ -223,6 +223,12 @@ class Price(models.Model):
 
 
 class HeroImage(models.Model):
+    class Season(models.TextChoices):
+        SPRING = "spring", "Spring (March–May)"
+        SUMMER = "summer", "Summer (June–August)"
+        AUTUMN = "autumn", "Autumn (September–November)"
+        WINTER = "winter", "Winter (December–February)"
+
     title = models.CharField(max_length=50, blank=False, null=False)
     image = models.ImageField(upload_to="images/hero", blank=False, null=False)
     img_alt = models.CharField(
@@ -233,6 +239,16 @@ class HeroImage(models.Model):
     )
     teaser_text = models.CharField(max_length=200, blank=False, null=False)
     active = models.BooleanField(blank=False, null=False, default=False)
+    season = models.CharField(
+        max_length=6,
+        choices=[("", "All year")] + Season.choices,
+        blank=True,
+        default="",
+        help_text=(
+            "Seasonal banners take priority over All year banners. Only active "
+            "banners appear. If several match, the oldest is shown."
+        ),
+    )
     use_button = models.BooleanField()
     button_text = models.CharField(max_length=50)
     button_link = models.CharField(max_length=20)

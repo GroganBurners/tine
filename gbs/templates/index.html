@@ -1,7 +1,8 @@
 {% extends "layouts/base.html" %}
 {% block content %}
+    {% if hero %}
     <section class="hero">
-     <img src="{{ hero.image.url }}" alt="{{ hero.image_alt }}">
+     <img src="{{ hero.image.url }}" alt="{{ hero.img_alt|default:'' }}">
      <div class="hero-text">
        <h2>{{ hero.title }}</h2>
        <p>{{ hero.teaser_text }}</p>
@@ -10,6 +11,7 @@
        {% endif %}
     </div>
     </section>
+    {% endif %}
 
     <section class="teasers">
       <div class="teaser">
@@ -160,4 +162,3 @@
       </div>
     </section>
 {% endblock %}
-

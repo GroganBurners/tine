@@ -1,8 +1,10 @@
 import logging
 import zipfile
 from io import BytesIO
+from zoneinfo import ZoneInfo
 
 from django.http import HttpResponse
+from django.utils import timezone
 
 from .conf import settings
 
@@ -51,22 +53,14 @@ def format_currency(amount):
     return f"{sym} {amount:.2f}"
 
 
-def get_season():
-    from datetime import date
-
-    doy = date.today().timetuple().tm_yday
-    # "day of year" ranges for the northern hemisphere
-    spring = range(80, 172)
-    summer = range(172, 264)
-    autumn = range(264, 355)
-    # winter = everything else
-
-    if doy in spring:
-        season = "spring"
-    elif doy in summer:
-        season = "summer"
-    elif doy in autumn:
-        season = "autumn"
-    else:
-        season = "winter"
-    return season
+def get_season(on_date=None):
+    """Return the meteorological season for today's date in Ireland."""
+    if on_date is None:
+        on_date = timezone.localdate(timezone=ZoneInfo("Europe/Dublin"))
+    if 3 <= on_date.month <= 5:
+        return "spring"
+    if 6 <= on_date.month <= 8:
+        return "summer"
+    if 9 <= on_date.month <= 11:
+        return "autumn"
+    return "winter"

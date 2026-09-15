@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.shortcuts import render
 
 from gbs.models import HeroImage, Price
+from gbs.utils import get_season
 
 ADMIN_LOGIN_URL = "/admin/login/"
 
@@ -30,8 +31,10 @@ def index(request):
         type__startswith="oil", summer_offer=True, cost__gt=Decimal("0.00")
     )
 
-    # season = get_season()
-    hero = HeroImage.objects.filter(active=True).first()
+    active_heroes = HeroImage.objects.filter(active=True).order_by("pk")
+    hero = active_heroes.filter(season=get_season()).first()
+    if hero is None:
+        hero = active_heroes.filter(season="").first()
     context = {
         "hero": hero,
         "gas_prices": gas_prices,

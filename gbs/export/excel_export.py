@@ -58,15 +58,15 @@ def print_total_row(ws, row_num):
         if let == "I":
             ws[start_cell] = f"=H{row_num}-G{row_num}"
         elif let == "J":
-            ws[start_cell] = f"=J{row_num-1}"
+            ws[start_cell] = f"=J{row_num - 1}"
         else:
-            ws[start_cell] = f"=SUM({let}2:{let}{row_num-1})"
+            ws[start_cell] = f"=SUM({let}2:{let}{row_num - 1})"
 
 
 def adjust_column_widths(ws):
     for col in ws.columns:
         max_length = 0
-        column = col[0].column  # Get the column name
+        column = col[0].column_letter
         for cell in col:
             try:  # Necessary to avoid error on empty cells
                 if len(str(cell.value)) > max_length:
@@ -89,8 +89,8 @@ def print_invoice_expense(ws, row_num):
     for res in get_invoices_expenses():
         items = res.items.all()
         row_num = row_num + 1
-        formula = f"=IF(ISNUMBER(J{row_num-1}),J{row_num-1}-F{row_num},F{row_num})+G{row_num}-E{row_num}-H{row_num}"
-        if type(res) == Invoice:
+        formula = f"=IF(ISNUMBER(J{row_num - 1}),J{row_num - 1}-F{row_num},F{row_num})+G{row_num}-E{row_num}-H{row_num}"
+        if isinstance(res, Invoice):
             total = total + res.total
             row = [
                 "",

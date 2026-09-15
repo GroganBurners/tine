@@ -10,7 +10,7 @@ from gbs.conf import settings
 
 
 def draw_header(canvas):
-    """ Draws the invoice header """
+    """Draws the invoice header"""
     canvas.setStrokeColorRGB(0.9, 0.5, 0.2)
     canvas.setFillColorRGB(0.2, 0.2, 0.2)
     canvas.setFont("Helvetica", 16)
@@ -24,21 +24,21 @@ def draw_header(canvas):
 
 
 def draw_address(canvas):
-    """ Draws the business address """
+    """Draws the business address"""
     business_details = (
-        u"GROGAN BURNER SERVICES LTD",
-        u"BALLYDA",
-        u"DANESFORT",
-        u"KILKENNY",
-        u"R95 CC92",
-        u"IRELAND",
-        u"",
-        u"",
-        u"Phone: " + settings.PHONE,
-        u"Email: " + settings.EMAIL,
-        u"Website: " + settings.WEBSITE,
-        u"Reg No: " + settings.REG_NO,
-        u"VAT No: " + settings.VAT_NO,
+        "GROGAN BURNER SERVICES LTD",
+        "BALLYDA",
+        "DANESFORT",
+        "KILKENNY",
+        "R95 CC92",
+        "IRELAND",
+        "",
+        "",
+        "Phone: " + settings.PHONE,
+        "Email: " + settings.EMAIL,
+        "Website: " + settings.WEBSITE,
+        "Reg No: " + settings.REG_NO,
+        "VAT No: " + settings.VAT_NO,
     )
     canvas.setFont("Helvetica", 9)
     textobject = canvas.beginText(13 * cm, -2.5 * cm)
@@ -48,18 +48,18 @@ def draw_address(canvas):
 
 
 def draw_footer(canvas):
-    """ Draws the invoice footer """
+    """Draws the invoice footer"""
     note = (
-        u"Bank Details: " + settings.BANK_ADDRESS,
-        u"Sort Code: "
+        "Bank Details: " + settings.BANK_ADDRESS,
+        "Sort Code: "
         + settings.SORT_CODE
         + " BIC: "
         + settings.BIC
         + " IBAN: "
         + settings.IBAN
         + " (Quote invoice number).",
-        u"Please pay via bank transfer or cheque. All payments should be made in EURO.",
-        u"Make cheques payable to Grogan Burner Services Ltd.",
+        "Please pay via bank transfer or cheque. All payments should be made in EURO.",
+        "Make cheques payable to Grogan Burner Services Ltd.",
     )
     textobject = canvas.beginText(1 * cm, -27 * cm)
     for line in note:
@@ -68,7 +68,7 @@ def draw_footer(canvas):
 
 
 def export_invoice(invoice):
-    """ Draws the invoice """
+    """Draws the invoice"""
     buffer = BytesIO()
     canvas = Canvas(buffer, pagesize=A4)
     canvas.translate(0, 29.7 * cm)
@@ -102,14 +102,14 @@ def export_invoice(invoice):
 
     # Info
     textobject = canvas.beginText(1.5 * cm, -6.75 * cm)
-    textobject.textLine(u"Invoice Number: %s" % invoice.invoice_id)
-    textobject.textLine(u"Invoice Date: %s" % invoice.date.strftime("%d %b %Y"))
+    textobject.textLine("Invoice Number: %s" % invoice.invoice_id)
+    textobject.textLine("Invoice Date: %s" % invoice.date.strftime("%d %b %Y"))
     # textobject.textLine(u'Client: %s' % invoice.customer.name)
     canvas.drawText(textobject)
 
     # Items
     data = [
-        [u"Description", "Quantity", u"VAT Rate", u"Price", "Amount"],
+        ["Description", "Quantity", "VAT Rate", "Price", "Amount"],
     ]
     for item in invoice.items.all():
         data.append(
@@ -121,9 +121,9 @@ def export_invoice(invoice):
                 item.total_ex_vat_amount,
             ]
         )
-    data.append([u"", u"", u"", u"Subtotal:", invoice.total_ex_vat_amount])
-    data.append([u"", u"", u"", u"VAT Total:", invoice.total_vat_amount])
-    data.append([u"", u"", u"", u"Total:", invoice.total_amount])
+    data.append(["", "", "", "Subtotal:", invoice.total_ex_vat_amount])
+    data.append(["", "", "", "VAT Total:", invoice.total_vat_amount])
+    data.append(["", "", "", "Total:", invoice.total_amount])
     table = Table(data, colWidths=[10 * cm, 2 * cm, 2 * cm, 2 * cm, 2.5 * cm])
     table.setStyle(
         [
@@ -136,7 +136,10 @@ def export_invoice(invoice):
             ("BACKGROUND", (0, 0), (-1, 0), (0.8, 0.8, 0.8)),
         ]
     )
-    tw, th, = table.wrapOn(canvas, 15 * cm, 19 * cm)
+    (
+        tw,
+        th,
+    ) = table.wrapOn(canvas, 15 * cm, 19 * cm)
     table.drawOn(canvas, 1 * cm, -8 * cm - th)
 
     canvas.showPage()

@@ -1,10 +1,14 @@
 from datetime import date
 from io import BytesIO
+from unittest.mock import patch
+from zipfile import ZipFile
 
 import PyPDF2
 from django.contrib.admin.options import ModelAdmin
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
+from django.core import mail
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from django.test import TestCase
@@ -47,7 +51,7 @@ class GBSAdminTests(TestCase):
         self.assertIsInstance(response.content, bytes)
 
         wb = load_workbook(BytesIO(response.content))
-        self.assertEqual(wb.get_sheet_names()[0], "FinanceSheet2018")
+        self.assertEqual(wb.sheetnames[0], "FinanceSheet2018")
 
 
 class InvoiceAdminTests(TestCase):
@@ -144,11 +148,11 @@ class InvoiceAdminTests(TestCase):
         self.assertEqual(response["Content-Type"], "application/pdf")
         self.assertIsInstance(response.content, bytes)
 
-        pdfReader = PyPDF2.PdfFileReader(BytesIO(response.content))
+        pdfReader = PyPDF2.PdfReader(BytesIO(response.content))
 
-        self.assertEqual(pdfReader.numPages, 1)
-        pageObj = pdfReader.getPage(0)
-        self.assertTrue(pageObj.extractText().find(self.invoice.customer.name))
+        self.assertEqual(len(pdfReader.pages), 1)
+        pageObj = pdfReader.pages[0]
+        self.assertIn(self.invoice.customer.name, pageObj.extract_text())
 
     def test_delete_invoice_admin(self):
         """
@@ -159,3 +163,81 @@ class InvoiceAdminTests(TestCase):
         response = self.client.get(delete_url)
         self.assertIsInstance(response, TemplateResponse)
         self.assertEqual(response.status_code, 200)
+
+    def test_bulk_pdf_export_contains_each_invoice(self):
+        other = Invoice.objects.create(customer=self.invoice.customer)
+        response = self.client.post(
+            reverse("gbsadmin:gbs_invoice_changelist"),
+            {
+                "action": "print_invoices",
+                "_selected_action": [self.invoice.pk, other.pk],
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/zip")
+        with ZipFile(BytesIO(response.content)) as archive:
+            self.assertEqual(
+                set(archive.namelist()), {self.invoice.file_name(), other.file_name()}
+            )
+            for name in archive.namelist():
+                self.assertTrue(archive.read(name).startswith(b"%PDF"))
+
+    def test_email_invoice_action(self):
+        response = self.client.get(
+            reverse("gbsadmin:invoice-email", args=[self.invoice.pk])
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "../")
+        self.assertIn(
+            "Invoice Email Sent.",
+            [str(message) for message in get_messages(response.wsgi_request)],
+        )
+        self.invoice.refresh_from_db()
+        self.assertTrue(self.invoice.invoiced)
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_bulk_email_action(self):
+        other = Invoice.objects.create(customer=self.invoice.customer)
+        response = self.client.post(
+            reverse("gbsadmin:gbs_invoice_changelist"),
+            {
+                "action": "email_invoices",
+                "_selected_action": [self.invoice.pk, other.pk],
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertFalse(Invoice.objects.filter(invoiced=False).exists())
+
+    def test_sms_action_reports_delivery_result(self):
+        for success, expected in [
+            (True, "Invoice SMS Sent."),
+            (False, "SMS sending failed. Please check the logs and try later."),
+        ]:
+            with self.subTest(success=success):
+                with patch(
+                    "gbs.models.sms.send_sms", return_value={"success": success}
+                ) as send:
+                    response = self.client.get(
+                        reverse("gbsadmin:invoice-sms", args=[self.invoice.pk])
+                    )
+                self.assertEqual(response.status_code, 302)
+                send.assert_called_once()
+                self.assertIn(
+                    expected,
+                    [str(message) for message in get_messages(response.wsgi_request)],
+                )
+
+    @patch("gbs.models.sms.send_sms")
+    def test_sms_action_without_phone_shows_error(self, send):
+        customer = self.invoice.customer
+        customer.phone_number = ""
+        customer.save()
+        response = self.client.get(
+            reverse("gbsadmin:invoice-sms", args=[self.invoice.pk])
+        )
+        send.assert_not_called()
+        self.assertIn(
+            "No phone number present for customer.",
+            [str(message) for message in get_messages(response.wsgi_request)],
+        )

@@ -3,6 +3,49 @@
 # tine
 A Django web application for Grogan Burner Services, a heating systems installation, repair and service company.
 
+## Seasonal homepage banners
+
+In Django admin, open **Hero images** and create a banner for each season. Set
+the image, title, teaser text (the message), optional button, and **Season**, then
+enable **Active**. The homepage automatically selects the matching banner on each
+request, using the date in `Europe/Dublin`:
+
+| Season | Months |
+| --- | --- |
+| Spring | March–May |
+| Summer | June–August |
+| Autumn | September–November |
+| Winter | December–February |
+
+These are [Met Éireann's meteorological seasons](https://www.met.ie/climate/climate-of-ireland).
+Keep an active **All year** banner as a fallback when no active seasonal banner
+matches. Existing banners default to **All year**. If multiple active banners
+match, the oldest is used; if none match and there is no fallback, the banner
+section is hidden. Images and messages switch together at Irish midnight on the
+first day of each season. No Celery worker or scheduled job is needed.
+
+Run `python manage.py migrate` before starting the updated app to add the season
+field. Python 3.14 and the dependencies in `requirements.txt` are required.
+
+## Tests and coverage
+
+With `DATABASE_URL` pointing to a PostgreSQL database, run:
+
+```sh
+coverage run manage.py test gbs
+coverage report
+coverage html
+```
+
+CI requires at least **90% application statement coverage**. Coverage includes
+the `gbs` application and management commands, excluding generated migrations
+and test code. Browser tests are optional and are not enabled in normal CI runs.
+
+The upgraded Django also requires a supported PostgreSQL server. The legacy
+PostgreSQL 10.4 image in `docker-compose.yml` needs a database upgrade before
+running the updated application locally. Preserve and migrate existing data;
+do not point a newer PostgreSQL image at the old data directory.
+
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/groganburners.svg)](https://saucelabs.com/u/groganburners)
 

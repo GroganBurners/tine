@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python_version: [3.11]
+        python_version: ["3.14"]
     env:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/gbs
     services:
@@ -34,12 +34,12 @@ jobs:
         ports:
           - 5432:5432
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v7.0.1
     - name: Set up Python ${{ matrix.python_version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v7.0.0
       with:
         python-version: ${{ matrix.python_version }}
-    - uses: actions/cache@v2
+    - uses: actions/cache@v6.1.0
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -54,43 +54,43 @@ jobs:
         flake8 . --ignore=E203,E231,E266,E501,W503,F403,F401 --count --select=B,C,E,F,W,T4,B9  --max-complexity=18 --max-line-length=88 --show-source --statistics
     - name: Migrate Static files and the Database
       run: |
-        mkdir -p $PWD/staticfiles && python manage.py collectstatic
-        python manage.py makemigrations
-        python manage.py migrate
+        mkdir -p "$PWD/staticfiles" && python manage.py collectstatic --noinput
+        python manage.py makemigrations --check --dry-run
+        python manage.py migrate --noinput
     - name: Django Testing project
       run: |
         python3 manage.py test gbs
     - name: Generate Code Coverage Report
       run: |
-        coverage run --source='gbs/' --omit="gbs/migrations/*,gbs/tests/*" manage.py test gbs
+        coverage run manage.py test gbs
         coverage report
         coverage html
     - name: upload report
       if:  ${{ success() || failure() }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: Code Coverage Report
         path: htmlcov/
   isort:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v7.0.1
+    - uses: actions/setup-python@v7.0.0
       with:
-        python-version: 3.8.2
+        python-version: "3.14"
 
     - name: pip install
       run: pip install -r requirements.txt 
 
     - name: isort
-      run: isort **/*.py -c -vb
+      run: isort . --check-only --verbose
   black:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v7.0.1
+    - uses: actions/setup-python@v7.0.0
       with:
-        python-version: 3.8.2
+        python-version: "3.14"
 
     - name: pip install
       run: pip install -r requirements.txt 
@@ -100,16 +100,16 @@ jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v7.0.1
+    - uses: actions/setup-python@v7.0.0
       with:
-        python-version: 3.8.2
+        python-version: "3.14"
 
     - name: pip install bandit
-      run: pip install bandit==1.6.2
+      run: pip install bandit==1.9.4
 
     - name: bandit
-      run: bandit -r **/*.py -f json -o report.json
+      run: bandit -r gbs tine manage.py -f json -o report.json
 
     - name: Show Bandit Report
       if:  ${{ success() || failure() }}
@@ -117,16 +117,16 @@ jobs:
 
     - name: Upload Bandit Report
       if:  ${{ success() || failure() }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: Bandit Security Report
         path: report.json
   docker:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7.0.1
 
     - name: docker build
       run: |
-        GITHUB_REPOSITORY_LOWERCASE=`echo ${{ github.repository }} | awk '{print tolower($0)}'`
-        docker build . --file Dockerfile -t $GITHUB_REPOSITORY_LOWERCASE -t $GITHUB_REPOSITORY_LOWERCASE:$(date +%s)
+        GITHUB_REPOSITORY_LOWERCASE="${GITHUB_REPOSITORY,,}"
+        docker build . --file Dockerfile -t "$GITHUB_REPOSITORY_LOWERCASE" -t "$GITHUB_REPOSITORY_LOWERCASE:$(date +%s)"

@@ -18,7 +18,6 @@ from .models import (
     Supplier,
 )
 from .utils import excel_response, pdf_response, zip_response
-from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
 
 class GBSAdminSite(AdminSite):
@@ -80,7 +79,8 @@ class InvoiceAdmin(admin.ModelAdmin):
     def sms_invoice(self, request, invoice_id):
         invoice = self.get_object(request, invoice_id)
         if invoice.customer.phone_number:
-            if invoice.send_sms():
+            sent, _ = invoice.send_sms()
+            if sent:
                 messages.add_message(request, messages.INFO, "Invoice SMS Sent.")
             else:
                 messages.add_message(
@@ -183,7 +183,8 @@ class SupplierAdmin(admin.ModelAdmin):
 class HeroImageAdmin(admin.ModelAdmin):
     model = HeroImage
     ordering = ("title", "active")
-    list_display = ["title", "active", "image", "teaser_text"]
+    list_display = ["title", "season", "active", "image", "teaser_text"]
+    list_filter = ["season", "active"]
 
 
 admin_site.register(Customer, CustomerAdmin)
@@ -193,5 +194,3 @@ admin_site.register(HeroImage, HeroImageAdmin)
 admin_site.register(Invoice, InvoiceAdmin)
 admin_site.register(Price, PriceAdmin)
 admin_site.register(Supplier, SupplierAdmin)
-admin_site.register(PeriodicTask)
-admin_site.register(IntervalSchedule)

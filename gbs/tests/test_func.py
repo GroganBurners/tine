@@ -91,8 +91,25 @@ class HelloSauceTest(StaticLiveServerTestCase):
 
         if os.getenv("SAUCE_ACCESS_KEY"):
             sauce_url = "http://%s:%s@ondemand.saucelabs.com:80/wd/hub"
+            option_types = {
+                "chrome": webdriver.ChromeOptions,
+                "firefox": webdriver.FirefoxOptions,
+                "MicrosoftEdge": webdriver.EdgeOptions,
+            }
+            capabilities = self.desired_capabilities
+            options = option_types[capabilities["browserName"]]()
+            options.set_capability("platformName", capabilities["platform"])
+            options.set_capability("browserVersion", capabilities["version"])
+            options.set_capability(
+                "sauce:options",
+                {
+                    key: value
+                    for key, value in capabilities.items()
+                    if key not in {"platform", "version", "browserName"}
+                },
+            )
             self.driver = webdriver.Remote(
-                desired_capabilities=self.desired_capabilities,
+                options=options,
                 command_executor=sauce_url % (USERNAME, ACCESS_KEY),
             )
             self.driver.implicitly_wait(5)

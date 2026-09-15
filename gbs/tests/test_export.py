@@ -68,7 +68,7 @@ class XLSExportTest(TestCase):
         result = excel_export.export_finances()
         self.assertIsInstance(result, bytes)
         wb = load_workbook(BytesIO(result))
-        self.assertEqual(wb.get_sheet_names()[0], "FinanceSheet2018")
+        self.assertEqual(wb.sheetnames[0], "FinanceSheet2018")
 
     def tearDown(self):
         Customer.objects.all().delete()

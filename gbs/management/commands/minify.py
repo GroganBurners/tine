@@ -1,11 +1,8 @@
-from django.core.management.base import BaseCommand  # , CommandError
-
-# from csscompressor import compress
+from django.core.management.base import BaseCommand, CommandError
 
 
-class MinifyCSSCommand(BaseCommand):
+class Command(BaseCommand):
     help = "Minifies CSS"
 
     def handle(self, *args, **options):
-        # TODO
-        pass
+        raise CommandError("CSS minification is not implemented.")

@@ -1,0 +1,12 @@
+[tool.black]
+target-version = ["py314"]
+force-exclude = '/migrations/'
+
+[tool.coverage.run]
+source = ["gbs"]
+omit = ["gbs/migrations/*", "gbs/tests/*"]
+
+[tool.coverage.report]
+include_namespace_packages = true
+fail_under = 90
+show_missing = true
